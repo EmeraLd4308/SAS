@@ -78,11 +78,6 @@ dependency-reduced-pom.xml
 release.properties
 *.log
 
-# Go
-bin/
-pkg/
-*.exe
-*.test
 
 # .NET Core
 project.lock.json
@@ -95,14 +90,12 @@ docker-compose.override.yml
 *.box
 
 # Secrets / env
-.env
-.env.*
-.env.local
 .local
 secrets.*
 credentials
 *.pem
 *.key
+.env
 
 # Logs / temp / coverage
 *.log
