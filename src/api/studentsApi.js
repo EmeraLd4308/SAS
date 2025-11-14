@@ -1,54 +1,143 @@
 import { supabase } from '../supabaseClient';
 
-const TABLE_NAME = 'Форма списків';
+const TABLE_NAME = 'students_info';
 
-
-export async function addStudent(newStudentData) {
-    // Вставляємо нові дані. newStudentData - це об'єкт,
-    // що містить child_name, gender, birth_date, тощо.
-    const { data, error } = await supabase
+// =======================================================
+// Приватна функція: Складання запиту з усіма параметрами
+// =======================================================
+function buildQuery(
+    sortBy,
+    sortAscending,
+    searchTerm,
+    genderFilter,
+    dateFrom,
+    dateTo
+) {
+    let query = supabase
         .from(TABLE_NAME)
-        .insert([newStudentData])
-        .select(); // Важливо: повертаємо доданий об'єкт
+        .select('*');
 
-    if (error) {
-        console.error('Помилка додавання учня:', error);
-        return { success: false, data: null };
+    // 1. Пошук (Search)
+
+    if (searchTerm) {
+        query = query.or(`child_name.ilike.%${searchTerm}%,parent_name.ilike.%${searchTerm}%,address.ilike.%${searchTerm}%`);
     }
-    // Повертаємо перший елемент масиву (доданий об'єкт)
-    return { success: true, data: data[0] };
+
+    // 2. Фільтрація за статтю (Gender Filter)
+    if (genderFilter && genderFilter !== 'all') {
+        query = query.eq('gender', genderFilter);
+    }
+
+    // 3. Фільтрація за датою народження (Date Range Filter)
+    if (dateFrom) {
+        query = query.gte('birth_date', dateFrom);
+    }
+    if (dateTo) {
+        query = query.lte('birth_date', dateTo);
+    }
+
+    // 4. Сортування (Sorting)
+    if (sortBy) {
+        query = query.order(sortBy, { ascending: sortAscending });
+    }
+
+    return query;
 }
 
 // =======================================================
-// R (Read): Функція для отримання всіх учнів
+// R (Read): Отримання всіх учнів (Публічний метод)
 // =======================================================
-export async function getStudents() {
-    // В цьому запиті ми отримуємо всі стовпці з таблиці 'students_info'
-    // і сортуємо їх за ім'ям (child_name)
-    const { data, error } = await supabase
-        .from(TABLE_NAME)
-        .select('id, child_name, gender, birth_date, address, parent_name, parent_phone')
-        .order('child_name', { ascending: true }); // Сортування за ім'ям
+export async function getStudents(
+    sortBy = 'seq_number',
+    sortAscending = true,
+    searchTerm = '',
+    genderFilter = '',
+    dateFrom = null,
+    dateTo = null
+) {
+    try {
+        const query = buildQuery(
+            sortBy,
+            sortAscending,
+            searchTerm,
+            genderFilter,
+            dateFrom,
+            dateTo
+        );
 
-    if (error) {
-        console.error('Помилка завантаження учнів:', error);
+        const { data, error } = await query;
+
+        if (error) {
+            console.error('Помилка отримання учнів:', error);
+            return [];
+        }
+        return data || [];
+    } catch (e) {
+        console.error('Непередбачена помилка в getStudents:', e);
         return [];
     }
-    return data;
 }
 
 // =======================================================
-// D (Delete): Функція для видалення учня
+// C (Create): Додавання нового учня
 // =======================================================
-export async function deleteStudent(id) {
-    const { error } = await supabase
-        .from(TABLE_NAME)
-        .delete()
-        .eq('id', id); // Видалити рядок, де 'id' дорівнює переданому значенню
+export async function addStudent(newStudentData) {
+    try {
+        const { data, error } = await supabase
+            .from(TABLE_NAME)
+            .insert([newStudentData])
+            .select();
 
-    if (error) {
-        console.error('Помилка видалення учня:', error);
-        return false;
+        if (error) {
+            console.error('Помилка додавання учня:', error);
+            return { success: false, data: null, error };
+        }
+        return { success: true, data: data?.[0] || null };
+    } catch (e) {
+        console.error('Непередбачена помилка в addStudent:', e);
+        return { success: false, data: null, error: e };
     }
-    return true; // Успішно
+}
+
+// =======================================================
+// U (Update): Оновлення даних учня
+// =======================================================
+export async function updateStudent(id, updatedFields) {
+    try {
+        const { data, error } = await supabase
+            .from(TABLE_NAME)
+            .update(updatedFields)
+            .eq('id', id)
+            .select();
+
+        if (error) {
+            console.error('Помилка оновлення учня:', error);
+            return { success: false, data: null, error };
+        }
+        return { success: true, data: data?.[0] || null };
+    } catch (e) {
+        console.error('Непередбачена помилка в updateStudent:', e);
+        return { success: false, data: null, error: e };
+    }
+}
+
+// =======================================================
+// D (Delete): Видалення учня
+// =======================================================
+export async function deleteStudent(studentId) {
+    try {
+        const { error } = await supabase
+            .from(TABLE_NAME)
+            .delete()
+            .eq('id', studentId);
+
+        if (error) {
+            console.error('Помилка видалення учня:', error);
+            return { success: false, error };
+        }
+        return { success: true };
+    } catch (e) {
+        console.error('Непередбачена помилка в deleteStudent:', e);
+        return { success: false, error: e };
+    }
 }

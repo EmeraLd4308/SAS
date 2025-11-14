@@ -1,0 +1,311 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+
+:root {
+  // Кольорова палітра
+  --color-primary: #007bff;
+  --color-secondary: #6c757d;
+  --color-success: #28a745;
+  --color-danger: #dc3545;
+  --color-light: #f8f9fa;
+  --color-dark: #343a40;
+  --color-background: #f8f9fa;
+  --color-surface: #ffffff;
+  --border-radius: 8px;
+  --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: var(--color-background);
+  color: var(--color-dark);
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
+}
+
+// Global reset
+* {
+  box-sizing: border-box;
+}
+
+h1,
+h2 {
+  color: var(--color-dark);
+  margin-bottom: 1rem;
+}
+
+// Стилізація головного контейнера
+.app-container {
+  padding: 30px;
+  max-width: 1300px;
+  margin: 0 auto;
+}
+
+// =======================================================
+// Стилі для Пошуку, Фільтрації та Сортування
+// =======================================================
+.table-controls {
+  display: grid;
+  // На великих екранах 5 колонок: Пошук(2), Стать(1), Сорт(1), Напрямок(1)
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 15px;
+  margin-bottom: 25px;
+  padding: 15px;
+  background-color: var(--color-surface);
+  border: 1px solid #e9ecef;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+
+  .control-group {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    min-width: 160px;
+  }
+
+  /* Щоб поле пошуку було ширшим, застосовуємо на сітці */
+  .search-control {
+    grid-column: span 1;
+  }
+
+  /* Збільшуємо розмір полів дати */
+  .date-control {
+    min-width: 140px;
+  }
+
+  label {
+    font-weight: 500;
+    margin-bottom: 5px;
+    font-size: 0.9rem;
+    color: var(--color-secondary);
+  }
+
+  input[type="text"],
+  input[type="date"],
+  select {
+    padding: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 1rem;
+    width: 100%;
+    min-height: 40px;
+    transition: border-color 0.3s;
+
+    &:focus {
+      border-color: var(--color-primary);
+      outline: none;
+    }
+  }
+}
+
+
+// Стилізація форми додавання
+.student-form-card {
+  background-color: var(--color-surface);
+  border: 1px solid #e9ecef;
+  padding: 25px;
+  margin-bottom: 30px;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  position: relative; // Для позиціонування кнопки скасування
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+  margin-top: 15px; // Відступ, якщо є кнопка скасування
+
+  input[type="text"],
+  input[type="date"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 1rem;
+  }
+}
+
+.form-button {
+  grid-column: 1 / -1;
+  padding: 12px;
+  background-color: var(--color-primary);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: darken(#007bff, 10%);
+  }
+
+  &:disabled {
+    background-color: var(--color-secondary);
+    cursor: not-allowed;
+  }
+}
+
+// Стилізація кнопки скасування редагування
+.cancel-edit-button {
+  position: absolute;
+  top: 25px;
+  right: 25px;
+  background: none;
+  border: 1px solid var(--color-secondary);
+  color: var(--color-secondary);
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-size: 0.85rem;
+
+  &:hover {
+    background-color: var(--color-secondary);
+    color: white;
+  }
+}
+
+// Стилізація таблиці
+.student-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  background-color: var(--color-surface);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  box-shadow: var(--box-shadow);
+}
+
+.student-table th,
+.student-table td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #dee2e6;
+  vertical-align: middle;
+}
+
+.student-table thead th {
+  background-color: var(--color-dark);
+  color: white;
+  font-weight: 500;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+}
+
+.student-table tbody tr:hover {
+  background-color: #e9ecef;
+}
+
+// Стилізація кнопок дій
+.action-cell {
+  display: flex;
+  gap: 8px;
+
+  button {
+    border: none;
+    padding: 6px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+}
+
+.delete-button {
+  background-color: var(--color-danger);
+  color: white;
+
+  &:hover {
+    background-color: darken(#dc3545, 10%);
+  }
+}
+
+.edit-button {
+  background-color: var(--color-success);
+  color: white;
+
+  &:hover {
+    background-color: darken(#28a745, 10%);
+  }
+}
+
+.loading-message {
+  text-align: center;
+  padding: 50px;
+  font-size: 1.5rem;
+}
+
+// =======================================================
+// Стилі для Кастомного Модального Вікна (Заміна alert/confirm)
+// =======================================================
+
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  padding: 30px;
+  border-radius: var(--border-radius);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+
+  p {
+    margin-bottom: 20px;
+    font-size: 1.1rem;
+  }
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+
+  button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.3s;
+  }
+}
+
+.btn-confirm {
+  background-color: var(--color-danger);
+  color: white;
+
+  &:hover {
+    background-color: darken(#dc3545, 10%);
+  }
+}
+
+.btn-cancel,
+.btn-ok {
+  background-color: var(--color-secondary);
+  color: white;
+
+  &:hover {
+    background-color: darken(#6c757d, 10%);
+  }
+}
+
+.btn-ok {
+  background-color: var(--color-primary); // ОК може бути і синім
+
+  &:hover {
+    background-color: darken(#007bff, 10%);
+  }
+}
