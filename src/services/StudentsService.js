@@ -1,10 +1,7 @@
-import { supabase } from '../supabaseClient';
-
+import { supabase } from '../client/SupabaseClient';
 const TABLE_NAME = 'students_info';
 
-// =======================================================
 // Приватна функція: Складання запиту з усіма параметрами
-// =======================================================
 function buildQuery(
     sortBy,
     sortAscending,
@@ -44,9 +41,7 @@ function buildQuery(
     return query;
 }
 
-// =======================================================
 // R (Read): Отримання всіх учнів (Публічний метод)
-// =======================================================
 export async function getStudents(
     sortBy = 'seq_number',
     sortAscending = true,
@@ -78,9 +73,7 @@ export async function getStudents(
     }
 }
 
-// =======================================================
 // C (Create): Додавання нового учня
-// =======================================================
 export async function addStudent(newStudentData) {
     try {
         const { data, error } = await supabase
@@ -99,9 +92,7 @@ export async function addStudent(newStudentData) {
     }
 }
 
-// =======================================================
 // U (Update): Оновлення даних учня
-// =======================================================
 export async function updateStudent(id, updatedFields) {
     try {
         const { data, error } = await supabase
@@ -121,9 +112,7 @@ export async function updateStudent(id, updatedFields) {
     }
 }
 
-// =======================================================
 // D (Delete): Видалення учня
-// =======================================================
 export async function deleteStudent(studentId) {
     try {
         const { error } = await supabase
