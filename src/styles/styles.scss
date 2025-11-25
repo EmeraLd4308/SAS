@@ -1,412 +1,65 @@
-// Імпорт шрифту Yaldevi Colombo тільки з SemiBold
 @import url('https://fonts.googleapis.com/css2?family=Yaldevi+Colombo:wght@600&display=swap');
+@import '../components/header/header.scss';
+@import '../components/footer/footer.scss';
+@import '../components/deleteWindow/deleteWindow.scss';
+@import '../components/studentForm/studentForm.scss';
+@import '../components/tableControls/tableControls.scss';
+@import '../components/studentTable/studentTable.scss';
+@import '../components/pagination/pagination.scss';
 
 :root {
-  // Кольорова палітра
-  --color-primary: #632be6;
-  --color-secondary: #9def78;
+  --color-primary: #007bff;
+  --color-secondary: #6c757d;
   --color-success: #28a745;
   --color-danger: #dc3545;
   --color-warning: #ffc107;
-  --color-info: #5fecd2;
+  --color-info: #17a2b8;
   --color-light: #f8f9fa;
-  --color-dark: #0a0318;
+  --color-dark: #343a40;
   --color-background: #f7f4fe;
   --color-surface: #ffffff;
-  --border-radius: 8px;
-  --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --color-accent-green: #9def78;
+  --color-accent-teal: #5fecd2;
+  --border-radius: 9px;
+  --box-shadow: 0.5px 0px 4px 0px rgba(106, 106, 106, 0.15);
   --transition: all 0.3s ease;
 }
 
-// ВЕСЬ ТЕКСТ SEMIBOLD (600)
+* {
+  box-sizing: border-box;
+  font-family: 'Yaldevi Colombo', sans-serif !important;
+  font-weight: 600 !important;
+}
+
 body {
-  font-family: 'Yaldevi Colombo', sans-serif;
+  font-family: 'Yaldevi Colombo', sans-serif !important;
   background-color: var(--color-background);
   color: var(--color-dark);
   line-height: 1.6;
   margin: 0;
   padding: 0;
-  font-weight: 600 !important; // SemiBold для всього
-}
-
-// Глобальний ресет
-* {
-  box-sizing: border-box;
-  font-family: 'Yaldevi Colombo', sans-serif !important;
-  font-weight: 600 !important; // SemiBold для всіх елементів
-}
-
-// Заголовки
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: 'Yaldevi Colombo', sans-serif !important;
-  font-weight: 600 !important;
-  color: var(--color-dark);
-  margin-bottom: 1rem;
-}
-
-h1 {
-  font-size: 2.5rem;
   font-weight: 600 !important;
 }
 
-h2 {
-  font-size: 2rem;
-  font-weight: 600 !important;
-}
-
-// Стилізація головного контейнера
 .app-container {
-  padding: 30px;
+  padding: 20px;
   max-width: 1400px;
   margin: 0 auto;
-  font-weight: 600 !important;
-}
-
-// Заголовок з кнопками
-.table-header {
+  min-height: 100vh;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-  flex-wrap: wrap;
-  gap: 15px;
-
-  h2 {
-    margin: 0;
-    font-family: 'Yaldevi Colombo', sans-serif !important;
-    font-weight: 600 !important;
-  }
+  flex-direction: column;
 }
 
-.header-actions {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
+.main-content {
+  flex: 1;
+  padding: 20px 0;
 }
 
-// Кнопка експорту
-.export-button {
-  background-color: var(--color-success);
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: var(--border-radius);
-  cursor: pointer;
-  font-family: 'Yaldevi Colombo', sans-serif !important;
-  font-weight: 600 !important;
-  transition: var(--transition);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-
-  &:hover:not(:disabled) {
-    background-color: darken(#28a745, 10%);
-    transform: translateY(-1px);
-  }
-
-  &:disabled {
-    background-color: var(--color-secondary);
-    cursor: not-allowed;
-    opacity: 0.6;
-  }
-}
-
-// Кнопка скидання фільтрів
-.reset-filters-btn {
-  background-color: var(--color-warning);
-  color: var(--color-dark);
-  border: none;
-  padding: 10px 20px;
-  border-radius: var(--border-radius);
-  cursor: pointer;
-  font-family: 'Yaldevi Colombo', sans-serif !important;
-  font-weight: 600 !important;
-  transition: var(--transition);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-
-  &:hover {
-    background-color: darken(#ffc107, 10%);
-    transform: translateY(-1px);
-  }
-}
-
-// =======================================================
-// Стилі для Пошуку, Фільтрації та Сортування
-// =======================================================
-.table-controls {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 20px;
-  margin-bottom: 25px;
-  padding: 20px;
-  background-color: var(--color-surface);
-  border: 1px solid #e9ecef;
-  border-radius: var(--border-radius);
-  box-shadow: var(--box-shadow);
-
-  .control-group {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-    min-width: 160px;
-  }
-
-  /* Пошук з підказками */
-  .search-control {
-    grid-column: 1 / -1;
-
-    .search-wrapper {
-      position: relative;
-    }
-
-    .search-suggestions {
-      position: absolute;
-      top: 100%;
-      left: 0;
-      right: 0;
-      background: white;
-      border: 1px solid #ddd;
-      border-top: none;
-      border-radius: 0 0 4px 4px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      z-index: 1000;
-      max-height: 150px;
-      overflow-y: auto;
-      font-family: 'Yaldevi Colombo', sans-serif !important;
-      font-weight: 600 !important;
-    }
-
-    .suggestion-item {
-      padding: 10px;
-      cursor: pointer;
-      border-bottom: 1px solid #f0f0f0;
-      transition: var(--transition);
-      font-family: 'Yaldevi Colombo', sans-serif !important;
-      font-weight: 600 !important;
-
-      &:hover {
-        background-color: #f8f9fa;
-      }
-
-      &:last-child {
-        border-bottom: none;
-      }
-    }
-  }
-
-  label {
-    font-weight: 600 !important;
-    margin-bottom: 8px;
-    font-size: 0.9rem;
-    color: var(--color-secondary);
-    font-family: 'Yaldevi Colombo', sans-serif !important;
-  }
-
-  input[type="text"],
-  input[type="date"],
-  input[type="tel"],
-  select {
-    padding: 12px;
-    border: 1px solid #ced4da;
-    border-radius: 4px;
-    font-size: 1rem;
-    width: 100%;
-    min-height: 44px;
-    transition: var(--transition);
-    font-family: 'Yaldevi Colombo', sans-serif !important;
-    font-weight: 600 !important;
-
-    &:focus {
-      border-color: var(--color-primary);
-      outline: none;
-      box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
-    }
-  }
-}
-
-// Стилізація форми додавання
-.student-form-card {
-  background-color: var(--color-surface);
-  border: 1px solid #e9ecef;
-  padding: 25px;
-  margin-bottom: 30px;
-  border-radius: var(--border-radius);
-  box-shadow: var(--box-shadow);
-  position: relative;
-}
-
-.form-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 20px;
-  margin-top: 20px;
-
-  input[type="text"],
-  input[type="date"],
-  input[type="tel"],
-  select {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #ced4da;
-    border-radius: 4px;
-    font-size: 1rem;
-    transition: var(--transition);
-    font-family: 'Yaldevi Colombo', sans-serif !important;
-    font-weight: 600 !important;
-
-    &:focus {
-      border-color: var(--color-primary);
-      outline: none;
-      box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
-    }
-  }
-}
-
-.form-button {
-  grid-column: 1 / -1;
-  padding: 14px;
-  background-color: var(--color-primary);
-  color: white;
-  border: none;
-  border-radius: var(--border-radius);
-  cursor: pointer;
-  font-family: 'Yaldevi Colombo', sans-serif !important;
-  font-weight: 600 !important;
-  font-size: 1.1rem;
-  transition: var(--transition);
-
-  &:hover:not(:disabled) {
-    background-color: darken(#007bff, 10%);
-    transform: translateY(-1px);
-  }
-
-  &:disabled {
-    background-color: var(--color-secondary);
-    cursor: not-allowed;
-    opacity: 0.7;
-  }
-}
-
-// Стилізація кнопки скасування редагування
-.cancel-edit-button {
-  position: absolute;
-  top: 25px;
-  right: 25px;
-  background: none;
-  border: 1px solid var(--color-secondary);
-  color: var(--color-secondary);
-  padding: 8px 16px;
-  border-radius: var(--border-radius);
-  cursor: pointer;
-  transition: var(--transition);
-  font-size: 0.9rem;
-  font-family: 'Yaldevi Colombo', sans-serif !important;
-  font-weight: 600 !important;
-
-  &:hover {
-    background-color: var(--color-secondary);
-    color: white;
-    transform: translateY(-1px);
-  }
-}
-
-// Стилізація таблиці
-.student-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
-  background-color: var(--color-surface);
-  border-radius: var(--border-radius);
-  overflow: hidden;
-  box-shadow: var(--box-shadow);
-  font-family: 'Yaldevi Colombo', sans-serif !important;
-}
-
-.student-table th,
-.student-table td {
-  padding: 14px 16px;
-  text-align: left;
-  border-bottom: 1px solid #dee2e6;
-  vertical-align: middle;
-  font-family: 'Yaldevi Colombo', sans-serif !important;
-  font-weight: 600 !important;
-}
-
-.student-table thead th {
-  background-color: var(--color-dark);
-  color: white;
-  font-weight: 600 !important;
-  text-transform: uppercase;
-  font-size: 0.85rem;
-  letter-spacing: 0.5px;
-  font-family: 'Yaldevi Colombo', sans-serif !important;
-}
-
-.student-table tbody tr {
-  transition: var(--transition);
-  font-weight: 600 !important;
-
-  &:hover {
-    background-color: #f8f9fa;
-    transform: translateY(-1px);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-}
-
-// Стилізація кнопок дій
-.action-cell {
-  display: flex;
-  gap: 8px;
-
-  button {
-    border: none;
-    padding: 8px 16px;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: var(--transition);
-    font-size: 0.9rem;
-    font-weight: 600 !important;
-    font-family: 'Yaldevi Colombo', sans-serif !important;
-
-    &:hover {
-      transform: translateY(-1px);
-    }
-  }
-}
-
-.delete-button {
-  background-color: var(--color-danger);
-  color: white;
-
-  &:hover {
-    background-color: darken(#dc3545, 10%);
-  }
-}
-
-.edit-button {
-  background-color: var(--color-success);
-  color: white;
-
-  &:hover {
-    background-color: darken(#28a745, 10%);
-  }
-}
-
-// Індикатор завантаження
 .loading-message {
   text-align: center;
   padding: 60px;
   font-size: 1.5rem;
   color: var(--color-primary);
-  font-family: 'Yaldevi Colombo', sans-serif !important;
-  font-weight: 600 !important;
 
   &::after {
     content: '';
@@ -415,23 +68,19 @@ h2 {
 }
 
 @keyframes dots {
-
   0%,
   20% {
     content: '.';
   }
-
   40% {
     content: '..';
   }
-
   60%,
   100% {
     content: '...';
   }
 }
 
-// Повідомлення про відсутність даних
 .no-data {
   text-align: center;
   padding: 40px;
@@ -440,261 +89,14 @@ h2 {
   background-color: var(--color-surface);
   border-radius: var(--border-radius);
   border: 2px dashed #dee2e6;
-  font-family: 'Yaldevi Colombo', sans-serif !important;
-  font-weight: 600 !important;
-}
-
-// =======================================================
-// Стилі для Пагінації
-// =======================================================
-.pagination {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 8px;
-  margin-top: 30px;
-  padding: 20px;
-  flex-wrap: wrap;
-  font-family: 'Yaldevi Colombo', sans-serif !important;
-}
-
-.pagination-btn {
-  padding: 10px 16px;
-  border: 1px solid #dee2e6;
-  background-color: white;
-  color: var(--color-dark);
-  cursor: pointer;
-  border-radius: 4px;
-  transition: var(--transition);
-  font-weight: 600 !important;
-  font-family: 'Yaldevi Colombo', sans-serif !important;
-
-  &:hover:not(:disabled) {
-    background-color: var(--color-primary);
-    color: white;
-    border-color: var(--color-primary);
-    transform: translateY(-1px);
-  }
-
-  &:disabled {
-    background-color: #f8f9fa;
-    color: #6c757d;
-    cursor: not-allowed;
-    opacity: 0.6;
-  }
-
-  &.active {
-    background-color: var(--color-primary);
-    color: white;
-    border-color: var(--color-primary);
-  }
-}
-
-.pagination-ellipsis {
-  padding: 10px 8px;
-  color: var(--color-secondary);
-  font-family: 'Yaldevi Colombo', sans-serif !important;
-  font-weight: 600 !important;
-}
-
-// =======================================================
-// Стилі для Кастомного Модального Вікна
-// =======================================================
-.modal-backdrop {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-  backdrop-filter: blur(2px);
-}
-
-.modal-content {
-  background: white;
-  padding: 30px;
-  border-radius: var(--border-radius);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-  max-width: 450px;
-  width: 90%;
-  text-align: center;
-  animation: modalAppear 0.3s ease-out;
-  font-family: 'Yaldevi Colombo', sans-serif !important;
-
-  p {
-    margin-bottom: 25px;
-    font-size: 1.1rem;
-    line-height: 1.5;
-    font-weight: 600 !important;
-  }
-}
-
-@keyframes modalAppear {
-  from {
-    opacity: 0;
-    transform: scale(0.9) translateY(-20px);
-  }
-
-  to {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
-}
-
-.modal-actions {
-  display: flex;
-  justify-content: center;
-  gap: 15px;
-  flex-wrap: wrap;
-
-  button {
-    padding: 12px 24px;
-    border: none;
-    border-radius: var(--border-radius);
-    cursor: pointer;
-    font-weight: 600 !important;
-    transition: var(--transition);
-    min-width: 120px;
-    font-family: 'Yaldevi Colombo', sans-serif !important;
-
-    &:hover {
-      transform: translateY(-1px);
-    }
-  }
-}
-
-.btn-confirm {
-  background-color: var(--color-danger);
-  color: white;
-
-  &:hover {
-    background-color: darken(#dc3545, 10%);
-  }
-}
-
-.btn-cancel {
-  background-color: var(--color-secondary);
-  color: white;
-
-  &:hover {
-    background-color: darken(#6c757d, 10%);
-  }
-}
-
-.btn-ok {
-  background-color: var(--color-primary);
-  color: white;
-
-  &:hover {
-    background-color: darken(#007bff, 10%);
-  }
-}
-
-// =======================================================
-// Адаптивність
-// =======================================================
-@media (max-width: 1024px) {
-  .app-container {
-    padding: 20px;
-  }
-
-  .table-controls {
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  }
-
-  .form-grid {
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  }
 }
 
 @media (max-width: 768px) {
   .app-container {
-    padding: 15px;
-  }
-
-  .table-header {
-    flex-direction: column;
-    align-items: stretch;
-
-    .header-actions {
-      justify-content: center;
-    }
-  }
-
-  .table-controls {
-    grid-template-columns: 1fr;
-    gap: 15px;
-    padding: 15px;
-  }
-
-  .form-grid {
-    grid-template-columns: 1fr;
-    gap: 15px;
-  }
-
-  .student-table {
-    font-size: 0.9rem;
-
-    th,
-    td {
-      padding: 10px 12px;
-    }
-  }
-
-  .action-cell {
-    flex-direction: column;
-    gap: 5px;
-
-    button {
-      width: 100%;
-      text-align: center;
-    }
-  }
-
-  .pagination {
-    gap: 5px;
-
-    .pagination-btn {
-      padding: 8px 12px;
-      font-size: 0.9rem;
-    }
-  }
-
-  .modal-content {
-    padding: 20px;
-
-    .modal-actions {
-      flex-direction: column;
-
-      button {
-        width: 100%;
-      }
-    }
-  }
-}
-
-@media (max-width: 480px) {
-  .app-container {
     padding: 10px;
   }
-
-  .student-form-card {
-    padding: 15px;
-  }
-
-  .cancel-edit-button {
-    position: static;
-    margin-bottom: 15px;
-    width: 100%;
-  }
-
-  .student-table {
-    display: block;
-    overflow-x: auto;
-    white-space: nowrap;
+  
+  .main-content {
+    padding: 10px 0;
   }
 }

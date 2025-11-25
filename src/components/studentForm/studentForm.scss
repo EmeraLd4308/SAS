@@ -1,0 +1,96 @@
+.student-form-card {
+    background-color: var(--color-surface);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    padding: 25px;
+    margin-bottom: 30px;
+    position: relative;
+
+    h2 {
+        margin: 0 0 20px 0;
+        color: #0a0318;
+        font-size: 1.5rem;
+    }
+}
+
+.cancel-edit-button {
+    position: absolute;
+    top: 25px;
+    right: 25px;
+    background: linear-gradient(135deg, #ff6b6b 0%, var(--color-danger) 100%);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: var(--transition);
+    font-size: 0.9rem;
+
+    &:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+
+    input[type="text"],
+    input[type="date"],
+    select {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ced4da;
+        border-radius: 4px;
+        font-size: 1rem;
+        transition: var(--transition);
+        background: white;
+
+        &:focus {
+            border-color: var(--color-accent-teal);
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(95, 236, 210, 0.25);
+        }
+    }
+}
+
+.form-button {
+    grid-column: 1 / -1;
+    padding: 14px;
+    background: linear-gradient(135deg, var(--color-accent-green) 0%, var(--color-accent-teal) 100%);
+    color: #0a0318;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: var(--transition);
+
+    &:hover:not(:disabled) {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    &:disabled {
+        background: linear-gradient(135deg, #e0e0e0 0%, #b0b0b0 100%);
+        cursor: not-allowed;
+        opacity: 0.7;
+    }
+}
+
+@media (max-width: 768px) {
+    .student-form-card {
+        padding: 15px;
+    }
+
+    .cancel-edit-button {
+        position: static;
+        margin-bottom: 15px;
+        width: 100%;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+}
