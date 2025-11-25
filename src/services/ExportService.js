@@ -1,11 +1,9 @@
-import { supabase } from '../client/SupabaseClient';
+import { supabase } from '../client/supabaseClient';
 import * as XLSX from 'xlsx';
 
 export async function exportToExcel(filters = {}) {
     try {
-        let query = supabase
-            .from('students_info')
-            .select('*');
+        let query = supabase.from('students_info').select('*');
 
         if (filters.searchTerm) {
             query = query.or(

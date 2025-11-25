@@ -1,4 +1,4 @@
-import { supabase } from '../client/SupabaseClient';
+import { supabase } from '../client/supabaseClient';
 const TABLE_NAME = 'students_info';
 
 // Приватна функція: Складання запиту з усіма параметрами
@@ -10,9 +10,7 @@ function buildQuery(
     dateFrom,
     dateTo
 ) {
-    let query = supabase
-        .from(TABLE_NAME)
-        .select('*');
+    let query = supabase.from(TABLE_NAME).select('*');
 
     // 1. Пошук (Search)
 
