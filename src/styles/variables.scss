@@ -1,29 +1,18 @@
-﻿// src/styles/_variables.scss
-
-// ----------------------------------------------------
-// Глобальні значення (раніше були тільки в :root)
-// ----------------------------------------------------
-$color-primary: #007bff;
-$color-secondary: #6c757d;
-$color-success: #28a745;
-$color-danger: #dc3545;
-$color-warning: #ffc107;
-$color-info: #17a2b8;
-$color-light: #f8f9fa;
-$color-dark: #343a40;
-$color-background: #f7f4fe;
-$color-surface: #ffffff;
-$color-accent-green: #9def78;
-$color-accent-teal: #5fecd2;
-
-$border-radius: 9px;
-$box-shadow: 0.5px 0px 4px 0px rgba(106, 106, 106, 0.15);
-$transition: all 0.3s ease;
-
-// ----------------------------------------------------
-// Специфічні змінні хедера (які не були у :root)
-// ----------------------------------------------------
-$color-header-bg: #f7f3fb;
-$color-border-gray: #d9d9d9;
-$color-text-dark: #0a0318; // Перевизначено, оскільки це темніший відтінок, ніж $color-dark
-$color-text-hover: #5d2b96;
+﻿  $color-primary: #5FECD2;
+  $color-secondary: #9DEF78;
+  $color-text: #0A0318;
+  $color-text50: rgba(10, 3, 24, 0.5);
+  $color-hover: #5d2b96;
+  $color-background: #F7F4FE;
+  $color-stroke: #6A6A6A;
+  $color-edit: rgba(106, 106, 106, 0.09);
+  $gradient-footer: linear-gradient(90deg, #9DEF78 0%, #5FECD2 15%, #632BE6 100%);
+  $gradient-50: linear-gradient(90deg, rgba(247, 244, 254, 0.98) 0%, #5FECD2 50%, rgba(247, 244, 254, 0.97) 100%);
+  $gradient-top: linear-gradient(to bottom, #5FECD2 0%, #F7F4FE 14%);
+  $gradient-plus: linear-gradient(90deg, #5FECD2 0%, #F7F4FE 89%);
+  $gradient-filter: linear-gradient(90deg, #F7F4FE 10%, #5FECD2 100%);
+  $gradient-table: linear-gradient(90deg, #F7F4FE 0%, #9DEF78 4%, rgba(157, 239, 120, 0.9) 50%, #9DEF78 96%, #F7F4FE 100%);
+  $border-radius: 9px;
+  $box-shadow: 0.5px 0px 4px 0px rgba(106, 106, 106, 0.15);
+  $transition: all 0.3s ease;
+  

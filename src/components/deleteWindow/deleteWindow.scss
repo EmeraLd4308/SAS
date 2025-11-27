@@ -1,10 +1,12 @@
+@use '../../styles/variables' as var;
+
 .modal-backdrop {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: var.$color-text;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -13,10 +15,10 @@
 }
 
 .modal-content {
-    background: white;
+    background: var.$color-background;
     padding: 30px;
-    border-radius: var(--border-radius);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    border-radius: var.$border-radius;
+    box-shadow: var.$box-shadow;
     max-width: 450px;
     width: 90%;
     text-align: center;
@@ -26,7 +28,7 @@
         margin-bottom: 25px;
         font-size: 1.1rem;
         line-height: 1.5;
-        color: #0a0318;
+        color: var.$color-text;
     }
 }
 

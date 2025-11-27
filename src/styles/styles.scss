@@ -9,24 +9,6 @@
 @use '../components/signIn/signIn.scss';
 @import url('https://fonts.googleapis.com/css2?family=Yaldevi+Colombo:wght@600&display=swap');
 
-:root {
-  --color-primary: var.$color-primary;
-  --color-secondary: var.$color-secondary;
-  --color-success: var.$color-success;
-  --color-danger: var.$color-danger;
-  --color-warning: var.$color-warning;
-  --color-info: var.$color-info;
-  --color-light: var.$color-light;
-  --color-dark: var.$color-dark;
-  --color-background: var.$color-background;
-  --color-surface: var.$color-surface;
-  --color-accent-green: var.$color-accent-green;
-  --color-accent-teal: var.$color-accent-teal;
-  --border-radius: var.$border-radius;
-  --box-shadow: var.$box-shadow;
-  --transition: var.$transition;
-}
-
 * {
   box-sizing: border-box;
   font-family: 'Yaldevi Colombo', sans-serif !important;
@@ -35,8 +17,8 @@
 
 body {
   font-family: 'Yaldevi Colombo', sans-serif !important;
-  background-color: var(--color-background);
-  color: var(--color-dark);
+  background-color: var.$color-background;
+  color: var.$color-text;
   line-height: 1.6;
   margin: 0;
   padding: 0;
@@ -44,7 +26,6 @@ body {
 }
 
 .app-container {
-  // ✅ ЗМІНЕНО: Прибираємо горизонтальний padding (0 0 20px 0), щоб хедер прилягав до країв сторінки
   padding: 0 0 20px 0;
   max-width: 1400px;
   margin: 0 auto;
@@ -55,7 +36,6 @@ body {
 
 .main-content {
   flex: 1;
-  // ✅ ЗМІНЕНО: Додаємо горизонтальний padding 20px сюди, щоб основний вміст мав відступ
   padding: 20px 20px 0 20px;
 }
 
@@ -63,7 +43,7 @@ body {
   text-align: center;
   padding: 60px;
   font-size: 1.5rem;
-  color: var(--color-primary);
+  color: var.$color-primary;
 
   &::after {
     content: '';
@@ -89,18 +69,18 @@ body {
   text-align: center;
   padding: 40px;
   font-size: 1.2rem;
-  color: var(--color-secondary);
+  color: var.$color-secondary;
   background-color: var(--color-surface);
-  border-radius: var(--border-radius);
+  border-radius: var.$border-radius;
   border: 2px dashed #dee2e6;
 }
 
 @media (max-width: 768px) {
   .app-container {
-    padding: 0 0 10px 0; // Змінюємо вертикальний padding на мобільному
+    padding: 0 0 10px 0;
   }
 
   .main-content {
-    padding: 10px 10px 0 10px; // Змінюємо горизонтальний padding на мобільному
+    padding: 10px 10px 0 10px;
   }
 }

@@ -1,14 +1,16 @@
+@use '../../styles/variables' as var;
+
 .student-form-card {
     background-color: var(--color-surface);
-    border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
+    border-radius: var.$border-radius;
+    box-shadow: var.$box-shadow;
     padding: 25px;
     margin-bottom: 30px;
     position: relative;
 
     h2 {
         margin: 0 0 20px 0;
-        color: #0a0318;
+        color: var.$color-text;
         font-size: 1.5rem;
     }
 }
@@ -21,9 +23,9 @@
     color: white;
     border: none;
     padding: 8px 16px;
-    border-radius: var(--border-radius);
+    border-radius: var.$border-radius;
     cursor: pointer;
-    transition: var(--transition);
+    transition: var.$transition;
     font-size: 0.9rem;
 
     &:hover {
@@ -60,7 +62,7 @@
     grid-column: 1 / -1;
     padding: 14px;
     background: linear-gradient(135deg, var(--color-accent-green) 0%, var(--color-accent-teal) 100%);
-    color: #0a0318;
+    color: var.$color-text;
     border: none;
     border-radius: var(--border-radius);
     cursor: pointer;

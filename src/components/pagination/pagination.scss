@@ -1,3 +1,5 @@
+@use '../../styles/variables' as var;
+
 .pagination {
     display: flex;
     justify-content: center;
@@ -7,18 +9,18 @@
     padding: 20px;
     flex-wrap: wrap;
     background-color: var(--color-surface);
-    border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
+    border-radius: var.$border-radius;
+    box-shadow: var.$box-shadow;
 }
 
 .pagination-btn {
     background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-    color: #0a0318;
+    color: var.$color-text;
     border: none;
     padding: 10px 16px;
-    border-radius: var(--border-radius);
+    border-radius: var.$border-radius;
     cursor: pointer;
-    transition: var(--transition);
+    transition: var.$transition;
     min-width: 44px;
 
     &:hover:not(:disabled) {
@@ -35,14 +37,14 @@
 
     &.active {
         background: linear-gradient(135deg, var(--color-accent-green) 0%, var(--color-accent-teal) 100%);
-        color: #0a0318;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        color: var.$color-text;
+        box-shadow: var.$box-shadow;
     }
 }
 
 .pagination-ellipsis {
     padding: 10px 8px;
-    color: var(--color-secondary);
+    color: var.$color-secondary;
 }
 
 @media (max-width: 768px) {

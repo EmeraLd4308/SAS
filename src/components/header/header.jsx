@@ -1,7 +1,7 @@
 import './header.scss';
 
 export function Header() {
-    const logoUrl = '/public/LOGO2.svg';
+    const logoUrl = '/LOGO2.svg';
     return (
         <header className="app-header">
             <div className="header-content">

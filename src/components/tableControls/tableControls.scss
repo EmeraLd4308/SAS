@@ -1,3 +1,5 @@
+@use '../../styles/variables' as var;
+
 .table-header {
     display: flex;
     justify-content: space-between;
@@ -8,7 +10,7 @@
 
     h2 {
         margin: 0;
-        color: #0a0318;
+        color: var.$color-text;
         font-size: 1.5rem;
     }
 }
@@ -22,12 +24,12 @@
 .export-button,
 .reset-filters-btn {
     background: linear-gradient(135deg, var(--color-accent-green) 0%, var(--color-accent-teal) 100%);
-    color: #0a0318;
+    color: var.$color-text;
     border: none;
     padding: 10px 20px;
-    border-radius: var(--border-radius);
+    border-radius: var.$border-radius;
     cursor: pointer;
-    transition: var(--transition);
+    transition: var.$transition;
     display: flex;
     align-items: center;
     gap: 8px;
@@ -55,8 +57,8 @@
     margin-bottom: 25px;
     padding: 20px;
     background-color: var(--color-surface);
-    border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
+    border-radius: var.$border-radius;
+    box-shadow: var.$box-shadow;
 
     .control-group {
         display: flex;
@@ -66,7 +68,7 @@
             font-weight: 600;
             margin-bottom: 8px;
             font-size: 0.9rem;
-            color: #0a0318;
+            color: var.$color-text;
         }
 
         input[type="text"],
@@ -76,8 +78,8 @@
             border: 1px solid #ced4da;
             border-radius: 4px;
             font-size: 1rem;
-            transition: var(--transition);
-            background: white;
+            transition: var.$transition;
+            background: var.$color-background;
 
             &:focus {
                 border-color: var(--color-accent-teal);
