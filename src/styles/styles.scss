@@ -1,28 +1,30 @@
+@use 'variables.scss' as var;
+@use '../components/header/header.scss';
+@use '../components/footer/footer.scss';
+@use '../components/deleteWindow/deleteWindow.scss';
+@use '../components/studentForm/studentForm.scss';
+@use '../components/tableControls/tableControls.scss';
+@use '../components/studentTable/studentTable.scss';
+@use '../components/pagination/pagination.scss';
+@use '../components/signIn/signIn.scss';
 @import url('https://fonts.googleapis.com/css2?family=Yaldevi+Colombo:wght@600&display=swap');
-@import '../components/header/header.scss';
-@import '../components/footer/footer.scss';
-@import '../components/deleteWindow/deleteWindow.scss';
-@import '../components/studentForm/studentForm.scss';
-@import '../components/tableControls/tableControls.scss';
-@import '../components/studentTable/studentTable.scss';
-@import '../components/pagination/pagination.scss';
 
 :root {
-  --color-primary: #007bff;
-  --color-secondary: #6c757d;
-  --color-success: #28a745;
-  --color-danger: #dc3545;
-  --color-warning: #ffc107;
-  --color-info: #17a2b8;
-  --color-light: #f8f9fa;
-  --color-dark: #343a40;
-  --color-background: #f7f4fe;
-  --color-surface: #ffffff;
-  --color-accent-green: #9def78;
-  --color-accent-teal: #5fecd2;
-  --border-radius: 9px;
-  --box-shadow: 0.5px 0px 4px 0px rgba(106, 106, 106, 0.15);
-  --transition: all 0.3s ease;
+  --color-primary: var.$color-primary;
+  --color-secondary: var.$color-secondary;
+  --color-success: var.$color-success;
+  --color-danger: var.$color-danger;
+  --color-warning: var.$color-warning;
+  --color-info: var.$color-info;
+  --color-light: var.$color-light;
+  --color-dark: var.$color-dark;
+  --color-background: var.$color-background;
+  --color-surface: var.$color-surface;
+  --color-accent-green: var.$color-accent-green;
+  --color-accent-teal: var.$color-accent-teal;
+  --border-radius: var.$border-radius;
+  --box-shadow: var.$box-shadow;
+  --transition: var.$transition;
 }
 
 * {
@@ -42,7 +44,8 @@ body {
 }
 
 .app-container {
-  padding: 20px;
+  // ✅ ЗМІНЕНО: Прибираємо горизонтальний padding (0 0 20px 0), щоб хедер прилягав до країв сторінки
+  padding: 0 0 20px 0;
   max-width: 1400px;
   margin: 0 auto;
   min-height: 100vh;
@@ -52,7 +55,8 @@ body {
 
 .main-content {
   flex: 1;
-  padding: 20px 0;
+  // ✅ ЗМІНЕНО: Додаємо горизонтальний padding 20px сюди, щоб основний вміст мав відступ
+  padding: 20px 20px 0 20px;
 }
 
 .loading-message {
@@ -93,10 +97,10 @@ body {
 
 @media (max-width: 768px) {
   .app-container {
-    padding: 10px;
+    padding: 0 0 10px 0; // Змінюємо вертикальний padding на мобільному
   }
-  
+
   .main-content {
-    padding: 10px 0;
+    padding: 10px 10px 0 10px; // Змінюємо горизонтальний padding на мобільному
   }
 }

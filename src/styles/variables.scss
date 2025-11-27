@@ -1,0 +1,29 @@
+﻿// src/styles/_variables.scss
+
+// ----------------------------------------------------
+// Глобальні значення (раніше були тільки в :root)
+// ----------------------------------------------------
+$color-primary: #007bff;
+$color-secondary: #6c757d;
+$color-success: #28a745;
+$color-danger: #dc3545;
+$color-warning: #ffc107;
+$color-info: #17a2b8;
+$color-light: #f8f9fa;
+$color-dark: #343a40;
+$color-background: #f7f4fe;
+$color-surface: #ffffff;
+$color-accent-green: #9def78;
+$color-accent-teal: #5fecd2;
+
+$border-radius: 9px;
+$box-shadow: 0.5px 0px 4px 0px rgba(106, 106, 106, 0.15);
+$transition: all 0.3s ease;
+
+// ----------------------------------------------------
+// Специфічні змінні хедера (які не були у :root)
+// ----------------------------------------------------
+$color-header-bg: #f7f3fb;
+$color-border-gray: #d9d9d9;
+$color-text-dark: #0a0318; // Перевизначено, оскільки це темніший відтінок, ніж $color-dark
+$color-text-hover: #5d2b96;

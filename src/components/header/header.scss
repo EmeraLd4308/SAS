@@ -1,90 +1,64 @@
+@use '../../styles/variables' as var;
+
 .app-header {
-    background: linear-gradient(135deg, var(--color-accent-green) 0%, var(--color-accent-teal) 100%);
-    box-shadow: var(--box-shadow);
-    border-radius: var(--border-radius);
-    margin-bottom: 20px;
+    background-color: var.$color-header-bg;
+    border-bottom: 1px solid var.$color-border-gray;
 
     .header-content {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 15px 25px;
 
-        .logo {
-            h1 {
-                margin: 0;
-                color: #0a0318;
-                font-size: 1.8rem;
-            }
+        height: 3.5rem;        // <<< головне! Адекватна висота хедера без px, але стабільна
+        line-height: 3.5rem;   // <<< дозволяє центрувати текст і тягнути кнопки
+    }
 
-            span {
-                color: rgba(10, 3, 24, 0.7);
-                font-size: 0.9rem;
-            }
-        }
+    .logo {
+        display: flex;
+        align-items: center;
+        margin-left: 20px;
+    }
 
-        .navigation {
-            display: flex;
-            gap: 10px;
+    .logo-image img {
+        height: 3.5rem;          // картинка підлаштовується під висоту хедера
+        width: auto;           // ширина автоматично
+        object-fit: contain;   // не обрізає логотип
+        align-items: center;
+    }
+    
+    
+    .navigation {
+        display: flex;
+        align-items: stretch;
+        margin-right: 20px;
 
-            .nav-btn {
-                background: rgba(255, 255, 255, 0.2);
-                border: none;
-                padding: 8px 16px;
-                border-radius: 20px;
-                color: #0a0318;
-                cursor: pointer;
-                transition: var(--transition);
-                font-size: 0.9rem;
+        height: 100%;          // <<< тепер кнопки знають свою висоту
 
-                &:hover {
-                    background: rgba(255, 255, 255, 0.3);
-                    transform: translateY(-1px);
-                }
-
-                &.active {
-                    background: rgba(255, 255, 255, 0.4);
-                    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-                }
-            }
-        }
-
-        .user-info {
+        .nav-btn {
             display: flex;
             align-items: center;
-            gap: 10px;
+            justify-content: center;
 
-            .user-name {
-                color: #0a0318;
-                font-size: 0.9rem;
+            height: 100%;      // <<< тепер реально працює
+            padding: 0 1rem;   // тільки горизонтальні відступи
+
+            border-radius: var.$border-radius;
+            background: none;
+            border: none;
+
+            color: var.$color-text-dark;
+            font-size: 1.2rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var.$transition;
+
+            &:hover {
+                background-color: var.$color-text-hover;
             }
 
-            .user-avatar {
-                width: 35px;
-                height: 35px;
-                background: rgba(255, 255, 255, 0.3);
-                border-radius: 50%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                color: #0a0318;
-                font-weight: bold;
-            }
-        }
-    }
-}
-
-@media (max-width: 768px) {
-    .app-header {
-        .header-content {
-            flex-direction: column;
-            gap: 15px;
-            text-align: center;
-
-            .navigation {
-                order: 3;
-                width: 100%;
-                justify-content: center;
+            &.active {
+                background-color: var.$color-text-hover;
+                font-weight: 700;
             }
         }
     }
