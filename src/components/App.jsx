@@ -154,7 +154,7 @@ function App() {
   // --- ЛОГІКА ВИДАЛЕННЯ ---
   const confirmDelete = (studentId) => {
     setModalState({
-      message: 'Ви впевнені, що хочете видалити цього учня?',
+      message: 'Ви впевнені, що хочете видалити цю дитину?',
       action: 'DELETE',
       id: studentId
     });
@@ -251,7 +251,6 @@ function App() {
         />
 
         <div className="table-header">
-          <h2>Список Учнів ({students.length})</h2>
           <div className="header-actions">
             <button onClick={handleExport} className="export-button" disabled={students.length === 0}>
               Експорт в Excel

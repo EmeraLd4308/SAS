@@ -7,22 +7,21 @@
 @use '../components/studentTable/studentTable.scss';
 @use '../components/pagination/pagination.scss';
 @use '../components/signIn/signIn.scss';
-@import url('https://fonts.googleapis.com/css2?family=Yaldevi+Colombo:wght@600&display=swap');
 
 * {
   box-sizing: border-box;
-  font-family: 'Yaldevi Colombo', sans-serif !important;
-  font-weight: 600 !important;
+  font-family: var.$font-family;
+  font-weight: var.$font-weight;
 }
 
 body {
-  font-family: 'Yaldevi Colombo', sans-serif !important;
+  font-family: var.$font-family;
   background-color: var.$color-background;
   color: var.$color-text;
   line-height: 1.6;
   margin: 0;
   padding: 0;
-  font-weight: 600 !important;
+  font-weight: var.$font-weight;
 }
 
 .app-container {
@@ -69,10 +68,10 @@ body {
   text-align: center;
   padding: 40px;
   font-size: 1.2rem;
-  color: var.$color-secondary;
-  background-color: var(--color-surface);
+  color: var.$color-text;
+  background: var.$gradient-top;
   border-radius: var.$border-radius;
-  border: 2px dashed #dee2e6;
+  border: var.$border;
 }
 
 @media (max-width: 768px) {

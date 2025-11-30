@@ -2,7 +2,7 @@
 
 .app-header {
     background: var.$gradient-top;
-    border-bottom: 1px solid var.$color-stroke;
+    border-bottom: var.$border;
 
     .header-content {
         display: flex;

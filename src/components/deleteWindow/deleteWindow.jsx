@@ -8,7 +8,7 @@ export function DeleteWindow({ message, onConfirm, onCancel }) {
             <div className="modal-content">
                 <p>{message}</p>
                 <div className="modal-actions">
-                    {isConfirm ? (<><button className="btn-confirm" onClick={onConfirm}>Так, видалити</button>
+                    {isConfirm ? (<><button className="btn-confirm" onClick={onConfirm}>Видалити</button>
                     <button className="btn-cancel" onClick={onCancel}>Скасувати</button></>) : (<button className="btn-ok" onClick={onCancel}>OK</button>)}
                 </div>
             </div>
