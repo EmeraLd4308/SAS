@@ -14,9 +14,8 @@
         th {
             background: none;
             color: var.$color-text50;
-            font-weight: 600;
+            font-weight: var.$font-weight;
             text-transform: uppercase;
-            font-size: 0.85rem;
             padding: 15px 16px;
             text-align: left;
         }
@@ -29,7 +28,6 @@
 
             &:hover {
                 background-color: var.$color-edit;
-                transform: translateY(-1px);
             }
 
             &:last-child {
@@ -54,9 +52,8 @@
         th {
             background: var.$gradient-table;
             color: var.$color-text50;
-            font-weight: 600;
+            font-weight: var.$font-weight;
             text-transform: uppercase;
-            font-size: 0.85rem;
             padding: 15px;
             text-align: center;
         }
@@ -71,7 +68,7 @@
     cursor: pointer;
     transition: var.$transition;
     font-size: 0.9rem;
-
+    box-shadow: var.$box-shadow;
     &:hover {
         background: var.$color-hover;
     }
@@ -98,7 +95,6 @@
                 display: block;
                 margin-bottom: 15px;
                 border: 1px solid #e9ecef;
-                border-radius: var(--border-radius);
                 padding: 15px;
 
                 td {

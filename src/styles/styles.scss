@@ -1,12 +1,12 @@
 @use 'variables.scss' as var;
-@use '../components/header/header.scss';
-@use '../components/footer/footer.scss';
-@use '../components/deleteWindow/deleteWindow.scss';
-@use '../components/studentForm/studentForm.scss';
-@use '../components/tableControls/tableControls.scss';
-@use '../components/studentTable/studentTable.scss';
-@use '../components/pagination/pagination.scss';
-@use '../components/signIn/signIn.scss';
+@use '../components/header/header';
+@use '../components/footer/footer';
+@use '../components/deleteWindow/deleteWindow';
+@use '../components/studentForm/studentForm';
+@use '../components/tableControls/tableControls';
+@use '../components/studentTable/studentTable';
+@use '../components/pagination/pagination';
+@use '../components/signIn/signIn';
 
 * {
   box-sizing: border-box;
@@ -22,12 +22,14 @@ body {
   margin: 0;
   padding: 0;
   font-weight: var.$font-weight;
+  min-height: 100vh;
 }
 
 .app-container {
-  padding: 0 0 20px 0;
-  max-width: 1400px;
+  padding: 0;
+  max-width: 90rem;
   margin: 0 auto;
+  width: 100%;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -35,14 +37,58 @@ body {
 
 .main-content {
   flex: 1;
-  padding: 20px 20px 0 20px;
+  padding: clamp(1rem, 2vw, 1.5rem);
+
+  // ЯВНО задаємо відступи між КОЖНИМ компонентом
+  & > *:not(:last-child) {
+    margin-bottom: clamp(2rem, 4vw, 2.5rem) !important;
+  }
+}
+
+// АБО простіше - задаємо відступи конкретним компонентам
+.header-component,
+.table-controls-component,
+.student-table-component,
+.pagination-component,
+.student-form-component,
+.delete-window-component,
+.sign-in-component {
+  & + * {
+    margin-top: clamp(2rem, 4vw, 2.5rem) !important;
+  }
+}
+
+// Альтернатива - створюємо класи-обгортки для відступів
+.component-wrapper {
+  &:not(:last-child) {
+    margin-bottom: clamp(2rem, 4vw, 2.5rem);
+  }
+
+  &-small {
+    &:not(:last-child) {
+      margin-bottom: clamp(1rem, 2vw, 1.5rem);
+    }
+  }
+
+  &-medium {
+    &:not(:last-child) {
+      margin-bottom: clamp(1.5rem, 3vw, 2rem);
+    }
+  }
+
+  &-large {
+    &:not(:last-child) {
+      margin-bottom: clamp(2rem, 4vw, 2.5rem);
+    }
+  }
 }
 
 .loading-message {
   text-align: center;
-  padding: 60px;
-  font-size: 1.5rem;
+  padding: clamp(3rem, 6vw, 4rem);
+  font-size: clamp(1.25rem, 2vw, 1.5rem);
   color: var.$color-primary;
+  margin: clamp(1.5rem, 3vw, 2rem) 0;
 
   &::after {
     content: '';
@@ -51,35 +97,44 @@ body {
 }
 
 @keyframes dots {
-  0%,
-  20% {
+  0%, 20% {
     content: '.';
   }
-  40% {
+  40%, 60% {
     content: '..';
   }
-  60%,
-  100% {
+  80%, 100% {
     content: '...';
   }
 }
 
 .no-data {
   text-align: center;
-  padding: 40px;
-  font-size: 1.2rem;
+  padding: clamp(2rem, 4vw, 3rem);
+  font-size: clamp(1rem, 1.5vw, 1.2rem);
   color: var.$color-text;
   background: var.$gradient-top;
   border-radius: var.$border-radius;
   border: var.$border;
+  margin: clamp(1.5rem, 3vw, 2rem) 0;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 48em) {
   .app-container {
-    padding: 0 0 10px 0;
+    max-width: 100%;
+    padding: 0 0.75rem;
   }
 
   .main-content {
-    padding: 10px 10px 0 10px;
+    padding: 1rem;
+
+    & > *:not(:last-child) {
+      margin-bottom: 1.5rem !important;
+    }
+  }
+
+  .loading-message,
+  .no-data {
+    margin: 1rem 0;
   }
 }

@@ -1,4 +1,6 @@
 import './studentTable.scss';
+import editIcon from '../../assets/icons/edit.png';
+import deleteIcon from '../../assets/icons/delete2.svg';
 
 export function StudentTable({
     students,
@@ -15,7 +17,7 @@ export function StudentTable({
         <table className="student-table">
             <thead>
                 <tr>
-                    <th>ID</th>
+                    <th>№З/П</th>
                     <th>ПІБ Дитини</th>
                     <th>Стать</th>
                     <th>Дата народження</th>
@@ -34,8 +36,12 @@ export function StudentTable({
                         <td>{student.address}</td>
                         <td>{student.parent_name}</td>
                         <td className="action-cell">
-                            <button onClick={() => onEdit(student)} className="edit-button">Редагувати</button>
-                            <button onClick={() => onDelete(student.id)} className="delete-button">Видалити</button>
+                            <button onClick={() => onEdit(student)} className="edit-button">
+                                <img src={editIcon} alt="Редагувати" width="20" height="20" />
+                            </button>
+                            <button onClick={() => onDelete(student.id)} className="delete-button">
+                                <img src={deleteIcon} alt="Видалити" width="20" height="20" />
+                            </button>
                         </td>
                     </tr>
                 ))}
