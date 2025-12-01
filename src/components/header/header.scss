@@ -48,6 +48,7 @@
 
             &:hover {
                 background-color: var.$color-hover;
+                transition: var.$transition;
             }
             &.active {
                 background-color: var.$color-hover;

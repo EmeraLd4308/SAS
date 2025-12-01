@@ -71,6 +71,7 @@
     box-shadow: var.$box-shadow;
     &:hover {
         background: var.$color-hover;
+        transition: var.$transition;
     }
 }
 

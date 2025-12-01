@@ -34,7 +34,8 @@
     gap: 8px;
 
     &:hover {
-        background: var.$color-hover ;
+        background: var.$color-hover;
+        transition: var.$transition;
     }
 }
 

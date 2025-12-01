@@ -79,6 +79,7 @@
     // При наведенні змінюємо тільки трансформацію, колір тексту залишається
     &:hover {
         background: var.$color-hover;
+        transition: var.$transition;
     }
     
 }
