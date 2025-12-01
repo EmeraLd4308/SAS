@@ -5,8 +5,7 @@ export function Footer() {
         <footer className="app-footer">
             <div className="footer-content">
                 <div className="footer-section">
-                    <h3>ВОКС</h3>
-                    <p>Система управління учнями шкільного та дошкільного віку</p>
+                    <p>©Відділ освіти, культури, молоді, спорту Берегометської селищної ради</p>
                 </div>
             </div>
         </footer>
