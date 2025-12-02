@@ -15,7 +15,7 @@ export function StudentTable({
                                  totalPages,
                                  onPageChange,
                                  onItemsPerPageChange,
-                                 itemsPerPageOptions = [5, 10, 20, 50, 100]
+                                 itemsPerPageOptions = [5, 10, 20, 50, 100, 200, 400, 600, 800]
                              }) {
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -106,12 +106,8 @@ export function StudentTable({
                             </button>
 
                             <div className="items-per-page-controls">
-                                <div className="items-info">
-                                    Показано {startItem}-{endItem} з {totalItems} записів
-                                </div>
-
                                 <div className="items-per-page-selector">
-                                    <label htmlFor="itemsPerPage">Показувати:</label>
+                                    <label htmlFor="itemsPerPage">Дітей на сторінці:</label>
                                     <select
                                         id="itemsPerPage"
                                         value={itemsPerPage}
@@ -120,7 +116,7 @@ export function StudentTable({
                                     >
                                         {itemsPerPageOptions.map(option => (
                                             <option key={option} value={option}>
-                                                {option} записів
+                                                {option}
                                             </option>
                                         ))}
                                     </select>

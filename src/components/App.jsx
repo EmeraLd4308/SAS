@@ -257,10 +257,6 @@ function App() {
               loading={loading}
           />
 
-          <div className="table-header">
-            <h2>Список дітей</h2>
-          </div>
-
           <TableControls
               searchTerm={searchTerm}
               onSearchChange={setSearchTerm}

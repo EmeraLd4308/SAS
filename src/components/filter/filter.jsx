@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import './filter.scss';
+import filterIcon from '../../assets/icons/filter.svg';
+
 
 export function FiltersButton({
                                   genderFilter,
@@ -44,8 +46,7 @@ export function FiltersButton({
                     onClick={() => setIsOpen(true)}
                     title="Показати фільтри"
                 >
-                    <span>Фільтри</span>
-                    <span className="toggle-icon">▼</span>
+                    <img src={filterIcon} alt="" width="40" height="40" />
                 </button>
             )}
 

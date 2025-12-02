@@ -32,12 +32,11 @@ export function TableControls({
         <div className="table-controls">
             <div className="search-and-filters">
                 <div className="control-group search-control">
-                    <label htmlFor="search">Пошук (ПІБ, Адреса)</label>
                     <div className="search-wrapper">
                         <input
                             type="text"
                             id="search"
-                            placeholder="Введіть пошуковий запит..."
+                            placeholder="Пошук (ПІБ, Адреса)"
                             defaultValue={searchTerm}
                             onChange={handleSearchChange}
                         />
