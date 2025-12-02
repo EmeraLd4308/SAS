@@ -63,7 +63,7 @@ export function StudentForm({
 
                 <label>
                     <input
-                        placeholder="ПІБ батьків"
+                        placeholder="ПІБ одного із батьків"
                         type="text"
                         name="parent_name"
                         value={formData.parent_name}

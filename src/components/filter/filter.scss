@@ -1,0 +1,311 @@
+@use '../../styles/variables' as var;
+
+.filters-container {
+  position: relative;
+  display: inline-block;
+
+  /* Кнопка "Фільтри" */
+  .filters-toggle-button {
+    background: var.$gradient-50;
+    color: var.$color-text;
+    border: none;
+    padding: 10px 20px;
+    border-radius: var.$border-radius;
+    cursor: pointer;
+    transition: var.$transition;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.95rem;
+
+    &:hover {
+      background: var.$color-hover;
+    }
+
+    .toggle-icon {
+      font-size: 0.8rem;
+      transition: transform 0.3s ease;
+
+      &.open {
+        transform: rotate(180deg);
+      }
+    }
+  }
+
+  /* Кнопка "Очистити фільтри" (коли є активні фільтри) */
+  .clear-filters-button {
+    background: linear-gradient(135deg, #ff6b6b 0%, #ff5252 100%);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: var.$border-radius;
+    cursor: pointer;
+    transition: var.$transition;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.95rem;
+
+    &:hover {
+      background: linear-gradient(135deg, #ff5252 0%, #ff3838 100%);
+      transform: translateY(-1px);
+      box-shadow: 0 2px 8px rgba(255, 82, 82, 0.3);
+    }
+
+    .clear-icon {
+      font-size: 1rem;
+      font-weight: bold;
+    }
+  }
+
+  /* Напівпрозорий фон */
+  .filters-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.3s ease;
+  }
+
+  .filters-panel {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: var.$color-background;
+    border: var.$border;
+    border-radius: var.$border-radius;
+    box-shadow:
+            0 10px 40px rgba(0, 0, 0, 0.2),
+            0 0 0 1px rgba(255, 255, 255, 0.1);
+    z-index: 1000;
+    width: 90%;
+    max-width: 500px;
+    max-height: 80vh;
+    overflow-y: auto;
+    animation: slideIn 0.3s ease;
+
+    .filters-content {
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+
+      .filter-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+
+        h3 {
+          margin: 0;
+          color: var.$color-text;
+          font-size: 1.3rem;
+        }
+
+        .close-button {
+          background: none;
+          border: none;
+          color: var.$color-text50;
+          font-size: 1.5rem;
+          cursor: pointer;
+          padding: 5px;
+          border-radius: 50%;
+          width: 30px;
+          height: 30px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          &:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var.$color-text;
+          }
+        }
+      }
+
+      .filter-group {
+        display: flex;
+        flex-direction: column;
+
+        label {
+          font-weight: 600;
+          margin-bottom: 8px;
+          font-size: 0.95rem;
+          color: var.$color-text;
+        }
+
+        input[type="date"],
+        select {
+          padding: 12px 15px;
+          border: var.$border;
+          border-radius: var.$border-radius;
+          font-size: 1rem;
+          transition: var.$transition;
+          background: var.$color-background;
+          color: var.$color-text;
+
+          &:focus {
+            border-color: var.$color-primary;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(var(--color-primary-rgb, 138, 43, 226), 0.2);
+          }
+
+          &:hover {
+            border-color: var.$color-hover;
+          }
+        }
+
+        &.date-group {
+          input[type="date"] {
+            width: 100%;
+          }
+        }
+      }
+
+      .panel-actions {
+        display: flex;
+        gap: 15px;
+        margin-top: 20px;
+
+        .apply-filters-btn {
+          flex: 1;
+          background: var.$color-primary;
+          color: white;
+          border: none;
+          padding: 12px;
+          border-radius: var.$border-radius;
+          cursor: pointer;
+          transition: var.$transition;
+          font-size: 1rem;
+          font-weight: 600;
+
+          &:hover {
+            background: darken(var.$color-primary, 10%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(var(--color-primary-rgb, 138, 43, 226), 0.3);
+          }
+        }
+
+        .cancel-filters-btn {
+          flex: 1;
+          background: var.$gradient-50;
+          color: var.$color-text;
+          border: none;
+          padding: 12px;
+          border-radius: var.$border-radius;
+          cursor: pointer;
+          transition: var.$transition;
+          font-size: 1rem;
+
+          &:hover {
+            background: var.$color-hover;
+            transform: translateY(-2px);
+          }
+        }
+      }
+    }
+  }
+}
+
+/* Анімації */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -60%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+
+/* Закриваюча анімація */
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes slideOut {
+  from {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+  to {
+    opacity: 0;
+    transform: translate(-50%, -60%);
+  }
+}
+
+/* Для мобільних */
+@media (max-width: 768px) {
+  .filters-container {
+    .filters-panel {
+      width: 95%;
+      max-width: 95%;
+      max-height: 85vh;
+
+      .filters-content {
+        padding: 20px;
+
+        .panel-actions {
+          flex-direction: column;
+          gap: 10px;
+
+          .apply-filters-btn,
+          .cancel-filters-btn {
+            width: 100%;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .filters-container {
+    .filters-panel {
+      .filters-content {
+        padding: 15px;
+        gap: 15px;
+
+        .filter-header {
+          h3 {
+            font-size: 1.1rem;
+          }
+        }
+
+        .filter-group {
+          label {
+            font-size: 0.9rem;
+          }
+
+          input[type="date"],
+          select {
+            padding: 10px;
+            font-size: 0.9rem;
+          }
+        }
+      }
+    }
+  }
+}
