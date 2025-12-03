@@ -4,7 +4,6 @@
   position: relative;
   display: inline-block;
 
-  /* Кнопка "Фільтри" */
   .filters-toggle-button {
     background: var.$gradient-50;
     color: var.$color-text;
@@ -32,7 +31,6 @@
     }
   }
 
-  /* Кнопка "Очистити фільтри" (коли є активні фільтри) */
   .clear-filters-button {
     background: var.$color-red;
     color: var.$color-text;
@@ -56,7 +54,6 @@
     }
   }
 
-  /* Напівпрозорий фон */
   .filters-overlay {
     position: fixed;
     top: 0;
@@ -97,7 +94,7 @@
       .filter-header {
         display: flex;
         align-items: center;
-        margin-bottom: clamp(-0.8rem, -1.2vw, -1.2rem); /* Негативний відступ, щоб компенсувати частину gap */
+        margin-bottom: clamp(-0.8rem, -1.2vw, -1.2rem); 
 
         h3 {
           color: var.$color-text;
@@ -106,7 +103,6 @@
         }
       }
 
-      /* Оновлений стиль для груп фільтрів з лейблом і полем в одному рядку */
       .filter-group {
         display: flex;
         flex-wrap: wrap;
@@ -141,7 +137,6 @@
           }
         }
 
-        /* Для дат можна зробити особливий випадок */
         &.date-group {
           display: flex;
           align-items: center;
@@ -189,7 +184,6 @@
   }
 }
 
-/* Анімації */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -210,7 +204,6 @@
   }
 }
 
-/* Закриваюча анімація */
 @keyframes fadeOut {
   from {
     opacity: 1;
@@ -231,7 +224,6 @@
   }
 }
 
-/* Для мобільних */
 @media (max-width: 768px) {
   .filters-container {
     .filters-panel {
@@ -243,7 +235,6 @@
         padding: 20px;
 
         .filter-group {
-          /* На мобільних можна повернути до колонки, якщо не поміщається */
           flex-direction: column;
           align-items: flex-start;
           gap: 0.5rem;
@@ -302,13 +293,11 @@
   }
 }
 
-/* Додаткові медіа-запити для дуже малих екранів */
 @media (max-width: 360px) {
   .filters-container {
     .filters-panel {
       .filters-content {
         .filter-group {
-          /* На дуже маленьких екранах завжди колонка */
           flex-direction: column;
           align-items: flex-start;
 

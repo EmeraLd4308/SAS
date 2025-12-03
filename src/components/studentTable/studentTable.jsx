@@ -1,22 +1,9 @@
-import './studentTable.scss';
 import editIcon from '../../assets/icons/edit.png';
 import deleteIcon from '../../assets/icons/delete.svg';
+import './studentTable.scss';
 
-export function StudentTable({
-                                 students,
-                                 onEdit,
-                                 onDelete,
-                                 currentPage,
-                                 itemsPerPage,
-                                 sortBy = 'id',
-                                 sortOrder = 'asc',
-                                 onSort = () => {},
-                                 onExport,
-                                 totalPages,
-                                 onPageChange,
-                                 onItemsPerPageChange,
-                                 itemsPerPageOptions = [5, 10, 20, 50, 100, 200, 400, 600, 800]
-                             }) {
+export function StudentTable({students, onEdit, onDelete, currentPage, itemsPerPage, sortBy = 'id', sortOrder = 'asc', onSort = () => {}, onExport, onPageChange, onItemsPerPageChange, itemsPerPageOptions = [5, 10, 20, 50, 100, 200, 400, 600, 800]}) {
+    
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
     const currentStudents = students.slice(indexOfFirstItem, indexOfLastItem);
@@ -30,7 +17,6 @@ export function StudentTable({
             onSort(columnName, newOrder);
         }
     };
-
     const handleItemsPerPageChange = (e) => {
         const newItemsPerPage = parseInt(e.target.value);
         onItemsPerPageChange(newItemsPerPage);
@@ -49,34 +35,23 @@ export function StudentTable({
                 <tr>
                     <th onClick={() => handleSortClick('id')} className="sortable">
                         №З/П
-                        {sortBy === 'id' && (
-                            <span className="sort-icon">
-                                    {sortOrder === 'asc' ? '▲' : '▼'}
-                                </span>
-                        )}
+                        {sortBy === 'id' && (<span className="sort-icon">{sortOrder === 'asc' ? '▲' : '▼'}</span>)}
                     </th>
                     <th onClick={() => handleSortClick('child_name')} className="sortable">
                         ПІБ Дитини
-                        {sortBy === 'child_name' && (
-                            <span className="sort-icon">
-                                    {sortOrder === 'asc' ? '▲' : '▼'}
-                                </span>
-                        )}
+                        {sortBy === 'child_name' && (<span className="sort-icon">{sortOrder === 'asc' ? '▲' : '▼'}</span>)}
                     </th>
                     <th>Стать</th>
                     <th onClick={() => handleSortClick('birth_date')} className="sortable">
                         Дата нар.
-                        {sortBy === 'birth_date' && (
-                            <span className="sort-icon">
-                                    {sortOrder === 'asc' ? '▲' : '▼'}
-                                </span>
-                        )}
+                        {sortBy === 'birth_date' && (<span className="sort-icon">{sortOrder === 'asc' ? '▲' : '▼'}</span>)}
                     </th>
                     <th>Адреса</th>
                     <th>ПІБ Батьків</th>
                     <th>Дія</th>
                 </tr>
                 </thead>
+                
                 <tbody>
                 {currentStudents.map((student) => (
                     <tr key={student.id}>
@@ -97,6 +72,7 @@ export function StudentTable({
                     </tr>
                 ))}
                 </tbody>
+                
                 <tfoot>
                 <tr>
                     <td colSpan="7" className="table-footer">
@@ -108,24 +84,17 @@ export function StudentTable({
                             <div className="items-per-page-controls">
                                 <div className="items-per-page-selector">
                                     <label htmlFor="itemsPerPage">Дітей на сторінці:</label>
-                                    <select
-                                        id="itemsPerPage"
-                                        value={itemsPerPage}
-                                        onChange={handleItemsPerPageChange}
-                                        className="items-select"
-                                    >
-                                        {itemsPerPageOptions.map(option => (
-                                            <option key={option} value={option}>
-                                                {option}
-                                            </option>
-                                        ))}
+                                    <select id="itemsPerPage" value={itemsPerPage} onChange={handleItemsPerPageChange} className="items-select">
+                                        {itemsPerPageOptions.map(option => (<option key={option} value={option}>{option}</option>))}
                                     </select>
                                 </div>
                             </div>
+                            
                         </div>
                     </td>
                 </tr>
                 </tfoot>
+                
             </table>
         </>
     );

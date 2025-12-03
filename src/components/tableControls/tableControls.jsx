@@ -2,60 +2,20 @@ import { useDebounce } from '../../hooks/useDebounce';
 import { FiltersButton } from '../filter/filter';
 import './tableControls.scss';
 
-export function TableControls({
-                                  searchTerm,
-                                  onSearchChange,
-                                  genderFilter,
-                                  onGenderFilterChange,
-                                  dateFrom,
-                                  onDateFromChange,
-                                  dateTo,
-                                  onDateToChange,
-                                  onResetFilters // Тільки це
-                              }) {
+export function TableControls({searchTerm, onSearchChange, genderFilter, onGenderFilterChange, dateFrom, onDateFromChange, dateTo, onDateToChange, onResetFilters}) {
+    
     const debouncedSearch = useDebounce(onSearchChange, 500);
-
     const handleSearchChange = (e) => {
         debouncedSearch(e.target.value);
     };
-
-    const searchSuggestions = [
-        'Іван',
-        'Марія',
-        'Київ',
-        'Львів'
-    ].filter(item =>
-        item.toLowerCase().includes(searchTerm.toLowerCase())
-    ).slice(0, 3);
-
+    
     return (
         <div className="table-controls">
             <div className="search-and-filters">
+                
                 <div className="control-group search-control">
                     <div className="search-wrapper">
-                        <input
-                            type="text"
-                            id="search"
-                            placeholder="Пошук (ПІБ, Адреса)"
-                            defaultValue={searchTerm}
-                            onChange={handleSearchChange}
-                        />
-                        {searchTerm && searchSuggestions.length > 0 && (
-                            <div className="search-suggestions">
-                                {searchSuggestions.map((suggestion, index) => (
-                                    <div
-                                        key={index}
-                                        className="suggestion-item"
-                                        onClick={() => {
-                                            onSearchChange(suggestion);
-                                            document.getElementById('search').value = suggestion;
-                                        }}
-                                    >
-                                        {suggestion}
-                                    </div>
-                                ))}
-                            </div>
-                        )}
+                        <input type="text" id="search" placeholder="Пошук (ПІБ, Адреса)" defaultValue={searchTerm} onChange={handleSearchChange}/>
                     </div>
                 </div>
 
