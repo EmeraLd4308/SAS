@@ -34,8 +34,8 @@
 
   /* Кнопка "Очистити фільтри" (коли є активні фільтри) */
   .clear-filters-button {
-    background: linear-gradient(135deg, #ff6b6b 0%, #ff5252 100%);
-    color: white;
+    background: var.$color-red;
+    color: var.$color-text;
     border: none;
     padding: 10px 20px;
     border-radius: var.$border-radius;
@@ -47,9 +47,7 @@
     font-size: 0.95rem;
 
     &:hover {
-      background: linear-gradient(135deg, #ff5252 0%, #ff3838 100%);
-      transform: translateY(-1px);
-      box-shadow: 0 2px 8px rgba(255, 82, 82, 0.3);
+      background: var.$color-hover;
     }
 
     .clear-icon {
@@ -65,148 +63,125 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
+    background: var.$color-fon;
     z-index: 999;
     display: flex;
     align-items: center;
     justify-content: center;
     animation: fadeIn 0.3s ease;
+    backdrop-filter: blur(2px);
   }
 
   .filters-panel {
+    border: var.$border;
+    background: var.$gradient-top;
+    border-radius: var.$border-radius;
+    padding: clamp(1rem, 2vw, 1.5rem);
+    padding-top: clamp(0.05rem, 0.2vw, 0.1rem);
+    width: min(40rem, 95vw);
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: var.$color-background;
+    background: var.$gradient-top;
     border: var.$border;
-    border-radius: var.$border-radius;
-    box-shadow:
-            0 10px 40px rgba(0, 0, 0, 0.2),
-            0 0 0 1px rgba(255, 255, 255, 0.1);
     z-index: 1000;
-    width: 90%;
-    max-width: 500px;
-    max-height: 80vh;
     overflow-y: auto;
     animation: slideIn 0.3s ease;
 
     .filters-content {
-      padding: 30px;
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      gap: clamp(1.2rem, 1.8vw, 1.8rem);
 
       .filter-header {
         display: flex;
-        justify-content: space-between;
         align-items: center;
-        margin-bottom: 10px;
+        margin-bottom: clamp(-0.8rem, -1.2vw, -1.2rem); /* Негативний відступ, щоб компенсувати частину gap */
 
         h3 {
-          margin: 0;
           color: var.$color-text;
-          font-size: 1.3rem;
-        }
-
-        .close-button {
-          background: none;
-          border: none;
-          color: var.$color-text50;
-          font-size: 1.5rem;
-          cursor: pointer;
-          padding: 5px;
-          border-radius: 50%;
-          width: 30px;
-          height: 30px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-
-          &:hover {
-            background: rgba(255, 255, 255, 0.1);
-            color: var.$color-text;
-          }
+          text-align: left;
+          font-size: clamp(1.25rem, 1.8vw, 1.5rem);
         }
       }
 
+      /* Оновлений стиль для груп фільтрів з лейблом і полем в одному рядку */
       .filter-group {
         display: flex;
-        flex-direction: column;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: clamp(0.5rem, 1vw, 0.8rem);
 
         label {
-          font-weight: 600;
-          margin-bottom: 8px;
-          font-size: 0.95rem;
-          color: var.$color-text;
+          font-weight: var.$font-weight;
+          color: var.$color-text50;
+          font-size: clamp(0.85rem, 0.95vw, 0.95rem);
+          text-align: left;
+          white-space: nowrap;
+          min-width: max-content;
+          flex-shrink: 0;
         }
-
-        input[type="date"],
-        select {
-          padding: 12px 15px;
+        
+        select,
+        input[type="date"] {
+        
+          padding: clamp(0.5rem, 0.8vw, 0.6rem);
           border: var.$border;
           border-radius: var.$border-radius;
-          font-size: 1rem;
-          transition: var.$transition;
           background: var.$color-background;
-          color: var.$color-text;
-
+          transition: var.$transition;
+          font-size: clamp(0.85rem, 0.95vw, 0.95rem);
+          flex: 1;
+          min-width: 8rem;
           &:focus {
-            border-color: var.$color-primary;
-            outline: none;
-            box-shadow: 0 0 0 2px rgba(var(--color-primary-rgb, 138, 43, 226), 0.2);
-          }
-
-          &:hover {
             border-color: var.$color-hover;
+            box-shadow: 0 0 0 clamp(0.1rem, 0.2vw, 0.15rem) rgba(163, 103, 255, 0.3);
+            outline: none;
           }
         }
 
+        /* Для дат можна зробити особливий випадок */
         &.date-group {
+          display: flex;
+          align-items: center;
+          gap: clamp(0.5rem, 1vw, 0.8rem);
+
           input[type="date"] {
-            width: 100%;
+            flex: 1;
           }
         }
       }
 
       .panel-actions {
         display: flex;
-        gap: 15px;
-        margin-top: 20px;
+        justify-content: space-between;
+        align-items: center;
+        gap: clamp(0.6rem, 0.9vw, 0.9rem);
+        margin-top: clamp(0.5rem, 0.8vw, 0.8rem);
+        width: 100%;
 
-        .apply-filters-btn {
-          flex: 1;
-          background: var.$color-primary;
-          color: white;
-          border: none;
-          padding: 12px;
-          border-radius: var.$border-radius;
-          cursor: pointer;
-          transition: var.$transition;
-          font-size: 1rem;
-          font-weight: 600;
-
-          &:hover {
-            background: darken(var.$color-primary, 10%);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(var(--color-primary-rgb, 138, 43, 226), 0.3);
-          }
-        }
-
+        .apply-filters-btn,
         .cancel-filters-btn {
-          flex: 1;
+          padding: clamp(0.6rem, 0.8vw, 0.8rem) clamp(1rem, 1.5vw, 1.5rem);
+          border-radius: var.$border-radius;
+          border: none;
+          box-shadow: var.$box-shadow;
+          cursor: pointer;
+          font-size: clamp(0.85rem, 0.95vw, 0.95rem);
           background: var.$gradient-50;
           color: var.$color-text;
-          border: none;
-          padding: 12px;
-          border-radius: var.$border-radius;
-          cursor: pointer;
+          min-height: clamp(2rem, 2.5vw, 2.5rem);
+          white-space: nowrap;
           transition: var.$transition;
-          font-size: 1rem;
+          flex: 1;
+          min-width: 8rem;
+          display: flex;
+          align-items: center;
+          justify-content: center;
 
           &:hover {
             background: var.$color-hover;
-            transform: translateY(-2px);
           }
         }
       }
@@ -267,6 +242,22 @@
       .filters-content {
         padding: 20px;
 
+        .filter-group {
+          /* На мобільних можна повернути до колонки, якщо не поміщається */
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 0.5rem;
+
+          label {
+            margin-bottom: 0.2rem;
+          }
+
+          input[type="date"],
+          select {
+            width: 100%;
+          }
+        }
+
         .panel-actions {
           flex-direction: column;
           gap: 10px;
@@ -303,6 +294,32 @@
           select {
             padding: 10px;
             font-size: 0.9rem;
+            width: 100%;
+          }
+        }
+      }
+    }
+  }
+}
+
+/* Додаткові медіа-запити для дуже малих екранів */
+@media (max-width: 360px) {
+  .filters-container {
+    .filters-panel {
+      .filters-content {
+        .filter-group {
+          /* На дуже маленьких екранах завжди колонка */
+          flex-direction: column;
+          align-items: flex-start;
+
+          label {
+            width: 100%;
+            margin-bottom: 0.3rem;
+          }
+
+          input[type="date"],
+          select {
+            width: 100%;
           }
         }
       }

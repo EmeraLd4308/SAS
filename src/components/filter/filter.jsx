@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import './filter.scss';
 import filterIcon from '../../assets/icons/filter.svg';
-
+import clearIcon from '../../assets/icons/clear.svg';
 
 export function FiltersButton({
                                   genderFilter,
@@ -20,11 +20,13 @@ export function FiltersButton({
         (dateFrom !== '' && dateFrom !== undefined) ||
         (dateTo !== '' && dateTo !== undefined);
 
-    const handleClose = () => {
+    
+    const handleApply = () => {
         setIsOpen(false);
     };
 
-    const handleApply = () => {
+    const handleCancel = () => {
+        onResetFilters();
         setIsOpen(false);
     };
 
@@ -37,8 +39,7 @@ export function FiltersButton({
                     onClick={onResetFilters}
                     title="Очистити всі фільтри"
                 >
-                    <span>Очистити фільтри</span>
-                    <span className="clear-icon">✕</span>
+                    <img src={clearIcon} alt="" width="40" height="40" />
                 </button>
             ) : (
                 <button
@@ -56,25 +57,16 @@ export function FiltersButton({
                     {/* Напівпрозорий фон */}
                     <div
                         className="filters-overlay"
-                        onClick={handleClose}
                     />
 
                     {/* Модальне вікно фільтрів */}
                     <div className="filters-panel">
                         <div className="filters-content">
                             <div className="filter-header">
-                                <h3>Фільтри</h3>
-                                <button
-                                    className="close-button"
-                                    onClick={handleClose}
-                                    title="Закрити"
-                                >
-                                    ×
-                                </button>
+                                <h3>Фільтр</h3>
                             </div>
-
                             <div className="filter-group">
-                                <label htmlFor="genderFilter">Фільтр по Статі</label>
+                                <label htmlFor="genderFilter">По cтаті</label>
                                 <select
                                     id="genderFilter"
                                     value={genderFilter}
@@ -108,17 +100,18 @@ export function FiltersButton({
 
                             <div className="panel-actions">
                                 <button
+                                    className="cancel-filters-btn"
+                                    onClick={handleCancel}
+                                >
+                                    Скасувати
+                                </button>
+                                <button
                                     className="apply-filters-btn"
                                     onClick={handleApply}
                                 >
                                     Застосувати
                                 </button>
-                                <button
-                                    className="cancel-filters-btn"
-                                    onClick={handleClose}
-                                >
-                                    Скасувати
-                                </button>
+                                
                             </div>
                         </div>
                     </div>

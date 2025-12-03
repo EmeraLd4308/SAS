@@ -1,6 +1,6 @@
 import './studentTable.scss';
 import editIcon from '../../assets/icons/edit.png';
-import deleteIcon from '../../assets/icons/delete2.svg';
+import deleteIcon from '../../assets/icons/delete.svg';
 
 export function StudentTable({
                                  students,
