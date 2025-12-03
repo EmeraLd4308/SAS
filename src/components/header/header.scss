@@ -1,74 +1,57 @@
+@use '../../styles/variables' as var;
+
 .app-header {
-    background: linear-gradient(135deg, var(--color-accent-green) 0%, var(--color-accent-teal) 100%);
-    box-shadow: var(--box-shadow);
-    border-radius: var(--border-radius);
-    margin-bottom: 20px;
+    background: var.$gradient-top;
+    border-bottom: var.$border;
 
     .header-content {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 15px 25px;
+        height: 5rem;        // Стабільна висота хедера
+        padding: 0 2rem;       // Додаємо бокові відступи
+    }
 
-        .logo {
-            h1 {
-                margin: 0;
-                color: #0a0318;
-                font-size: 1.8rem;
-            }
+    .logo {
+        display: flex;
+        align-items: center;
+        height: 100%;          // Займає всю висоту хедера
+    }
 
-            span {
-                color: rgba(10, 3, 24, 0.7);
-                font-size: 0.9rem;
-            }
-        }
+    .logo-image img {
+        height: 4rem;        // Зменшуємо трохи для кращого пропорцій
+        width: auto;           // ширина автоматично
+        object-fit: contain;   // не обрізає логотип
+    }
 
-        .navigation {
-            display: flex;
-            gap: 10px;
+    .navigation {
+        display: flex;
+        align-items: center;   // Центруємо вертикально
+        height: 100%;          // Займає всю висоту хедера
 
-            .nav-btn {
-                background: rgba(255, 255, 255, 0.2);
-                border: none;
-                padding: 8px 16px;
-                border-radius: 20px;
-                color: #0a0318;
-                cursor: pointer;
-                transition: var(--transition);
-                font-size: 0.9rem;
-
-                &:hover {
-                    background: rgba(255, 255, 255, 0.3);
-                    transform: translateY(-1px);
-                }
-
-                &.active {
-                    background: rgba(255, 255, 255, 0.4);
-                    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-                }
-            }
-        }
-
-        .user-info {
+        .nav-btn {
+            height: 100%;          // Займає всю висоту хедера
             display: flex;
             align-items: center;
-            gap: 10px;
+            border: none;
+            justify-content: center;
+            min-width: 8rem;   // Мінімальна ширина кнопки
+            padding: 0 1.5rem; // Збільшені горизонтальні відступи
+            border-radius: var.$border-radius;
+            background: none;
+            color: var.$color-text;
+            font-weight: var.$font-weight;
+            font-size: 1.8rem; // Трохи менший шрифт
+            cursor: pointer;
+            transition: var.$transition;
+            white-space: nowrap; // Запобігає переносу тексту
 
-            .user-name {
-                color: #0a0318;
-                font-size: 0.9rem;
+            &:hover {
+                background-color: var.$color-hover;
+                transition: var.$transition;
             }
-
-            .user-avatar {
-                width: 35px;
-                height: 35px;
-                background: rgba(255, 255, 255, 0.3);
-                border-radius: 50%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                color: #0a0318;
-                font-weight: bold;
+            &.active {
+                background-color: var.$color-hover;
             }
         }
     }
@@ -77,14 +60,45 @@
 @media (max-width: 768px) {
     .app-header {
         .header-content {
-            flex-direction: column;
-            gap: 15px;
-            text-align: center;
+            height: 4.5rem;    // Менша висота на мобільних
+            padding: 0 0.5rem;
+        }
 
-            .navigation {
-                order: 3;
-                width: 100%;
-                justify-content: center;
+        .logo-image img {
+            height: 2.5rem;    // Менше лого на мобільних
+        }
+
+        .navigation {
+            gap: 0.25rem;      // Менші відступи між кнопками
+
+            .nav-btn {
+                min-width: 4rem; // Менша мінімальна ширина
+                padding: 0 0.75rem;
+                height: 2.5rem;
+                font-size: 0.9rem;
+            }
+        }
+    }
+}
+
+@media (max-width: 480px) {
+    .app-header {
+        .navigation {
+            .nav-btn {
+                min-width: auto; // Автоматична ширина
+                padding: 0 0.5rem;
+                font-size: 0.8rem;
+
+                // Можна приховати текст і показати тільки іконки
+                span {
+                    display: none;
+                }
+
+                // Або зробити квадратні кнопки з іконками
+                &:before {
+                    content: '☰'; // Або ваша іконка
+                    font-size: 1.2rem;
+                }
             }
         }
     }

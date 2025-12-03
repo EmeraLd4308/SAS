@@ -1,0 +1,317 @@
+@use '../../styles/variables' as var;
+
+.filters-container {
+  position: relative;
+  display: inline-block;
+
+  .filters-toggle-button {
+    background: var.$gradient-50;
+    color: var.$color-text;
+    border: none;
+    padding: 10px 20px;
+    border-radius: var.$border-radius;
+    cursor: pointer;
+    transition: var.$transition;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.95rem;
+
+    &:hover {
+      background: var.$color-hover;
+    }
+
+    .toggle-icon {
+      font-size: 0.8rem;
+      transition: transform 0.3s ease;
+
+      &.open {
+        transform: rotate(180deg);
+      }
+    }
+  }
+
+  .clear-filters-button {
+    background: var.$color-red;
+    color: var.$color-text;
+    border: none;
+    padding: 10px 20px;
+    border-radius: var.$border-radius;
+    cursor: pointer;
+    transition: var.$transition;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.95rem;
+
+    &:hover {
+      background: var.$color-hover;
+    }
+
+    .clear-icon {
+      font-size: 1rem;
+      font-weight: bold;
+    }
+  }
+
+  .filters-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var.$color-fon;
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.3s ease;
+    backdrop-filter: blur(2px);
+  }
+
+  .filters-panel {
+    border: var.$border;
+    background: var.$gradient-top;
+    border-radius: var.$border-radius;
+    padding: clamp(1rem, 2vw, 1.5rem);
+    padding-top: clamp(0.05rem, 0.2vw, 0.1rem);
+    width: min(40rem, 95vw);
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: var.$gradient-top;
+    border: var.$border;
+    z-index: 1000;
+    overflow-y: auto;
+    animation: slideIn 0.3s ease;
+
+    .filters-content {
+      display: flex;
+      flex-direction: column;
+      gap: clamp(1.2rem, 1.8vw, 1.8rem);
+
+      .filter-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: clamp(-0.8rem, -1.2vw, -1.2rem); 
+
+        h3 {
+          color: var.$color-text;
+          text-align: left;
+          font-size: clamp(1.25rem, 1.8vw, 1.5rem);
+        }
+      }
+
+      .filter-group {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: clamp(0.5rem, 1vw, 0.8rem);
+
+        label {
+          font-weight: var.$font-weight;
+          color: var.$color-text50;
+          font-size: clamp(0.85rem, 0.95vw, 0.95rem);
+          text-align: left;
+          white-space: nowrap;
+          min-width: max-content;
+          flex-shrink: 0;
+        }
+        
+        select,
+        input[type="date"] {
+        
+          padding: clamp(0.5rem, 0.8vw, 0.6rem);
+          border: var.$border;
+          border-radius: var.$border-radius;
+          background: var.$color-background;
+          transition: var.$transition;
+          font-size: clamp(0.85rem, 0.95vw, 0.95rem);
+          flex: 1;
+          min-width: 8rem;
+          &:focus {
+            border-color: var.$color-hover;
+            box-shadow: 0 0 0 clamp(0.1rem, 0.2vw, 0.15rem) rgba(163, 103, 255, 0.3);
+            outline: none;
+          }
+        }
+
+        &.date-group {
+          display: flex;
+          align-items: center;
+          gap: clamp(0.5rem, 1vw, 0.8rem);
+
+          input[type="date"] {
+            flex: 1;
+          }
+        }
+      }
+
+      .panel-actions {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: clamp(0.6rem, 0.9vw, 0.9rem);
+        margin-top: clamp(0.5rem, 0.8vw, 0.8rem);
+        width: 100%;
+
+        .apply-filters-btn,
+        .cancel-filters-btn {
+          padding: clamp(0.6rem, 0.8vw, 0.8rem) clamp(1rem, 1.5vw, 1.5rem);
+          border-radius: var.$border-radius;
+          border: none;
+          box-shadow: var.$box-shadow;
+          cursor: pointer;
+          font-size: clamp(0.85rem, 0.95vw, 0.95rem);
+          background: var.$gradient-50;
+          color: var.$color-text;
+          min-height: clamp(2rem, 2.5vw, 2.5rem);
+          white-space: nowrap;
+          transition: var.$transition;
+          flex: 1;
+          min-width: 8rem;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          &:hover {
+            background: var.$color-hover;
+          }
+        }
+      }
+    }
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -60%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes slideOut {
+  from {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+  to {
+    opacity: 0;
+    transform: translate(-50%, -60%);
+  }
+}
+
+@media (max-width: 768px) {
+  .filters-container {
+    .filters-panel {
+      width: 95%;
+      max-width: 95%;
+      max-height: 85vh;
+
+      .filters-content {
+        padding: 20px;
+
+        .filter-group {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 0.5rem;
+
+          label {
+            margin-bottom: 0.2rem;
+          }
+
+          input[type="date"],
+          select {
+            width: 100%;
+          }
+        }
+
+        .panel-actions {
+          flex-direction: column;
+          gap: 10px;
+
+          .apply-filters-btn,
+          .cancel-filters-btn {
+            width: 100%;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .filters-container {
+    .filters-panel {
+      .filters-content {
+        padding: 15px;
+        gap: 15px;
+
+        .filter-header {
+          h3 {
+            font-size: 1.1rem;
+          }
+        }
+
+        .filter-group {
+          label {
+            font-size: 0.9rem;
+          }
+
+          input[type="date"],
+          select {
+            padding: 10px;
+            font-size: 0.9rem;
+            width: 100%;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 360px) {
+  .filters-container {
+    .filters-panel {
+      .filters-content {
+        .filter-group {
+          flex-direction: column;
+          align-items: flex-start;
+
+          label {
+            width: 100%;
+            margin-bottom: 0.3rem;
+          }
+
+          input[type="date"],
+          select {
+            width: 100%;
+          }
+        }
+      }
+    }
+  }
+}

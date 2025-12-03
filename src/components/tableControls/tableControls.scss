@@ -1,3 +1,5 @@
+@use '../../styles/variables' as var;
+
 .table-header {
     display: flex;
     justify-content: space-between;
@@ -8,7 +10,7 @@
 
     h2 {
         margin: 0;
-        color: #0a0318;
+        color: var.$color-text;
         font-size: 1.5rem;
     }
 }
@@ -21,26 +23,20 @@
 
 .export-button,
 .reset-filters-btn {
-    background: linear-gradient(135deg, var(--color-accent-green) 0%, var(--color-accent-teal) 100%);
-    color: #0a0318;
+    background: var.$gradient-50;
+    color: var.$color-text;
     border: none;
     padding: 10px 20px;
-    border-radius: var(--border-radius);
+    border-radius: var.$border-radius;
     cursor: pointer;
-    transition: var(--transition);
+    transition: var.$transition;
     display: flex;
     align-items: center;
     gap: 8px;
 
-    &:hover:not(:disabled) {
-        transform: translateY(-1px);
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
-    }
-
-    &:disabled {
-        background: linear-gradient(135deg, #e0e0e0 0%, #b0b0b0 100%);
-        cursor: not-allowed;
-        opacity: 0.6;
+    &:hover {
+        background: var.$color-hover;
+        transition: var.$transition;
     }
 }
 
@@ -49,80 +45,139 @@
 }
 
 .table-controls {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
+    border: var.$border;
+    display: flex;
+    gap: 15px;
     margin-bottom: 25px;
-    padding: 20px;
-    background-color: var(--color-surface);
-    border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
+    padding: 15px;
+    background: var.$color-background;
+    border-radius: var.$border-radius;
+    box-shadow: var.$box-shadow;
+    align-items: center;
+    flex-wrap: wrap;
+}
 
-    .control-group {
-        display: flex;
-        flex-direction: column;
+.control-group {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 200px;
+    max-width: 400px;
 
-        label {
-            font-weight: 600;
-            margin-bottom: 8px;
-            font-size: 0.9rem;
-            color: #0a0318;
+    label {
+        font-weight: 600;
+        margin-bottom: 8px;
+        font-size: 0.9rem;
+        color: var.$color-text;
+    }
+
+    input[type="text"],
+    input[type="date"],
+    select {
+        padding: 12px;
+        border: var.$border;
+        border-radius: var.$border-radius;
+        font-size: 1rem;
+        transition: var.$transition;
+        background: var.$color-background;
+        width: 100%;
+
+        &:focus {
+            border-color: var.$color-hover;
+            outline: none;
         }
+    }
+}
 
-        input[type="text"],
-        input[type="date"],
-        select {
-            padding: 12px;
-            border: 1px solid #ced4da;
-            border-radius: 4px;
-            font-size: 1rem;
-            transition: var(--transition);
-            background: white;
+.search-control {
+    position: relative;
+    flex: 1;
+    min-width: 250px;
+    max-width: 500px;
 
-            &:focus {
-                border-color: var(--color-accent-teal);
-                outline: none;
-                box-shadow: 0 0 0 2px rgba(95, 236, 210, 0.25);
-            }
+    .search-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+
+    input[type="text"] {
+        padding-right: 40px;
+        padding-left: 40px;
+    }
+
+    .search-icon {
+        position: absolute;
+        left: 12px;
+        color: var.$color-text;
+        opacity: 0.6;
+        pointer-events: none;
+    }
+
+    .add-button {
+        position: absolute;
+        right: 40px;
+        background: none;
+        border: none;
+        color: var.$color-primary;
+        cursor: pointer;
+        padding: 0 5px;
+        font-size: 1.2rem;
+        transition: var.$transition;
+
+        &:hover {
+            color: var.$color-hover;
+            transform: scale(1.1);
         }
     }
 
-    .search-control {
-        grid-column: 1 / -1;
+    .filter-icon {
+        position: absolute;
+        right: 12px;
+        background: none;
+        border: none;
+        color: var.$color-text;
+        opacity: 0.6;
+        cursor: pointer;
+        padding: 0 5px;
+        font-size: 1rem;
+        transition: var.$transition;
 
-        .search-wrapper {
-            position: relative;
+        &:hover {
+            opacity: 1;
+            color: var.$color-primary;
+        }
+    }
+
+    .search-suggestions {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: white;
+        border: 1px solid #ddd;
+        border-top: none;
+        border-radius: 0 0 4px 4px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        max-height: 150px;
+        overflow-y: auto;
+        margin-top: -1px;
+    }
+
+    .suggestion-item {
+        padding: 10px;
+        cursor: pointer;
+        border-bottom: 1px solid #f0f0f0;
+        transition: var.$transition;
+        color: #0a0318;
+
+        &:hover {
+            background-color: #f8f9fa;
         }
 
-        .search-suggestions {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            right: 0;
-            background: white;
-            border: 1px solid #ddd;
-            border-top: none;
-            border-radius: 0 0 4px 4px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            z-index: 1000;
-            max-height: 150px;
-            overflow-y: auto;
-        }
-
-        .suggestion-item {
-            padding: 10px;
-            cursor: pointer;
-            border-bottom: 1px solid #f0f0f0;
-            transition: var(--transition);
-            color: #0a0318;
-
-            &:hover {
-                background-color: #f8f9fa;
-            }
-
-            &:last-child {
-                border-bottom: none;
-            }
+        &:last-child {
+            border-bottom: none;
         }
     }
 }
@@ -138,8 +193,14 @@
     }
 
     .table-controls {
-        grid-template-columns: 1fr;
+        flex-direction: column;
         gap: 15px;
         padding: 15px;
+    }
+
+    .control-group,
+    .search-control {
+        min-width: 100%;
+        max-width: 100%;
     }
 }

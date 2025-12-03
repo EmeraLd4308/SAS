@@ -7,7 +7,6 @@ import { DeleteWindow } from './deleteWindow/deleteWindow';
 import { StudentForm } from './studentForm/studentForm';
 import { TableControls } from './tableControls/tableControls';
 import { StudentTable } from './studentTable/studentTable';
-import { Pagination } from './pagination/pagination';
 import '../styles/styles.scss';
 
 const initialFormData = {
@@ -23,26 +22,16 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [formData, setFormData] = useState(initialFormData);
   const [editingId, setEditingId] = useState(null);
-
-  // Стани для пошуку, сортування та фільтрів
   const [searchTerm, setSearchTerm] = useState('');
   const [sortBy, setSortBy] = useState('id');
   const [sortOrder, setSortOrder] = useState('asc');
   const [genderFilter, setGenderFilter] = useState('all');
   const [dateFrom, setDateFrom] = useState('');
   const [dateTo, setDateTo] = useState('');
-
-  // Пагінація
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [modalState, setModalState] = useState({message: null, action: null, id: null});
 
-  const [modalState, setModalState] = useState({
-    message: null,
-    action: null,
-    id: null
-  });
-
-  // Завантаження стану з localStorage
   useEffect(() => {
     const savedFilters = localStorage.getItem('studentFilters');
     if (savedFilters) {
@@ -54,7 +43,6 @@ function App() {
     }
   }, []);
 
-  // Збереження стану в localStorage
   useEffect(() => {
     const filters = {
       search: searchTerm,
@@ -65,17 +53,22 @@ function App() {
     localStorage.setItem('studentFilters', JSON.stringify(filters));
   }, [searchTerm, genderFilter, sortBy, sortOrder]);
 
-  // --- ЛОГІКА ЧИТАННЯ ---
+  const handleSort = (column, order) => {
+    setSortBy(column);
+    setSortOrder(order);
+    setCurrentPage(1);
+  };
+
   const loadStudents = useCallback(async () => {
     setLoading(true);
     try {
       const data = await getStudents(
-        sortBy,
-        sortOrder === 'asc',
-        searchTerm,
-        genderFilter,
-        dateFrom,
-        dateTo
+          sortBy,
+          sortOrder === 'asc',
+          searchTerm,
+          genderFilter,
+          dateFrom,
+          dateTo
       );
       setStudents(data || []);
       setCurrentPage(1);
@@ -88,7 +81,6 @@ function App() {
     }
   }, [sortBy, sortOrder, searchTerm, genderFilter, dateFrom, dateTo]);
 
-  // Завантаження даних при зміні параметрів
   useEffect(() => {
     loadStudents();
   }, [sortBy, sortOrder, genderFilter, dateFrom, dateTo, loadStudents]);
@@ -99,16 +91,13 @@ function App() {
     }
   }, [searchTerm, loadStudents]);
 
-  // --- ЛОГІКА ФОРМИ ---
   const handleFormSubmit = async (formData) => {
     if (!formData.child_name.trim() || !formData.birth_date) {
       setModalState({ message: 'Заповніть обовʼязкові поля', action: null, id: null });
       return;
     }
-
     setLoading(true);
     let success, message;
-
     try {
       if (editingId) {
         const result = await updateStudent(editingId, formData);
@@ -119,7 +108,6 @@ function App() {
         success = result.success;
         message = success ? 'Учня успішно додано!' : 'Помилка додавання.';
       }
-
       if (success) {
         loadStudents();
         setFormData(initialFormData);
@@ -134,7 +122,6 @@ function App() {
     }
   };
 
-  // --- ЛОГІКА РЕДАГУВАННЯ ---
   const handleEdit = (student) => {
     setEditingId(student.id);
     setFormData({
@@ -151,10 +138,9 @@ function App() {
     setFormData(initialFormData);
   };
 
-  // --- ЛОГІКА ВИДАЛЕННЯ ---
   const confirmDelete = (studentId) => {
     setModalState({
-      message: 'Ви впевнені, що хочете видалити цього учня?',
+      message: 'Ви впевнені, що хочете видалити цю дитину?',
       action: 'DELETE',
       id: studentId
     });
@@ -163,7 +149,6 @@ function App() {
   const executeDelete = async () => {
     const studentId = modalState.id;
     setModalState({ message: null, action: null, id: null });
-
     try {
       const success = await deleteStudent(studentId);
       if (success) {
@@ -181,7 +166,6 @@ function App() {
     setModalState({ message: null, action: null, id: null });
   };
 
-  // --- ЕКСПОРТ В EXCEL ---
   const handleExport = async () => {
     const result = await exportToExcel({
       searchTerm,
@@ -189,7 +173,6 @@ function App() {
       dateFrom,
       dateTo
     });
-
     if (result.success) {
       setModalState({
         message: `Експортовано ${result.count} записів у файл "${result.fileName}"`,
@@ -205,7 +188,6 @@ function App() {
     }
   };
 
-  // --- СКИДАННЯ ФІЛЬТРІВ ---
   const resetFilters = () => {
     setSearchTerm('');
     setGenderFilter('all');
@@ -214,98 +196,71 @@ function App() {
     setSortBy('id');
     setSortOrder('asc');
     setCurrentPage(1);
+    setItemsPerPage(10);
   };
 
   const totalPages = Math.ceil(students.length / itemsPerPage);
-
   if (loading && students.length === 0) {
     return (
-      <div className="app-container">
-        <Header />
-        <div className="main-content">
-          <h1 className="loading-message">Завантаження даних</h1>
+        <div className="app-container">
+          <Header />
+          <div className="main-content">
+            <h1 className="loading-message">Завантаження даних</h1>
+          </div>
+          <Footer />
         </div>
-        <Footer />
-      </div>
     );
   }
 
   return (
-    <div className="app-container">
-      <Header />
+      <div className="app-container">
+        <Header />
 
-      <div className="main-content">
-        <DeleteWindow
-          message={modalState.message}
-          onConfirm={modalState.action === 'DELETE' ? executeDelete : null}
-          onCancel={closeModal}
-        />
+        <div className="main-content">
+          <DeleteWindow message={modalState.message} onConfirm={modalState.action === 'DELETE' ? executeDelete : null} onCancel={closeModal}/>
 
-        <StudentForm
-          onSubmit={handleFormSubmit}
-          editingId={editingId}
-          onCancelEdit={handleCancelEdit}
-          formData={formData}
-          onFormChange={setFormData}
-          loading={loading}
-        />
+          <StudentForm
+              onSubmit={handleFormSubmit}
+              editingId={editingId}
+              onCancelEdit={handleCancelEdit}
+              formData={formData}
+              onFormChange={setFormData}
+              loading={loading}
+          />
 
-        <div className="table-header">
-          <h2>Список Учнів ({students.length})</h2>
-          <div className="header-actions">
-            <button onClick={handleExport} className="export-button" disabled={students.length === 0}>
-              Експорт в Excel
-            </button>
-            <button onClick={resetFilters} className="reset-filters-btn">
-              Скинути фільтри
-            </button>
-          </div>
+          <TableControls
+              searchTerm={searchTerm}
+              onSearchChange={setSearchTerm}
+              genderFilter={genderFilter}
+              onGenderFilterChange={setGenderFilter}
+              dateFrom={dateFrom}
+              onDateFromChange={setDateFrom}
+              dateTo={dateTo}
+              onDateToChange={setDateTo}
+              onResetFilters={resetFilters}
+          />
+
+          {loading ? (<h1 className="loading-message">Завантаження даних</h1>) : students.length === 0 ? (
+              <p className="no-data">Немає жодного учня, що відповідає критеріям пошуку/фільтрації.</p>) : (
+              <StudentTable
+                  students={students}
+                  onEdit={handleEdit}
+                  onDelete={confirmDelete}
+                  currentPage={currentPage}
+                  itemsPerPage={itemsPerPage}
+                  sortBy={sortBy}
+                  sortOrder={sortOrder}
+                  onSort={handleSort}
+                  onExport={handleExport}
+                  totalPages={totalPages}
+                  onPageChange={setCurrentPage}
+                  onItemsPerPageChange={setItemsPerPage} // Додайте це
+              />
+          )}
         </div>
 
-        <TableControls
-          searchTerm={searchTerm}
-          onSearchChange={setSearchTerm}
-          genderFilter={genderFilter}
-          onGenderFilterChange={setGenderFilter}
-          dateFrom={dateFrom}
-          onDateFromChange={setDateFrom}
-          dateTo={dateTo}
-          onDateToChange={setDateTo}
-          sortBy={sortBy}
-          onSortByChange={setSortBy}
-          sortOrder={sortOrder}
-          onSortOrderChange={setSortOrder}
-          itemsPerPage={itemsPerPage}
-          onItemsPerPageChange={setItemsPerPage}
-        />
-
-        {loading ? (
-          <h1 className="loading-message">Завантаження даних</h1>
-        ) : students.length === 0 ? (
-          <p className="no-data">Немає жодного учня, що відповідає критеріям пошуку/фільтрації.</p>
-        ) : (
-          <>
-            <StudentTable
-              students={students}
-              onEdit={handleEdit}
-              onDelete={confirmDelete}
-              currentPage={currentPage}
-              itemsPerPage={itemsPerPage}
-            />
-
-            {totalPages > 1 && (
-              <Pagination
-                currentPage={currentPage}
-                totalPages={totalPages}
-                onPageChange={setCurrentPage}
-              />
-            )}
-          </>
-        )}
+        <Footer />
       </div>
-
-      <Footer />
-    </div>
   );
 }
 

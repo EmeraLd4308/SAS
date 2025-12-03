@@ -9,16 +9,9 @@ const initialFormData = {
     parent_name: '',
 };
 
-export function StudentForm({
-    onSubmit,
-    editingId,
-    onCancelEdit,
-    formData: externalFormData,
-    onFormChange,
-    loading
-}) {
+export function StudentForm({onSubmit, editingId, onCancelEdit, formData: externalFormData, onFormChange, loading}) {
+    
     const [localFormData, setLocalFormData] = useState(initialFormData);
-
     const formData = externalFormData || localFormData;
     const setFormData = onFormChange || setLocalFormData;
 
@@ -28,7 +21,6 @@ export function StudentForm({
             [e.target.name]: e.target.value
         });
     };
-
     const handleSubmit = (e) => {
         e.preventDefault();
         onSubmit(formData);
@@ -36,30 +28,45 @@ export function StudentForm({
 
     return (
         <div className="student-form-card">
-            <h2>{editingId ? 'Редагувати Учня' : 'Додати Нового Учня'}</h2>
+            <h2>{editingId ? 'Редагувати дитину' : 'Додати дитину'}</h2>
 
-            {editingId && (
-                <button onClick={onCancelEdit} className="cancel-edit-button">
-                    Скасувати Редагування
-                </button>
-            )}
+            <form onSubmit={handleSubmit} className="form-vertical">
+                <label>
+                    <input placeholder="Адреса дитини" type="text" name="address" value={formData.address} onChange={handleFormChange} required/>
+                </label>
 
-            <form onSubmit={handleSubmit} className="form-grid">
-                <input type="text" name="child_name" placeholder="ПІБ Дитини *" value={formData.child_name} onChange={handleFormChange} required />
+                <label>
+                    <input placeholder="ПІБ дитини" type="text" name="child_name" value={formData.child_name} onChange={handleFormChange} required/>
+                </label>
 
-                <select name="gender" value={formData.gender} onChange={handleFormChange}>
-                    <option value="">Оберіть стать</option>
-                    <option value="Ч">Чоловіча</option>
-                    <option value="Ж">Жіноча</option>
-                </select>
+                <label>
+                    <input placeholder="ПІБ одного із батьків" type="text" name="parent_name" value={formData.parent_name} onChange={handleFormChange}/>
+                </label>
 
-                <input type="date" name="birth_date" placeholder="Дата народження *" value={formData.birth_date} onChange={handleFormChange} required />
-                <input type="text" name="address" placeholder="Адреса дитини" value={formData.address} onChange={handleFormChange} />
-                <input type="text" name="parent_name" placeholder="ПІБ Батьків" value={formData.parent_name} onChange={handleFormChange} />
+                <div className="date-gender-row">
+                    <span>Дата нар.</span>
+                    <label className="date-field">
+                        <input type="date" name="birth_date" value={formData.birth_date} onChange={handleFormChange} required/>
+                    </label>
 
-                <button type="submit" disabled={loading} className="form-button">
-                    {loading ? 'Обробка...' : (editingId ? 'ОНОВИТИ ДАНІ' : 'ЗБЕРЕГТИ УЧНЯ')}
-                </button>
+                    <div className="gender-block">
+                        <span>|ㅤСтать</span>
+                        <label className="gender-option">
+                            <input type="radio" name="gender" value="Ч" checked={formData.gender === "Ч"} onChange={handleFormChange}/>
+                            <span>Ч</span>
+                        </label>
+
+                        <label className="gender-option"><input type="radio" name="gender" value="Ж" checked={formData.gender === "Ж"} onChange={handleFormChange}/>
+                            <span>Ж</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div className="button-row">
+                    <button type="button" className="cancel-button" onClick={onCancelEdit}>Скасувати</button>
+                    <button type="submit" disabled={loading} className="save-button">{loading ? 'Обробка...' : (editingId ? 'Оновити' : 'Зберегти')}</button>
+                </div>
+                
             </form>
         </div>
     );
