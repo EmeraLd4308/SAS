@@ -1,4 +1,4 @@
-import './header.scss';
+import './header.scss'
 
 export function Header() {
     const logoUrl = '/logo.svg';

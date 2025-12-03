@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import './studentForm.scss';
+import { useState } from 'react'
+import './studentForm.scss'
 
 const initialFormData = {
     child_name: '',

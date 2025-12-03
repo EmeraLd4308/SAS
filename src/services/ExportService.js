@@ -1,5 +1,5 @@
-import { supabase } from '../client/supabaseClient';
-import * as XLSX from 'xlsx';
+import { supabase } from '../client/supabaseClient'
+import * as XLSX from 'xlsx'
 
 export async function exportToExcel(filters = {}) {
     try {

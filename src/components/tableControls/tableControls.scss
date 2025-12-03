@@ -1,49 +1,5 @@
 @use '../../styles/variables' as var;
 
-.table-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
-    gap: 15px;
-
-    h2 {
-        margin: 0;
-        color: var.$color-text;
-        font-size: 1.5rem;
-    }
-}
-
-.header-actions {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-}
-
-.export-button,
-.reset-filters-btn {
-    background: var.$gradient-50;
-    color: var.$color-text;
-    border: none;
-    padding: 10px 20px;
-    border-radius: var.$border-radius;
-    cursor: pointer;
-    transition: var.$transition;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-
-    &:hover {
-        background: var.$color-hover;
-        transition: var.$transition;
-    }
-}
-
-.reset-filters-btn {
-    background: linear-gradient(135deg, #ffd43b 0%, var(--color-warning) 100%);
-}
-
 .table-controls {
     border: var.$border;
     display: flex;
@@ -146,38 +102,6 @@
         &:hover {
             opacity: 1;
             color: var.$color-primary;
-        }
-    }
-
-    .search-suggestions {
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-        background: white;
-        border: 1px solid #ddd;
-        border-top: none;
-        border-radius: 0 0 4px 4px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        z-index: 1000;
-        max-height: 150px;
-        overflow-y: auto;
-        margin-top: -1px;
-    }
-
-    .suggestion-item {
-        padding: 10px;
-        cursor: pointer;
-        border-bottom: 1px solid #f0f0f0;
-        transition: var.$transition;
-        color: #0a0318;
-
-        &:hover {
-            background-color: #f8f9fa;
-        }
-
-        &:last-child {
-            border-bottom: none;
         }
     }
 }

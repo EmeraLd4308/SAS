@@ -1,13 +1,13 @@
-import { useState, useEffect, useCallback } from 'react';
-import { getStudents, deleteStudent, addStudent, updateStudent } from '../services/StudentsService';
-import { exportToExcel } from '../services/ExportService';
-import { Header } from './header/header';
-import { Footer } from './footer/footer';
-import { DeleteWindow } from './deleteWindow/deleteWindow';
-import { StudentForm } from './studentForm/studentForm';
-import { TableControls } from './tableControls/tableControls';
-import { StudentTable } from './studentTable/studentTable';
-import '../styles/styles.scss';
+import { useState, useEffect, useCallback } from 'react'
+import { getStudents, deleteStudent, addStudent, updateStudent } from '../services/StudentsService'
+import { exportToExcel } from '../services/ExportService'
+import { Header } from './header/header'
+import { Footer } from './footer/footer'
+import { DeleteWindow } from './deleteWindow/deleteWindow'
+import { StudentForm } from './studentForm/studentForm'
+import { TableControls } from './tableControls/tableControls'
+import { StudentTable } from './studentTable/studentTable'
+import '../styles/styles.scss'
 
 const initialFormData = {
   child_name: '',

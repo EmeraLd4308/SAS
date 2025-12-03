@@ -1,6 +1,6 @@
-import { useDebounce } from '../../hooks/useDebounce';
-import { FiltersButton } from '../filter/filter';
-import './tableControls.scss';
+import { useDebounce } from '../../hooks/useDebounce'
+import { FiltersButton } from '../filter/filter'
+import './tableControls.scss'
 
 export function TableControls({searchTerm, onSearchChange, genderFilter, onGenderFilterChange, dateFrom, onDateFromChange, dateTo, onDateToChange, onResetFilters}) {
     

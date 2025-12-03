@@ -1,4 +1,4 @@
-import './deleteWindow.scss';
+import './deleteWindow.scss'
 
 export function DeleteWindow({ message, onConfirm, onCancel }) {
     if (!message) return null;

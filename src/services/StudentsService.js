@@ -1,4 +1,4 @@
-import { supabase } from '../client/supabaseClient';
+import { supabase } from '../client/supabaseClient'
 
 const TABLE_NAME = 'students_info';
 function buildQuery(sortBy, sortAscending, searchTerm, genderFilter, dateFrom, dateTo) {
