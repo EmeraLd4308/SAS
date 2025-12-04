@@ -1,13 +1,36 @@
 @use '../../styles/variables' as var;
 
+.filters-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var.$color-fon;
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.3s ease;
+    backdrop-filter: blur(2px);
+    height: 100%;
+}
+
 .student-form-card {
     border: var.$border;
     background: var.$gradient-top;
     border-radius: var.$border-radius;
     padding: clamp(1rem, 2vw, 1.5rem);
-    padding-top: clamp(0.05rem, 0.2vw, 0.1rem);
     width: min(40rem, 95vw);
     margin: 0 auto;
+    padding-top: clamp(0.05rem, 0.2vw, 0.1rem);
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    overflow-y: auto;
+    animation: slideIn 0.3s ease;
 
     h2 {
         margin-bottom: clamp(1.5rem, 2.5vw, 2rem);
@@ -183,6 +206,48 @@
     background: var.$gradient-50; // Залишив ваш колір
     color: var.$color-text; // Залишив ваш колір тексту
 }
+
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -60%);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes slideOut {
+    from {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+    to {
+        opacity: 0;
+        transform: translate(-50%, -60%);
+    }
+}
+
 
 // Адаптивні медіа-запити
 @media (max-width: 48rem) {

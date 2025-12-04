@@ -22,43 +22,51 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [formData, setFormData] = useState(initialFormData);
   const [editingId, setEditingId] = useState(null);
+  const [isFormOpen, setIsFormOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [sortBy, setSortBy] = useState('id');
   const [sortOrder, setSortOrder] = useState('asc');
   const [genderFilter, setGenderFilter] = useState('all');
   const [dateFrom, setDateFrom] = useState('');
   const [dateTo, setDateTo] = useState('');
+  const [yearFilter, setYearFilter] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [modalState, setModalState] = useState({message: null, action: null, id: null});
 
+  // Завантаження фільтрів з localStorage
   useEffect(() => {
     const savedFilters = localStorage.getItem('studentFilters');
     if (savedFilters) {
-      const { search, gender, sortBy: savedSortBy, sortOrder: savedSortOrder } = JSON.parse(savedFilters);
+      const { search, gender, sortBy: savedSortBy, sortOrder: savedSortOrder, year } = JSON.parse(savedFilters);
       setSearchTerm(search || '');
       setGenderFilter(gender || 'all');
       setSortBy(savedSortBy || 'id');
       setSortOrder(savedSortOrder || 'asc');
+      setYearFilter(year || null);
     }
   }, []);
 
+  // Збереження фільтрів в localStorage
   useEffect(() => {
     const filters = {
       search: searchTerm,
       gender: genderFilter,
       sortBy,
-      sortOrder
+      sortOrder,
+      year: yearFilter
     };
     localStorage.setItem('studentFilters', JSON.stringify(filters));
-  }, [searchTerm, genderFilter, sortBy, sortOrder]);
+  }, [searchTerm, genderFilter, sortBy, sortOrder, yearFilter]);
 
+  // Функція сортування
   const handleSort = (column, order) => {
     setSortBy(column);
     setSortOrder(order);
     setCurrentPage(1);
   };
 
+  // Функція завантаження студентів
   const loadStudents = useCallback(async () => {
     setLoading(true);
     try {
@@ -68,7 +76,8 @@ function App() {
           searchTerm,
           genderFilter,
           dateFrom,
-          dateTo
+          dateTo,
+          yearFilter
       );
       setStudents(data || []);
       setCurrentPage(1);
@@ -79,18 +88,25 @@ function App() {
     } finally {
       setLoading(false);
     }
-  }, [sortBy, sortOrder, searchTerm, genderFilter, dateFrom, dateTo]);
+  }, [sortBy, sortOrder, searchTerm, genderFilter, dateFrom, dateTo, yearFilter]);
 
+  // Завантаження студентів при зміні фільтрів
   useEffect(() => {
     loadStudents();
-  }, [sortBy, sortOrder, genderFilter, dateFrom, dateTo, loadStudents]);
+  }, [sortBy, sortOrder, genderFilter, dateFrom, dateTo, yearFilter, loadStudents]);
 
+  // Завантаження студентів при зміні пошуку
   useEffect(() => {
     if (searchTerm !== undefined) {
-      loadStudents();
+      const timer = setTimeout(() => {
+        loadStudents();
+      }, 300); // Debounce 300ms
+
+      return () => clearTimeout(timer);
     }
   }, [searchTerm, loadStudents]);
 
+  // Обробка збереження форми
   const handleFormSubmit = async (formData) => {
     if (!formData.child_name.trim() || !formData.birth_date) {
       setModalState({ message: 'Заповніть обовʼязкові поля', action: null, id: null });
@@ -112,6 +128,7 @@ function App() {
         loadStudents();
         setFormData(initialFormData);
         setEditingId(null);
+        setIsFormOpen(false);
       }
     } catch (error) {
       success = false;
@@ -122,8 +139,23 @@ function App() {
     }
   };
 
+  // Відкриття форми для додавання
+  const handleAddClick = () => {
+    setIsFormOpen(true);
+    setEditingId(null);
+    setFormData(initialFormData);
+  };
+
+  // Фільтрація за роком
+  const handleYearFilter = (year) => {
+    setYearFilter(year);
+    setCurrentPage(1);
+  };
+
+  // Редагування студента
   const handleEdit = (student) => {
     setEditingId(student.id);
+    setIsFormOpen(true);
     setFormData({
       child_name: student.child_name || '',
       gender: student.gender || '',
@@ -133,11 +165,14 @@ function App() {
     });
   };
 
+  // Скасування редагування
   const handleCancelEdit = () => {
     setEditingId(null);
+    setIsFormOpen(false);
     setFormData(initialFormData);
   };
 
+  // Підтвердження видалення
   const confirmDelete = (studentId) => {
     setModalState({
       message: 'Ви впевнені, що хочете видалити цю дитину?',
@@ -146,6 +181,7 @@ function App() {
     });
   };
 
+  // Виконання видалення
   const executeDelete = async () => {
     const studentId = modalState.id;
     setModalState({ message: null, action: null, id: null });
@@ -162,16 +198,19 @@ function App() {
     }
   };
 
+  // Закриття модального вікна
   const closeModal = () => {
     setModalState({ message: null, action: null, id: null });
   };
 
+  // Експорт до Excel
   const handleExport = async () => {
     const result = await exportToExcel({
       searchTerm,
       genderFilter: genderFilter !== 'all' ? genderFilter : '',
       dateFrom,
-      dateTo
+      dateTo,
+      yearFilter
     });
     if (result.success) {
       setModalState({
@@ -188,22 +227,27 @@ function App() {
     }
   };
 
+  // Скидання всіх фільтрів
   const resetFilters = () => {
     setSearchTerm('');
     setGenderFilter('all');
     setDateFrom('');
     setDateTo('');
+    setYearFilter(null);
     setSortBy('id');
     setSortOrder('asc');
     setCurrentPage(1);
     setItemsPerPage(10);
   };
 
+  // Розрахунок загальної кількості сторінок
   const totalPages = Math.ceil(students.length / itemsPerPage);
+
+  // Показати завантаження якщо дані ще не завантажені
   if (loading && students.length === 0) {
     return (
         <div className="app-container">
-          <Header />
+          <Header onYearFilter={handleYearFilter} />
           <div className="main-content">
             <h1 className="loading-message">Завантаження даних</h1>
           </div>
@@ -214,18 +258,13 @@ function App() {
 
   return (
       <div className="app-container">
-        <Header />
+        <Header onYearFilter={handleYearFilter} />
 
         <div className="main-content">
-          <DeleteWindow message={modalState.message} onConfirm={modalState.action === 'DELETE' ? executeDelete : null} onCancel={closeModal}/>
-
-          <StudentForm
-              onSubmit={handleFormSubmit}
-              editingId={editingId}
-              onCancelEdit={handleCancelEdit}
-              formData={formData}
-              onFormChange={setFormData}
-              loading={loading}
+          <DeleteWindow
+              message={modalState.message}
+              onConfirm={modalState.action === 'DELETE' ? executeDelete : null}
+              onCancel={closeModal}
           />
 
           <TableControls
@@ -238,10 +277,25 @@ function App() {
               dateTo={dateTo}
               onDateToChange={setDateTo}
               onResetFilters={resetFilters}
+              onAddClick={handleAddClick}
           />
 
-          {loading ? (<h1 className="loading-message">Завантаження даних</h1>) : students.length === 0 ? (
-              <p className="no-data">Немає жодного учня, що відповідає критеріям пошуку/фільтрації.</p>) : (
+          {(isFormOpen || editingId !== null) && (
+              <StudentForm
+                  onSubmit={handleFormSubmit}
+                  editingId={editingId}
+                  onCancelEdit={handleCancelEdit}
+                  formData={formData}
+                  onFormChange={setFormData}
+                  loading={loading}
+              />
+          )}
+
+          {loading ? (
+              <h1 className="loading-message">Завантаження даних</h1>
+          ) : students.length === 0 ? (
+              <p className="no-data">Немає жодного учня, що відповідає критеріям пошуку/фільтрації.</p>
+          ) : (
               <StudentTable
                   students={students}
                   onEdit={handleEdit}
@@ -254,12 +308,12 @@ function App() {
                   onExport={handleExport}
                   totalPages={totalPages}
                   onPageChange={setCurrentPage}
-                  onItemsPerPageChange={setItemsPerPage} // Додайте це
+                  onItemsPerPageChange={setItemsPerPage}
               />
           )}
         </div>
 
-        <Footer />
+        <Footer onYearFilter={handleYearFilter} />
       </div>
   );
 }

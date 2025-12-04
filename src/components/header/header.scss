@@ -25,6 +25,8 @@
     }
 
     .navigation {
+        gap: 0; // ← ОСЬ ЦЕ ДОДАЙ
+        margin: 0; // ← І це теж може допомогти
         display: flex;
         align-items: center;   // Центруємо вертикально
         height: 100%;          // Займає всю висоту хедера
@@ -36,7 +38,6 @@
             border: none;
             justify-content: center;
             min-width: 8rem;   // Мінімальна ширина кнопки
-            padding: 0 1.5rem; // Збільшені горизонтальні відступи
             border-radius: var.$border-radius;
             background: none;
             color: var.$color-text;
@@ -45,13 +46,23 @@
             cursor: pointer;
             transition: var.$transition;
             white-space: nowrap; // Запобігає переносу тексту
-
+            box-shadow: none;
+            
             &:hover {
                 background-color: var.$color-hover;
                 transition: var.$transition;
+                color: var.$color-text;
             }
+            
             &.active {
-                background-color: var.$color-hover;
+                color: var.$color-text;
+                box-shadow: none;
+                background: var.$color-secondary;
+
+                &:hover {
+                    background-color: var.$color-hover;
+                    transition: var.$transition;
+                }
             }
         }
     }

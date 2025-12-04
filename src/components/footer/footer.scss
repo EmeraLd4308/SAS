@@ -2,25 +2,93 @@
 
 .app-footer {
     background: var.$gradient-footer;
-    box-shadow: 0.5px -0.5px 4px 0px rgba(106, 106, 106, 0.15);
+    box-shadow: var.$box-shadow;
     color: var.$color-text;
     width: 100%;
     margin-top: auto;
+    // Центрування всього футера
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 
     .footer-content {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(min(16rem, 100%), 1fr));
+        grid-template-columns: 1fr 1fr;
         gap: clamp(1rem, 2vw, 1.5rem);
         padding: clamp(1.5rem, 3vw, 2rem) clamp(1rem, 2vw, 1.5rem);
         max-width: 90rem;
         margin: 0 auto;
+        align-items: center;
+        width: 100%; // Додаємо ширину 100%
+        box-sizing: border-box; // Враховуємо padding у ширині
+    }
 
-        .footer-section {
+    .footer-section {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        p {
+            text-align: center; // Центруємо текст
+            margin: 0.25rem 0;
+            color: var.$color-text;
+            line-height: 1.5;
+            font-size: 0.95rem;
+        }
+
+        // Перша секція - текст зліва
+        &:first-child {
             p {
-                text-align: right;
-                margin: 0.25rem 0;
-                color: var.$color-text;
-                line-height: 1.5;
+                text-align: left; // Текст залишається зліва
+            }
+        }
+
+        // Друга секція - навігація
+        &:last-child {
+            display: flex;
+            justify-content: flex-end; // Навігацію залишаємо справа
+        }
+    }
+}
+
+.navigation {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end; // Залишаємо навігацію справа
+    flex-wrap: wrap;
+    gap: 0.5rem; // Додаємо відступи між кнопками
+
+    .loading-years {
+        color: var.$color-text;
+        font-size: 0.95rem;
+        padding: 0.5rem 0; // Зменшуємо горизонтальні padding
+        margin-right: 0.25rem; // Невеликий відступ від кнопок
+    }
+
+    .nav-btn {
+        min-width: 6rem;
+        min-height: 3rem;
+        padding: 0.5rem 1rem;
+        border: none;
+        border-radius: var.$border-radius;
+        background: transparent;
+        color: var.$color-text;
+        font-size: 0.95rem;
+        font-weight: var.$font-weight;
+        cursor: pointer;
+        transition: var.$transition;
+
+        &:hover {
+            background: var.$color-hover;
+        }
+
+        &.active {
+            background: var.$color-secondary;
+            border: var.$border;
+
+            &:hover {
+                background: var.$color-hover;
+                border: none;
             }
         }
     }
@@ -30,20 +98,51 @@
     .app-footer {
         .footer-content {
             grid-template-columns: 1fr;
+            gap: 1.5rem;
+            text-align: center;
+            padding: clamp(1.5rem, 3vw, 2rem) 1rem; // Рівні відступи з боків
 
             .footer-section {
-                text-align: center !important;
+                text-align: center;
 
-                &.text-left,
-                &.text-center,
-                &.text-right {
-                    text-align: center !important;
-
-                    p, h3, h4 {
-                        text-align: center !important;
+                &:first-child {
+                    p {
+                        text-align: center; // На мобільних центруємо весь текст
                     }
                 }
+
+                &:last-child {
+                    justify-content: center; // На мобільних центруємо навігацію
+                }
+
+                .navigation {
+                    justify-content: center;
+                }
             }
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .app-footer {
+        .footer-content {
+            padding: 1.5rem 1rem; // Фіксовані відступи на малих екранах
+        }
+    }
+
+    .navigation {
+        justify-content: center !important;
+        gap: 0.5rem;
+
+        .nav-btn {
+            min-width: auto; // Дозволяємо кнопкам бути меншими
+            padding: 0.4rem 0.8rem;
+            font-size: 0.85rem;
+        }
+
+        .loading-years {
+            margin-right: 0;
+            padding: 0.4rem 0;
         }
     }
 }

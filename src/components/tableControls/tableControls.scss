@@ -3,128 +3,346 @@
 .table-controls {
     border: var.$border;
     display: flex;
-    gap: 15px;
-    margin-bottom: 25px;
-    padding: 15px;
+    margin: 0 0 25px 0;
     background: var.$color-background;
     border-radius: var.$border-radius;
     box-shadow: var.$box-shadow;
+    align-items: stretch;
+    flex-wrap: nowrap;
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 60px;
+}
+
+.search-and-filters {
+    width: 100%;
+    display: flex;
     align-items: center;
-    flex-wrap: wrap;
+    height: 100%;
 }
 
 .control-group {
     display: flex;
     flex-direction: column;
-    flex: 1;
-    min-width: 200px;
-    max-width: 400px;
+    width: 100%;
+    height: 100%;
+    justify-content: center; 
 
     label {
-        font-weight: 600;
-        margin-bottom: 8px;
-        font-size: 0.9rem;
+        font-weight: var.$font-weight;
+        font-size: 0.95rem;
         color: var.$color-text;
     }
+}
 
-    input[type="text"],
-    input[type="date"],
-    select {
-        padding: 12px;
-        border: var.$border;
-        border-radius: var.$border-radius;
-        font-size: 1rem;
-        transition: var.$transition;
-        background: var.$color-background;
+.search-control {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    height: 100%;
+
+    .search-wrapper {
+        display: flex;
+        align-items: center; 
         width: 100%;
+        gap: 0.35rem;
+        margin: 0;
+        height: 100%;
+    }
+
+    input[type="text"] {
+        flex: 1 1 auto;
+        padding: 0 12px;
+        border-radius: var.$border-radius;
+        min-width: 0;
+        height: 60px; 
+        font-size: 1.4rem;
+        box-sizing: border-box;
+        background: var.$color-background;
+        transition: var.$transition;
+        line-height: normal;
+        border: none;
+
 
         &:focus {
             border-color: var.$color-hover;
             outline: none;
         }
     }
-}
-
-.search-control {
-    position: relative;
-    flex: 1;
-    min-width: 250px;
-    max-width: 500px;
-
-    .search-wrapper {
-        position: relative;
-        display: flex;
-        align-items: center;
-    }
-
-    input[type="text"] {
-        padding-right: 40px;
-        padding-left: 40px;
-    }
-
-    .search-icon {
-        position: absolute;
-        left: 12px;
-        color: var.$color-text;
-        opacity: 0.6;
-        pointer-events: none;
-    }
 
     .add-button {
-        position: absolute;
-        right: 40px;
-        background: none;
+        min-width: 75px;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var.$gradient-plus;
+        color: var.$color-text;
         border: none;
-        color: var.$color-primary;
+        border-radius: var.$border-radius;
         cursor: pointer;
-        padding: 0 5px;
-        font-size: 1.2rem;
+        padding: 0;
+        font-size: 2rem;
+        font-weight: bold;
         transition: var.$transition;
+        box-shadow: var.$box-shadow;
+        margin: 0;
+        flex-shrink: 0;
+        white-space: nowrap;
+        box-sizing: border-box;
+        line-height: normal;
 
         &:hover {
-            color: var.$color-hover;
-            transform: scale(1.1);
+            background: var.$color-hover;
+        }
+    }
+    
+    .search-button {
+        min-width: 75px;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var.$gradient-50;
+        color: var.$color-text;
+        border: none;
+        border-radius: var.$border-radius;
+        cursor: pointer;
+        padding: 0;
+        font-size: 2rem;
+        font-weight: bold;
+        transition: var.$transition;
+        box-shadow: var.$box-shadow;
+        margin: 0;
+        flex-shrink: 0;
+        white-space: nowrap;
+        box-sizing: border-box;
+        line-height: normal;
+
+        &:hover {
+            background: var.$color-hover;
         }
     }
 
-    .filter-icon {
-        position: absolute;
-        right: 12px;
-        background: none;
-        border: none;
+
+
+    .clear-button {
+        min-width: 75px;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var.$color-red;
         color: var.$color-text;
-        opacity: 0.6;
+        border: none;
+        border-radius: var.$border-radius;
         cursor: pointer;
-        padding: 0 5px;
-        font-size: 1rem;
+        padding: 0;
+        font-size: 2rem;
+        font-weight: bold;
         transition: var.$transition;
+        box-shadow: var.$box-shadow;
+        margin: 0;
+        flex-shrink: 0;
+        white-space: nowrap;
+        box-sizing: border-box;
+        line-height: normal;
 
         &:hover {
-            opacity: 1;
-            color: var.$color-primary;
+            background: var.$color-hover;
+        }
+    }
+    
+    .search-button {
+        img {
+            width: 35px; 
+            height: 35px;
+            object-fit: contain;
+        }
+    }
+    
+    .clear-button {
+        img {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+        }
+    }
+
+    
+}
+
+// Планшетні пристрої
+@media (max-width: 1024px) {
+    .table-controls {
+        flex-wrap: wrap;
+        padding: 0.8rem; // Збільшив паддінг
+        min-height: auto;
+    }
+
+    .search-control {
+        .search-wrapper {
+            flex-wrap: wrap;
+            height: auto;
+        }
+
+        input[type="text"] {
+            min-width: 100%;
+            order: 2;
+            height: 50px; // Збільшив висоту
+        }
+
+        .add-button {
+            order: 1;
+            flex: 1;
+            min-width: auto;
+            height: 50px; // Збільшив висоту
+            font-size: 1.4rem;
+        }
+
+        .search-button {
+            order: 3;
+            flex: 1;
+            min-width: auto;
+            height: 50px; // Збільшив висоту
+
+            img {
+                width: 22px;
+                height: 22px;
+            }
+        }
+
+        .filters-button {
+            order: 4;
+            width: 100%;
+            justify-content: center;
+            margin-top: 0.8rem;
+            height: 50px; // Збільшив висоту
+            font-size: 1.1rem;
         }
     }
 }
 
+// Мобільні пристрої
 @media (max-width: 768px) {
-    .table-header {
+    .table-controls {
+        padding: 0.8rem;
+        gap: 0.8rem;
         flex-direction: column;
         align-items: stretch;
+        min-height: auto;
+    }
 
-        .header-actions {
+    .search-control {
+        .search-wrapper {
+            flex-direction: column;
+            gap: 0.8rem;
+            height: auto;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            order: 2;
+            height: 50px;
+            font-size: 1.1rem;
+        }
+
+        .add-button {
+            order: 1;
+            width: 100%;
+            height: 50px;
+            font-size: 1.5rem;
+        }
+
+        .search-button {
+            order: 3;
+            width: 100%;
+            height: 50px;
+
+            img {
+                width: 22px;
+                height: 22px;
+            }
+        }
+
+        .filters-button {
+            order: 4;
+            width: 100%;
+            height: 50px;
+            font-size: 1.1rem;
             justify-content: center;
         }
     }
+}
 
+// Додаткові медіа-запити для маленьких екранів
+@media (max-width: 480px) {
     .table-controls {
-        flex-direction: column;
-        gap: 15px;
-        padding: 15px;
+        padding: 0.6rem;
     }
 
-    .control-group,
     .search-control {
-        min-width: 100%;
-        max-width: 100%;
+        .add-button,
+        .search-button,
+        .filters-button {
+            height: 48px;
+            font-size: 1.1rem;
+        }
+
+        .add-button {
+            font-size: 1.4rem;
+        }
+
+        .search-button img {
+            width: 20px;
+            height: 20px;
+        }
+
+        input[type="text"] {
+            height: 48px;
+            font-size: 1rem;
+        }
     }
+}
+
+// Дуже маленькі екрани
+@media (max-width: 320px) {
+    .table-controls {
+        padding: 0.5rem;
+    }
+
+    .search-control {
+        .add-button,
+        .search-button,
+        .filters-button {
+            height: 46px;
+            font-size: 1rem;
+        }
+
+        .add-button {
+            font-size: 1.3rem;
+        }
+
+        .search-button img {
+            width: 18px;
+            height: 18px;
+        }
+
+        input[type="text"] {
+            height: 46px;
+            font-size: 0.95rem;
+        }
+    }
+}
+
+// Запобігаємо горизонтальному скролу на всіх екранах
+.table-controls,
+.search-control,
+.search-wrapper {
+    max-width: 100%;
+    overflow: hidden;
+}
+
+* {
+    box-sizing: border-box;
 }
