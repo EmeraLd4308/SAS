@@ -9,6 +9,7 @@ export function TableControls({searchTerm, onSearchChange, genderFilter, onGende
     const searchInputRef = useRef(null);
     const [inputValue, setInputValue] = useState(searchTerm || '');
     const [hasSearched, setHasSearched] = useState(false);
+    const shouldShowClearButton = hasSearched && inputValue !== '' && inputValue === searchTerm;
 
     useEffect(() => {
         setInputValue(searchTerm || '');
@@ -51,8 +52,6 @@ export function TableControls({searchTerm, onSearchChange, genderFilter, onGende
         }
     };
     
-    const shouldShowClearButton = hasSearched && inputValue !== '' && inputValue === searchTerm;
-
     return (
         <div className="table-controls">
             <div className="search-and-filters">

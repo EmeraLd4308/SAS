@@ -23,11 +23,6 @@ export function StudentTable({students, onEdit, onDelete, currentPage, itemsPerP
         onPageChange(1);
     };
 
-    // Розрахунок інформації про елементи
-    const startItem = indexOfFirstItem + 1;
-    const endItem = Math.min(indexOfLastItem, students.length);
-    const totalItems = students.length;
-
     return (
         <>
             <table className="student-table">
@@ -77,6 +72,7 @@ export function StudentTable({students, onEdit, onDelete, currentPage, itemsPerP
                 <tr>
                     <td colSpan="7" className="table-footer">
                         <div className="footer-content">
+                            
                             <button onClick={onExport} className="export-button" disabled={students.length === 0}>
                                 Експортувати в Excel
                             </button>

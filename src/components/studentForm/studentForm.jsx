@@ -49,12 +49,14 @@ export function StudentForm({onSubmit, editingId, onCancelEdit, formData: extern
 
                     <div className="date-gender-row">
                         <span>Дата нар.</span>
+                        
                         <label className="date-field">
                             <input type="date" name="birth_date" value={formData.birth_date} onChange={handleFormChange} required/>
                         </label>
 
                         <div className="gender-block">
                             <span>|ㅤСтать</span>
+                            
                             <label className="gender-option">
                                 <input type="radio" name="gender" value="Ч" checked={formData.gender === "Ч"} onChange={handleFormChange}/>
                                 <span>Ч</span>
@@ -63,6 +65,7 @@ export function StudentForm({onSubmit, editingId, onCancelEdit, formData: extern
                             <label className="gender-option"><input type="radio" name="gender" value="Ж" checked={formData.gender === "Ж"} onChange={handleFormChange}/>
                                 <span>Ж</span>
                             </label>
+                            
                         </div>
                     </div>
 
@@ -70,8 +73,7 @@ export function StudentForm({onSubmit, editingId, onCancelEdit, formData: extern
                         <button type="button" className="cancel-button" onClick={onCancelEdit}>Скасувати</button>  
                         <button type="submit" disabled={loading} className="save-button">{loading ? 'Обробка...' : (editingId ? 'Оновити' : 'Зберегти')}</button>
                     </div>
-
-                   
+                    
                 </form>
             </div>
         </>

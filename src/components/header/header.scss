@@ -3,60 +3,61 @@
 .app-header {
     background: var.$gradient-top;
     border-bottom: var.$border;
+    box-shadow: var.$box-shadow;
 
     .header-content {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        height: 5rem;        // Стабільна висота хедера
-        padding: 0 2rem;       // Додаємо бокові відступи
+        height: 5rem;
+        padding: 0 2rem;
     }
 
     .logo {
         display: flex;
         align-items: center;
-        height: 100%;          // Займає всю висоту хедера
+        height: 100%;
     }
 
     .logo-image img {
-        height: 4rem;        // Зменшуємо трохи для кращого пропорцій
-        width: auto;           // ширина автоматично
-        object-fit: contain;   // не обрізає логотип
+        height: 4rem;
+        width: auto;
+        object-fit: contain;
     }
 
     .navigation {
-        gap: 0; // ← ОСЬ ЦЕ ДОДАЙ
-        margin: 0; // ← І це теж може допомогти
+        gap: 0;
+        margin: 0;
         display: flex;
-        align-items: center;   // Центруємо вертикально
-        height: 100%;          // Займає всю висоту хедера
+        align-items: center;
+        height: 100%;
 
         .nav-btn {
-            height: 100%;          // Займає всю висоту хедера
+            height: 100%;
             display: flex;
             align-items: center;
             border: none;
             justify-content: center;
-            min-width: 8rem;   // Мінімальна ширина кнопки
+            min-width: 8rem;
             border-radius: var.$border-radius;
             background: none;
             color: var.$color-text;
             font-weight: var.$font-weight;
-            font-size: 1.8rem; // Трохи менший шрифт
+            font-size: 1.8rem;
             cursor: pointer;
             transition: var.$transition;
-            white-space: nowrap; // Запобігає переносу тексту
+            white-space: nowrap;
             box-shadow: none;
             
             &:hover {
                 background-color: var.$color-hover;
-                transition: var.$transition;
                 color: var.$color-text;
             }
             
             &.active {
                 color: var.$color-text;
                 box-shadow: none;
+                border-bottom: none;
                 background: var.$color-secondary;
 
                 &:hover {
@@ -71,19 +72,19 @@
 @media (max-width: 768px) {
     .app-header {
         .header-content {
-            height: 4.5rem;    // Менша висота на мобільних
+            height: 4.5rem;
             padding: 0 0.5rem;
         }
 
         .logo-image img {
-            height: 2.5rem;    // Менше лого на мобільних
+            height: 2.5rem;
         }
 
         .navigation {
-            gap: 0.25rem;      // Менші відступи між кнопками
+            gap: 0.25rem;
 
             .nav-btn {
-                min-width: 4rem; // Менша мінімальна ширина
+                min-width: 4rem;
                 padding: 0 0.75rem;
                 height: 2.5rem;
                 font-size: 0.9rem;
@@ -96,18 +97,16 @@
     .app-header {
         .navigation {
             .nav-btn {
-                min-width: auto; // Автоматична ширина
+                min-width: auto;
                 padding: 0 0.5rem;
                 font-size: 0.8rem;
 
-                // Можна приховати текст і показати тільки іконки
                 span {
                     display: none;
                 }
 
-                // Або зробити квадратні кнопки з іконками
                 &:before {
-                    content: '☰'; // Або ваша іконка
+                    content: '☰';
                     font-size: 1.2rem;
                 }
             }

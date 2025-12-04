@@ -12,6 +12,7 @@
     width: 100%;
     box-sizing: border-box;
     min-height: 60px;
+    margin-top: 1.5rem;
 }
 
 .search-and-filters {
@@ -123,16 +124,14 @@
             background: var.$color-hover;
         }
     }
-
-
-
+    
     .clear-button {
         min-width: 75px;
         height: 60px;
         display: flex;
         align-items: center;
         justify-content: center;
-        background: var.$color-red;
+        background: var.$color-secondary;
         color: var.$color-text;
         border: none;
         border-radius: var.$border-radius;
@@ -168,15 +167,12 @@
             object-fit: contain;
         }
     }
-
-    
 }
 
-// Планшетні пристрої
 @media (max-width: 1024px) {
     .table-controls {
         flex-wrap: wrap;
-        padding: 0.8rem; // Збільшив паддінг
+        padding: 0.8rem;
         min-height: auto;
     }
 
@@ -189,14 +185,14 @@
         input[type="text"] {
             min-width: 100%;
             order: 2;
-            height: 50px; // Збільшив висоту
+            height: 50px;
         }
 
         .add-button {
             order: 1;
             flex: 1;
             min-width: auto;
-            height: 50px; // Збільшив висоту
+            height: 50px;
             font-size: 1.4rem;
         }
 
@@ -204,7 +200,7 @@
             order: 3;
             flex: 1;
             min-width: auto;
-            height: 50px; // Збільшив висоту
+            height: 50px;
 
             img {
                 width: 22px;
@@ -217,13 +213,12 @@
             width: 100%;
             justify-content: center;
             margin-top: 0.8rem;
-            height: 50px; // Збільшив висоту
+            height: 50px;
             font-size: 1.1rem;
         }
     }
 }
 
-// Мобільні пристрої
 @media (max-width: 768px) {
     .table-controls {
         padding: 0.8rem;
@@ -275,7 +270,6 @@
     }
 }
 
-// Додаткові медіа-запити для маленьких екранів
 @media (max-width: 480px) {
     .table-controls {
         padding: 0.6rem;
@@ -305,7 +299,6 @@
     }
 }
 
-// Дуже маленькі екрани
 @media (max-width: 320px) {
     .table-controls {
         padding: 0.5rem;
@@ -335,7 +328,6 @@
     }
 }
 
-// Запобігаємо горизонтальному скролу на всіх екранах
 .table-controls,
 .search-control,
 .search-wrapper {
