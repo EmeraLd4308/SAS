@@ -1,6 +1,8 @@
-import { supabase } from '../client/supabaseClient';
+import { supabase } from '../client/supabaseClient'
 
 const TABLE_NAME = 'students_info';
+
+// Функція buildQuery залишається БЕЗ ЗМІН
 function buildQuery(sortBy, sortAscending, searchTerm, genderFilter, dateFrom, dateTo) {
     let query = supabase.from(TABLE_NAME).select('*');
     if (searchTerm) {
@@ -21,10 +23,29 @@ function buildQuery(sortBy, sortAscending, searchTerm, genderFilter, dateFrom, d
     return query;
 }
 
-export async function getStudents(sortBy = 'seq_number', sortAscending = true, searchTerm = '', genderFilter = '', dateFrom = null, dateTo = null) {
+// Оновлена getStudents, яка конвертує yearFilter в dateFrom/dateTo
+export async function getStudents(
+    sortBy = 'seq_number',
+    sortAscending = true,
+    searchTerm = '',
+    genderFilter = '',
+    dateFrom = null,
+    dateTo = null,
+    yearFilter = null
+) {
     try {
-        const query = buildQuery(sortBy, sortAscending, searchTerm, genderFilter, dateFrom, dateTo);
+        // Якщо є yearFilter, перетворюємо його на dateFrom/dateTo
+        let actualDateFrom = dateFrom;
+        let actualDateTo = dateTo;
+
+        if (yearFilter) {
+            actualDateFrom = `${yearFilter}-01-01`;
+            actualDateTo = `${yearFilter}-12-31`;
+        }
+
+        const query = buildQuery(sortBy, sortAscending, searchTerm, genderFilter, actualDateFrom, actualDateTo);
         const { data, error } = await query;
+
         if (error) {
             console.error('Помилка отримання учнів:', error);
             return [];
@@ -36,6 +57,48 @@ export async function getStudents(sortBy = 'seq_number', sortAscending = true, s
     }
 }
 
+// Функція для отримання унікальних років (залишається)
+export async function getUniqueYears() {
+    try {
+        const { data, error } = await supabase
+            .from(TABLE_NAME)
+            .select('birth_date')
+            .not('birth_date', 'is', null);
+
+        if (error) {
+            console.error('Помилка отримання років:', error);
+            return getDefaultYears();
+        }
+
+        if (!data || data.length === 0) {
+            return getDefaultYears();
+        }
+
+        const yearsSet = new Set();
+        data.forEach(student => {
+            if (student.birth_date) {
+                const year = new Date(student.birth_date).getFullYear();
+                yearsSet.add(year);
+            }
+        });
+
+        const years = Array.from(yearsSet)
+            .sort((a, b) => b - a)
+            .slice(0, 6);
+
+        return years.length > 0 ? years : getDefaultYears();
+    } catch (error) {
+        console.error('Непередбачена помилка в getUniqueYears:', error);
+        return getDefaultYears();
+    }
+}
+
+function getDefaultYears() {
+    const currentYear = new Date().getFullYear();
+    return Array.from({length: 6}, (_, i) => currentYear - i);
+}
+
+// Інші функції залишаються без змін
 export async function addStudent(newStudentData) {
     try {
         const { data, error } = await supabase.from(TABLE_NAME).insert([newStudentData]).select();

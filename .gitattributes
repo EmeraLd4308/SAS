@@ -1,3 +1,0 @@
-vite.config.js linguist-detectable=false
-eslint.config.js linguist-detectable=false
-node_modules/*.js linguist-detectable=false

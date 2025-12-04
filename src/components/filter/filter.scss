@@ -5,7 +5,7 @@
   display: inline-block;
 
   .filters-toggle-button {
-    background: var.$gradient-50;
+    background: var.$gradient-filter;
     color: var.$color-text;
     border: none;
     padding: 10px 20px;
@@ -16,6 +16,7 @@
     align-items: center;
     gap: 8px;
     font-size: 0.95rem;
+    box-shadow: var.$box-shadow;
 
     &:hover {
       background: var.$color-hover;
@@ -47,11 +48,6 @@
     &:hover {
       background: var.$color-hover;
     }
-
-    .clear-icon {
-      font-size: 1rem;
-      font-weight: bold;
-    }
   }
 
   .filters-overlay {
@@ -67,6 +63,7 @@
     justify-content: center;
     animation: fadeIn 0.3s ease;
     backdrop-filter: blur(2px);
+    height: 100%;
   }
 
   .filters-panel {
@@ -85,6 +82,7 @@
     z-index: 1000;
     overflow-y: auto;
     animation: slideIn 0.3s ease;
+    
 
     .filters-content {
       display: flex;

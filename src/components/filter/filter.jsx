@@ -1,7 +1,7 @@
-import { useState } from 'react';
-import filterIcon from '../../assets/icons/filter.svg';
-import clearIcon from '../../assets/icons/clear.svg';
-import './filter.scss';
+import { useState } from 'react'
+import filterIcon from '../../assets/icons/filter.svg'
+import clearIcon from '../../assets/icons/clear.svg'
+import './filter.scss'
 
 export function FiltersButton({genderFilter, onGenderFilterChange, dateFrom, onDateFromChange, dateTo, onDateToChange, onResetFilters}) {
     

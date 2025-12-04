@@ -4,14 +4,16 @@
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: var.$color-fon;
+    right: 0;
+    bottom: 0;
+    background: var.$color-fon;
+    z-index: 999;
     display: flex;
-    justify-content: center;
     align-items: center;
-    z-index: 1000;
+    justify-content: center;
+    animation: fadeIn 0.3s ease;
     backdrop-filter: blur(2px);
+    height: 100%;
 }
 
 .modal-content {

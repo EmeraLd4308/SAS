@@ -1,5 +1,5 @@
-import { supabase } from '../client/supabaseClient';
-import * as XLSX from 'xlsx';
+import { supabase } from '../client/supabaseClient'
+import * as XLSX from 'xlsx'
 
 export async function exportToExcel(filters = {}) {
     try {
@@ -44,7 +44,12 @@ export async function exportToExcel(filters = {}) {
             { wch: 25 }, // ПІБ Батьків
         ];
         worksheet['!cols'] = colWidths;
-        const fileName = `Діти_ВОКС_${new Date().toLocaleDateString('uk-UA')}.xlsx`;
+        const date = new Date();
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        const formattedTime = date.toLocaleTimeString('uk-UA').replace(/:/g, '-');
+        const fileName = `Діти_ОТГ_${year}-${month}-${day}__${formattedTime}.xlsx`;
         XLSX.writeFile(workbook, fileName);
         return {success: true, count: data.length, fileName: fileName};
     } catch (error) {
