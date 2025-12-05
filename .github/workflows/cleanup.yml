@@ -1,20 +1,23 @@
 ﻿name: Auto Cleanup Every 10 Minutes
 
 on:
-  schedule:
-    - cron: '59 21 * * *'  # 21:20 UTC = 23:20 Київ
+    schedule:
+      - cron: '59 21 * * *'  # 21:20 UTC = 23:20 Київ
 
-  workflow_dispatch:
-  push:
-    paths:
-      - '.github/workflows/cleanup.yml'
+    workflow_dispatch:
+    push:
+      paths:
+        - '.github/workflows/cleanup.yml'
 jobs:
   cleanup:
     runs-on: ubuntu-latest
     
     steps:
-      - name: Setup PostgreSQL
-        run: sudo apt-get install -y postgresql-client
+      - name: Update and install PostgreSQL client
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y postgresql-client-15
+          psql --version  # Перевірка версії
 
       - name: Delete adult students
         env:
@@ -22,11 +25,8 @@ jobs:
         run: |
           echo "🕒 Запуск очищення: $(date)"
           
-          PGPASSWORD="$PGPASSWORD" psql \
-            -h db.rhrcqedkxmxzedeowiwx.supabase.co \
-            -p 5432 \
-            -U postgres \
-            -d postgres \
+          # Використовуємо connection string для простоти
+          psql "postgresql://postgres:$PGPASSWORD@db.rhrcqedkxmxzedeowiwx.supabase.co:5432/postgres" \
             -c "DELETE FROM students_info WHERE birth_date <= CURRENT_DATE - INTERVAL '18 years';"
           
           echo "✅ Виконано!"
