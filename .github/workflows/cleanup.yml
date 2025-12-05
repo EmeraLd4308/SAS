@@ -1,5 +1,9 @@
 ﻿name: Simple Connection Test
-on: workflow_dispatch
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/cleanup.yml'
 
 jobs:
   test:
