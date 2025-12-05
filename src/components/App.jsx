@@ -1,12 +1,14 @@
 import { useState, useEffect, useCallback } from 'react'
-import { getStudents, deleteStudent, addStudent, updateStudent } from '../services/StudentsService'
-import { exportToExcel } from '../services/ExportService'
+import { checkAccessKey, checkAuthSession, saveAuthSession, clearAuthSession, getRemainingTime } from '../services/authService'
+import { getStudents, deleteStudent, addStudent, updateStudent } from '../services/studentsService'
+import { TableControls } from './tableControls/tableControls'
+import { DeleteWindow } from './deleteWindow/deleteWindow'
+import { StudentTable } from './studentTable/studentTable'
+import { exportToExcel } from '../services/exportService'
+import { StudentForm } from './studentForm/studentForm'
+import { SignIn } from './signIn/signIn'
 import { Header } from './header/header'
 import { Footer } from './footer/footer'
-import { DeleteWindow } from './deleteWindow/deleteWindow'
-import { StudentForm } from './studentForm/studentForm'
-import { TableControls } from './tableControls/tableControls'
-import { StudentTable } from './studentTable/studentTable'
 import '../styles/styles.scss'
 
 const initialFormData = {
@@ -34,8 +36,23 @@ function App() {
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [modalState, setModalState] = useState({message: null, action: null, id: null});
   const [activeYear, setActiveYear] = useState(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const totalPages = Math.ceil(students.length / itemsPerPage);
-  
+
+  useEffect(() => {
+    const sessionValid = checkAuthSession();
+    setIsAuthenticated(sessionValid);
+    if (sessionValid) {
+      const remainingTime = getRemainingTime();
+      if (remainingTime > 0) {
+        setTimeout(() => {
+          clearAuthSession();
+          window.location.reload();
+        }, remainingTime + 100);
+      }
+    }
+  }, []);
+
   useEffect(() => {
     const savedFilters = localStorage.getItem('studentFilters');
     if (savedFilters) {
@@ -55,13 +72,8 @@ function App() {
     localStorage.setItem('studentFilters', JSON.stringify(filters));
   }, [searchTerm, genderFilter, sortBy, sortOrder, yearFilter]);
 
-  const handleSort = (column, order) => {
-    setSortBy(column);
-    setSortOrder(order);
-    setCurrentPage(1);
-  };
-
   const loadStudents = useCallback(async () => {
+    if (!isAuthenticated) return;
     setLoading(true);
     try {
       const data = await getStudents(sortBy, sortOrder === 'asc', searchTerm, genderFilter, dateFrom, dateTo, yearFilter);
@@ -74,20 +86,49 @@ function App() {
     } finally {
       setLoading(false);
     }
-  }, [sortBy, sortOrder, searchTerm, genderFilter, dateFrom, dateTo, yearFilter]);
+  }, [sortBy, sortOrder, searchTerm, genderFilter, dateFrom, dateTo, yearFilter, isAuthenticated]);
 
   useEffect(() => {
-    loadStudents();
-  }, [sortBy, sortOrder, genderFilter, dateFrom, dateTo, yearFilter, loadStudents]);
+    if (isAuthenticated) {
+      loadStudents();
+    }
+  }, [sortBy, sortOrder, genderFilter, dateFrom, dateTo, yearFilter, loadStudents, isAuthenticated]);
 
   useEffect(() => {
-    if (searchTerm !== undefined) {
+    if (searchTerm !== undefined && isAuthenticated) {
       const timer = setTimeout(() => {
         loadStudents();
       }, 300);
       return () => clearTimeout(timer);
     }
-  }, [searchTerm, loadStudents]);
+  }, [searchTerm, loadStudents, isAuthenticated]);
+
+  const handleLogin = (accessKey) => {
+    try {
+      checkAccessKey(accessKey);
+      saveAuthSession();
+      setIsAuthenticated(true);
+      const remainingTime = getRemainingTime();
+      setTimeout(() => {
+        clearAuthSession();
+        window.location.reload();
+      }, remainingTime + 100);
+    } catch (error) {
+      if (error.message === 'EMPTY') {
+        alert('Введіть ключ доступу!');
+      } else if (error.message === 'WRONG') {
+        alert('Невірний ключ доступу!');
+      } else {
+        alert('Помилка: ' + error.message);
+      }
+    }
+  };
+  
+  const handleSort = (column, order) => {
+    setSortBy(column);
+    setSortOrder(order);
+    setCurrentPage(1);
+  };
 
   const handleFormSubmit = async (formData) => {
     if (!formData.child_name.trim() || !formData.birth_date) {
@@ -139,13 +180,7 @@ function App() {
   const handleEdit = (student) => {
     setEditingId(student.id);
     setIsFormOpen(true);
-    setFormData({
-      child_name: student.child_name || '',
-      gender: student.gender || '',
-      birth_date: student.birth_date ? student.birth_date.slice(0, 10) : '',
-      address: student.address || '',
-      parent_name: student.parent_name || '',
-    });
+    setFormData({child_name: student.child_name || '', gender: student.gender || '', birth_date: student.birth_date ? student.birth_date.slice(0, 10) : '', address: student.address || '', parent_name: student.parent_name || '',});
   };
 
   const handleCancelEdit = () => {
@@ -211,71 +246,35 @@ function App() {
     setCurrentPage(1);
     setItemsPerPage(10);
   };
-  
+
+  if (!isAuthenticated) {
+    return (
+        <div className="app-container"><SignIn onLogin={handleLogin}/></div>
+    );
+  }
+
   return (
       <div className="app-container">
         <Header onYearFilter={handleYearFilter} activeYear={activeYear} onResetActiveYear={resetActiveYear}/>
-
         <div className="main-content">
           <DeleteWindow message={modalState.message} onConfirm={modalState.action === 'DELETE' ? executeDelete : null} onCancel={closeModal}/>
 
-          {loading && students.length === 0 ? (
-              <div className="loading-message">
-                <div className="loading-spinner"></div>
-                <div className="loading-text">Завантаження</div>
-              </div>
-          ) : (
+          {loading && students.length === 0 ? (<div className="loading-message"><div className="loading-spinner"></div><div className="loading-text">Завантаження</div></div>) : (
               <>
-                <TableControls
-                    searchTerm={searchTerm}
-                    onSearchChange={setSearchTerm}
-                    genderFilter={genderFilter}
-                    onGenderFilterChange={setGenderFilter}
-                    dateFrom={dateFrom}
-                    onDateFromChange={setDateFrom}
-                    dateTo={dateTo}
-                    onDateToChange={setDateTo}
-                    onResetFilters={resetFilters}
-                    onAddClick={handleAddClick}
-                />
+                <TableControls searchTerm={searchTerm} onSearchChange={setSearchTerm} genderFilter={genderFilter} onGenderFilterChange={setGenderFilter} dateFrom={dateFrom} onDateFromChange={setDateFrom} dateTo={dateTo} onDateToChange={setDateTo} onResetFilters={resetFilters} onAddClick={handleAddClick}/>
 
                 {(isFormOpen || editingId !== null) && (
-                    <StudentForm
-                        onSubmit={handleFormSubmit}
-                        editingId={editingId}
-                        onCancelEdit={handleCancelEdit}
-                        formData={formData}
-                        onFormChange={setFormData}
-                        loading={loading}
-                    />
+                    <StudentForm onSubmit={handleFormSubmit} editingId={editingId} onCancelEdit={handleCancelEdit} formData={formData} onFormChange={setFormData} loading={loading}/>
                 )}
 
                 {loading ? (
-                    <div className="loading-message">
-                      <div className="loading-spinner"></div>
-                      <div className="loading-text">Оновлення даних</div>
-                    </div>
-                ) : students.length === 0 ? (<p className="no-data">Немає жодного учня, що відповідає критеріям пошуку/фільтрації.</p>) : (
-                    <StudentTable
-                        students={students}
-                        onEdit={handleEdit}
-                        onDelete={confirmDelete}
-                        currentPage={currentPage}
-                        itemsPerPage={itemsPerPage}
-                        sortBy={sortBy}
-                        sortOrder={sortOrder}
-                        onSort={handleSort}
-                        onExport={handleExport}
-                        totalPages={totalPages}
-                        onPageChange={setCurrentPage}
-                        onItemsPerPageChange={setItemsPerPage}
-                    />
-                    
+                    <div className="loading-message"><div className="loading-spinner"></div><div className="loading-text">Оновлення даних</div></div>) : 
+                    students.length === 0 ? (<p className="no-data">Немає жодного учня, що відповідає критеріям пошуку/фільтрації.</p>) : (
+                    <StudentTable students={students} onEdit={handleEdit} onDelete={confirmDelete} currentPage={currentPage} itemsPerPage={itemsPerPage} sortBy={sortBy} sortOrder={sortOrder} onSort={handleSort} onExport={handleExport} totalPages={totalPages} onPageChange={setCurrentPage} onItemsPerPageChange={setItemsPerPage}/>
                 )}
               </>
           )}
         </div>
-
         <Footer onYearFilter={handleYearFilter} activeYear={activeYear} onResetActiveYear={resetActiveYear}/>
       </div>
   );

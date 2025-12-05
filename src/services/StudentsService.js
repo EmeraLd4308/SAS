@@ -22,15 +22,7 @@ function buildQuery(sortBy, sortAscending, searchTerm, genderFilter, dateFrom, d
     return query;
 }
 
-export async function getStudents(
-    sortBy = 'seq_number',
-    sortAscending = true,
-    searchTerm = '',
-    genderFilter = '',
-    dateFrom = null,
-    dateTo = null,
-    yearFilter = null
-) {
+export async function getStudents(sortBy = 'seq_number', sortAscending = true, searchTerm = '', genderFilter = '', dateFrom = null, dateTo = null, yearFilter = null) {
     try {
         let actualDateFrom = dateFrom;
         let actualDateTo = dateTo;
@@ -53,11 +45,7 @@ export async function getStudents(
 
 export async function getUniqueYears() {
     try {
-        const { data, error } = await supabase
-            .from(TABLE_NAME)
-            .select('birth_date')
-            .not('birth_date', 'is', null);
-
+        const { data, error } = await supabase.from(TABLE_NAME).select('birth_date').not('birth_date', 'is', null);
         if (error) {
             console.error('Помилка отримання років:', error);
             return getDefaultYears();
@@ -65,7 +53,6 @@ export async function getUniqueYears() {
         if (!data || data.length === 0) {
             return getDefaultYears();
         }
-
         const yearsSet = new Set();
         data.forEach(student => {
             if (student.birth_date) {
@@ -73,12 +60,9 @@ export async function getUniqueYears() {
                 yearsSet.add(year);
             }
         });
-
-        const years = Array.from(yearsSet)
-            .sort((a, b) => b - a)
-            .slice(0, 6);
-
+        const years = Array.from(yearsSet).sort((a, b) => b - a).slice(0, 6);
         return years.length > 0 ? years : getDefaultYears();
+        
     } catch (error) {
         console.error('Непередбачена помилка в getUniqueYears:', error);
         return getDefaultYears();

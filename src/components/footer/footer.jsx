@@ -40,11 +40,8 @@ export function Footer({ onYearFilter, activeYear, onResetActiveYear }) {
                 
                 <div className="footer-section">
                     <nav className="navigation">
-                        {loading ? (<div className="loading-years">Завантаження років...</div>
-                        ) : (
-                            years.map(year => (
-                                <button key={year} className={`nav-btn ${activeYear === year ? 'active' : ''}`} onClick={() => handleYearClick(year)} title={`Фільтрувати за ${year} роком народження`}>{year}</button>
-                            ))
+                        {loading ? (<div className="loading-years">Завантаження років...</div>) : (
+                            years.map(year => (<button key={year} className={`nav-btn ${activeYear === year ? 'active' : ''}`} onClick={() => handleYearClick(year)} title={`Фільтрувати за ${year} роком народження`}>{year}</button>))
                         )}
                     </nav>
                 </div>

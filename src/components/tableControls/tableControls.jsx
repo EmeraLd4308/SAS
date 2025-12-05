@@ -68,15 +68,7 @@ export function TableControls({searchTerm, onSearchChange, genderFilter, onGende
                         ) : (
                             <button className="search-button" title="Пошук" aria-label="Пошук" onClick={handleSearchClick}><img src={searchIcon} alt="Пошук" /></button>
                         )}
-                        <FiltersButton
-                            genderFilter={genderFilter}
-                            onGenderFilterChange={onGenderFilterChange}
-                            dateFrom={dateFrom}
-                            onDateFromChange={onDateFromChange}
-                            dateTo={dateTo}
-                            onDateToChange={onDateToChange}
-                            onResetFilters={onResetFilters}
-                        />
+                        <FiltersButton genderFilter={genderFilter} onGenderFilterChange={onGenderFilterChange} dateFrom={dateFrom} onDateFromChange={onDateFromChange} dateTo={dateTo} onDateToChange={onDateToChange} onResetFilters={onResetFilters}/>
                     </div>
                 </div>
             </div>
