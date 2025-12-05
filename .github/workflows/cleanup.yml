@@ -2,11 +2,15 @@
 
 on:
   schedule:
-    - cron: '45 22 * * *'  # 22:45 UTC = 00:45 Київ
+    - cron: '55 22 * * *'  # 22:55 UTC = 00:55 Київ
+  
+  # Дозволити запуск вручну
   workflow_dispatch:
+  
+  # Опціонально: запускати при зміні цього файлу
   push:
-    paths:
-      - '.github/workflows/cleanup.yml'
+    branches: [ main ]
+    paths: [ '.github/workflows/cleanup.yml' ]
 
 jobs:
   cleanup:
