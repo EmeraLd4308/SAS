@@ -1,31 +1,28 @@
-﻿name: Simple Connection Test
+﻿name: Daily Cleanup
+
 on:
+  schedule:
+    - cron: '20 21 * * *'  # 21:20 UTC = 23:20 Київ
   workflow_dispatch:
   push:
     paths:
       - '.github/workflows/cleanup.yml'
 
 jobs:
-  test:
+  cleanup:
     runs-on: ubuntu-latest
     steps:
-      - name: Install PostgreSQL
+      - name: Setup
         run: sudo apt-get install -y postgresql-client
 
-      - name: Test Connection
+      - name: Delete adults
         env:
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
         run: |
-          echo "🔧 Тестую з'єднання..."
+          echo "🔄 Видалення дорослих студентів..."
           
-          # Спробуємо з curl (без пароля)
-          echo "1. Чи відповідає сервер?"
-          curl -s https://rhrcqedkxmxzedeowiwx.supabase.co/rest/v1/ || echo "❌ REST API не відповідає"
+          # Використовуємо sslmode=require для безпеки
+          psql "postgresql://postgres:${DB_PASSWORD}@db.rhrcqedkxmxzedeowiwx.supabase.co:5432/postgres?sslmode=require" \
+            -c "DELETE FROM students_info WHERE birth_date <= CURRENT_DATE - INTERVAL '18 years';"
           
-          # Спробуємо підключитись
-          echo "2. Підключення до бази..."
-          timeout 5 psql \
-            "postgresql://postgres:${DB_PASSWORD}@db.rhrcqedkxmxzedeowiwx.supabase.co:5432/postgres?sslmode=require" \
-            -c "SELECT '✅ Connected!' as status;" 2>&1 || echo "❌ Не вдалося підключитись"
-          
-          echo "Тест завершено"
+          echo "✅ Виконано! $(date)"
