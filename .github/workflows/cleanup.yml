@@ -1,8 +1,10 @@
 ﻿name: Network Test
-on: workflow_dispatch
-push:
-  paths:
-    - '.github/workflows/cleanup.yml'
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/cleanup.yml'
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -13,7 +15,11 @@ jobs:
           ping -c 2 db.rhrcqedkxmxzedeowiwx.supabase.co
           
           echo "2. Check pooler port:"
-          nc -zv aws-0-eu-central-1.pooler.supabase.com 6543
+          timeout 2 bash -c "echo > /dev/tcp/aws-0-eu-central-1.pooler.supabase.com/6543" && \
+            echo "✅ Pooler port доступний" || \
+            echo "❌ Pooler port недоступний"
           
           echo "3. Check direct port:"
-          nc -zv db.rhrcqedkxmxzedeowiwx.supabase.co 5432
+          timeout 2 bash -c "echo > /dev/tcp/db.rhrcqedkxmxzedeowiwx.supabase.co/5432" && \
+            echo "✅ Direct port доступний" || \
+            echo "❌ Direct port недоступний"
