@@ -1,52 +1,16 @@
-﻿name: Auto Cleanup
-
-on:
-  schedule:
-    - cron: '10 22 * * *'  # 22:10 UTC = 00:10 Київ
-  workflow_dispatch:
-  push:
-    paths:
-      - '.github/workflows/cleanup.yml'
-
+﻿name: Network Test
+on: workflow_dispatch
 jobs:
-  cleanup:
+  test:
     runs-on: ubuntu-latest
-    
     steps:
-      - name: Install PostgreSQL client
+      - name: Check connectivity
         run: |
-          sudo apt-get update
-          sudo apt-get install -y postgresql-client
-          echo "✅ psql встановлено"
-          psql --version
-
-      - name: Test connection and delete
-        env:
-          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-        run: |
-          echo "🔧 Початок виконання: $(date)"
+          echo "1. Ping Supabase:"
+          ping -c 2 db.rhrcqedkxmxzedeowiwx.supabase.co
           
-          # Тест підключення
-          echo "1. Тестую підключення..."
-          if PGPASSWORD="${DB_PASSWORD}" psql \
-            -h db.rhrcqedkxmxzedeowiwx.supabase.co \
-            -p 5432 \
-            -U postgres \
-            -d postgres \
-            -c "SELECT NOW();" 2>/dev/null; then
-            echo "✅ Підключення успішне"
-          else
-            echo "❌ Помилка підключення"
-            exit 1
-          fi
+          echo "2. Check pooler port:"
+          nc -zv aws-0-eu-central-1.pooler.supabase.com 6543
           
-          # Видалення
-          echo "2. Видаляю дорослих студентів..."
-          PGPASSWORD="${DB_PASSWORD}" psql \
-            -h db.rhrcqedkxmxzedeowiwx.supabase.co \
-            -p 5432 \
-            -U postgres \
-            -d postgres \
-            -c "DELETE FROM students_info WHERE birth_date <= CURRENT_DATE - INTERVAL '18 years';"
-          
-          echo "✅ Виконано успішно!"
+          echo "3. Check direct port:"
+          nc -zv db.rhrcqedkxmxzedeowiwx.supabase.co 5432
