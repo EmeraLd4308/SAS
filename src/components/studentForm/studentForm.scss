@@ -58,10 +58,10 @@
         &:not(:placeholder-shown)  {
             background: var.$color-edit;
         }
-
+        
         &:focus {
-            border-color: var.$color-hover;
-            box-shadow: 0 0 0 clamp(0.1rem, 0.2vw, 0.15rem) rgba(163, 103, 255, 0.3);
+            border-color: var.$color-secondary;
+            box-shadow: 0 0 0 clamp(0.1rem, 0.2vw, 0.15rem) rgba(157, 239, 120, 0.3), 0 0 10px rgba(157, 239, 120, 0.2);
             outline: none;
         }
     }
@@ -106,11 +106,11 @@
         flex-shrink: 1;
 
         &:focus {
-            border-color: var.$color-hover;
-            box-shadow: 0 0 0 clamp(0.1rem, 0.2vw, 0.15rem) rgba(163, 103, 255, 0.3);
+            border-color: var.$color-secondary;
+            box-shadow: 0 0 0 clamp(0.1rem, 0.2vw, 0.15rem) rgba(157, 239, 120, 0.3), 0 0 10px rgba(157, 239, 120, 0.2);
             outline: none;
         }
-
+        
         &:valid  {
             background: var.$color-edit;
         }

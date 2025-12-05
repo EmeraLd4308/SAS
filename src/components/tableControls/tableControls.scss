@@ -13,6 +13,12 @@
     box-sizing: border-box;
     min-height: 60px;
     margin-top: 1.5rem;
+    transition: var.$transition;
+
+    &.input-focused {
+        border-color: var.$color-secondary;
+        box-shadow: 0 0 0 clamp(0.1rem, 0.2vw, 0.15rem) rgba(157, 239, 120, 0.3), 0 0 10px rgba(157, 239, 120, 0.2);
+    }
 }
 
 .search-and-filters {
@@ -83,7 +89,7 @@
         border-radius: var.$border-radius;
         cursor: pointer;
         padding: 0;
-        font-size: 2rem;
+        font-size: 2.3rem;
         font-weight: bold;
         transition: var.$transition;
         box-shadow: var.$box-shadow;
@@ -131,7 +137,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background: var.$color-secondary;
+        background: var.$gradient-table;
         color: var.$color-text;
         border: none;
         border-radius: var.$border-radius;

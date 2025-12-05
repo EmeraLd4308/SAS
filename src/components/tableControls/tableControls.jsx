@@ -10,6 +10,7 @@ export function TableControls({searchTerm, onSearchChange, genderFilter, onGende
     const [inputValue, setInputValue] = useState(searchTerm || '');
     const [hasSearched, setHasSearched] = useState(false);
     const shouldShowClearButton = hasSearched && inputValue !== '' && inputValue === searchTerm;
+    const [isInputFocused, setIsInputFocused] = useState(false);
 
     useEffect(() => {
         setInputValue(searchTerm || '');
@@ -51,14 +52,17 @@ export function TableControls({searchTerm, onSearchChange, genderFilter, onGende
             handleSearchClick();
         }
     };
-    
+
     return (
-        <div className="table-controls">
+        <div className={`table-controls ${isInputFocused ? 'input-focused' : ''}`}>
             <div className="search-and-filters">
                 <div className="control-group search-control">
                     <div className="search-wrapper">
                         <button className="add-button" onClick={onAddClick} title="Додати запис" aria-label="Додати дитину">+</button>
-                        <input ref={searchInputRef} type="text" id="search" placeholder="Пошук (ПІБ, Адреса)" value={inputValue} onChange={handleInputChange} onKeyPress={handleKeyPress}/>
+                        <input ref={searchInputRef} type="text" 
+                               onFocus={() => setIsInputFocused(true)} 
+                               onBlur={() => setIsInputFocused(false)} 
+                               id="search" placeholder="Пошук (ПІБ, Адреса)" value={inputValue} onChange={handleInputChange} onKeyPress={handleKeyPress}/>
                         {shouldShowClearButton ? (
                             <button className="clear-button" title="Очистити пошук" aria-label="Очистити пошук" onClick={handleClearSearch}><img src={clearIcon} alt="Очистити" /></button>
                         ) : (

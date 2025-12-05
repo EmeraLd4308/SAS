@@ -13,6 +13,20 @@ body {
   color: var.$color-text;
   line-height: 1.6;
   min-height: 100vh;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+    background: var.$color-background;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: var.$color-background;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var.$gradient-table;
+    box-shadow: var.$box-shadow;
+  }
 }
 
 .app-container {
@@ -79,6 +93,9 @@ body {
 
 @keyframes spin {
   0% { transform: rotate(0deg); }
+  25% { transform: rotate(90deg); }
+  50% { transform: rotate(180deg); }
+  75% { transform: rotate(270deg); }
   100% { transform: rotate(360deg); }
 }
 

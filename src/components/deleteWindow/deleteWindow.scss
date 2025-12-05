@@ -19,13 +19,20 @@
 .modal-content {
     border: var.$border;
     background: var.$gradient-top;
-    padding: 30px;
     border-radius: var.$border-radius;
-    max-width: 450px;
-    width: 90%;
-    text-align: center;
-    animation: modalAppear 0.3s ease-out;
-
+    padding: clamp(1rem, 2vw, 1.5rem);
+    width: min(40rem, 95vw);
+    margin: 0 auto;
+    padding-top: clamp(0.05rem, 0.2vw, 0.1rem);
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    overflow-y: auto;
+    animation: slideIn 0.3s ease;
+    text-align: center
+;
     p {
         margin-bottom: 25px;
         font-size: 1.1rem;
@@ -42,16 +49,29 @@
     transition: var.$transition;
     
     button {
-        padding: 12px 24px;
-        border: none;
+
+        padding: clamp(0.6rem, 0.8vw, 0.8rem) clamp(1rem, 1.5vw, 1.5rem);
         border-radius: var.$border-radius;
+        border: none;
+        box-shadow: var.$box-shadow;
         cursor: pointer;
+        font-size: clamp(0.85rem, 0.95vw, 0.95rem);
+        background: var.$gradient-50;
+        color: var.$color-text;
+        min-height: clamp(2rem, 2.5vw, 2.5rem);
+        white-space: nowrap;
         transition: var.$transition;
-        min-width: 120px;
+        flex: 1;
+        min-width: 8rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
 
         &:hover {
             background: var.$color-hover;
         }
+        
+        
     }
 }
 
