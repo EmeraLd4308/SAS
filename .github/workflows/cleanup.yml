@@ -1,0 +1,47 @@
+﻿name: Supabase Daily Cleanup
+
+on:
+  # Запускати щодня о 3:00 UTC
+  schedule:
+    - cron: '15 23 * * *'  # 23:15 UTC кожен день
+
+  # Дозволити запускати вручну
+  workflow_dispatch:
+  # Опціонально: запускати при зміні цього файлу
+  push:
+    paths:
+      - '.github/workflows/cleanup.yml'
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    # Додай цю секцію якщо хочеш запускати тільки на main гілці
+    # if: github.ref == 'refs/heads/main'
+    
+    steps:
+      - name: Setup PostgreSQL
+        run: sudo apt-get install -y postgresql-client
+
+      - name: Delete adult students
+        env:
+          PGHOST: db.rhrcqedkxmxzedeowiwx.supabase.co
+          PGPORT: 5432
+          PGDATABASE: postgres
+          PGUSER: postgres
+          PGPASSWORD: ${{ secrets.DB_PASSWORD }}
+        run: |
+          echo "🔄 Запуск очищення бази даних..."
+          
+          psql -c "
+            DELETE FROM students_info 
+            WHERE birth_date <= CURRENT_DATE - INTERVAL '18 years';
+          
+            -- Логування
+            INSERT INTO cleanup_logs (deleted_count, executed_at)
+            VALUES (
+              (SELECT COUNT(*) FROM students_info WHERE birth_date <= CURRENT_DATE - INTERVAL '18 years'),
+              NOW()
+            );
+          " || echo "❌ Помилка виконання"
+          
+          echo "✅ Очищення завершено"
