@@ -2,7 +2,7 @@
 
 on:
   schedule:
-    - cron: '20 21 * * *'  # 21:20 UTC = 23:20 Київ (зима)
+    - cron: '20 21 * * *'  # 21:20 UTC = 23:20 Київ
   workflow_dispatch:
   push:
     paths:
@@ -13,38 +13,16 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - name: Install PostgreSQL client
-        run: sudo apt-get update && sudo apt-get install -y postgresql-client
-
-      - name: Force IPv4 connection and delete
+      - name: Call Edge Function
         env:
-          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
         run: |
-          echo "🔄 Видалення дорослих студентів..."
-          echo "Час запуску: $(date)"
+          echo "🔄 Виклик Edge Function..."
           
-          # Використовуємо змінні середовища для примусового IPv4
-          export PGHOST=db.rhrcqedkxmxzedeowiwx.supabase.co
-          export PGPORT=5432
-          export PGUSER=postgres
-          export PGDATABASE=postgres
-          export PGPASSWORD="$DB_PASSWORD"
-          
-          # Виконуємо запит
-          psql -c "
-            -- Спочатку перевіримо кількість
-            SELECT COUNT(*) as adults_before 
-            FROM students_info 
-            WHERE birth_date <= CURRENT_DATE - INTERVAL '18 years';
-          
-            -- Потім видалимо
-            DELETE FROM students_info 
-            WHERE birth_date <= CURRENT_DATE - INTERVAL '18 years';
-          
-            -- Підтвердження
-            SELECT COUNT(*) as adults_after 
-            FROM students_info 
-            WHERE birth_date <= CURRENT_DATE - INTERVAL '18 years';
-          "
+          curl -X POST \
+            "https://rhrcqedkxmxzedeowiwx.supabase.co/functions/v1/cleanup-adults" \
+            -H "Authorization: Bearer $SUPABASE_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{}'
           
           echo "✅ Виконано! $(date)"
