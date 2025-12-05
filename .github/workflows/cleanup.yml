@@ -2,7 +2,7 @@
 
 on:
   schedule:
-    - cron: '59 21 * * *'  # 21:59 UTC = 23:59 Київ
+    - cron: '10 22 * * *'  # 21:59 UTC = 23:59 Київ
   workflow_dispatch:
     push:
       paths:
