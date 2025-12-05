@@ -2,10 +2,12 @@
 
 on:
   schedule:
-    # Кожні 10 хвилин
-    - cron: '*/10 * * * *'
-  workflow_dispatch:
+    - cron: '59 21 * * *'  # 21:20 UTC = 23:20 Київ
 
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/cleanup.yml'
 jobs:
   cleanup:
     runs-on: ubuntu-latest
