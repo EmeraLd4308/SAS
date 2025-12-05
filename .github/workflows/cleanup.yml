@@ -1,25 +1,27 @@
-﻿name: Network Test
-on:
-  workflow_dispatch:
-  push:
-    paths:
-      - '.github/workflows/cleanup.yml'
+﻿name: Simple Connection Test
+on: workflow_dispatch
 
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - name: Check connectivity
+      - name: Install PostgreSQL
+        run: sudo apt-get install -y postgresql-client
+
+      - name: Test Connection
+        env:
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
         run: |
-          echo "1. Ping Supabase:"
-          ping -c 2 db.rhrcqedkxmxzedeowiwx.supabase.co
+          echo "🔧 Тестую з'єднання..."
           
-          echo "2. Check pooler port:"
-          timeout 2 bash -c "echo > /dev/tcp/aws-0-eu-central-1.pooler.supabase.com/6543" && \
-            echo "✅ Pooler port доступний" || \
-            echo "❌ Pooler port недоступний"
+          # Спробуємо з curl (без пароля)
+          echo "1. Чи відповідає сервер?"
+          curl -s https://rhrcqedkxmxzedeowiwx.supabase.co/rest/v1/ || echo "❌ REST API не відповідає"
           
-          echo "3. Check direct port:"
-          timeout 2 bash -c "echo > /dev/tcp/db.rhrcqedkxmxzedeowiwx.supabase.co/5432" && \
-            echo "✅ Direct port доступний" || \
-            echo "❌ Direct port недоступний"
+          # Спробуємо підключитись
+          echo "2. Підключення до бази..."
+          timeout 5 psql \
+            "postgresql://postgres:${DB_PASSWORD}@db.rhrcqedkxmxzedeowiwx.supabase.co:5432/postgres?sslmode=require" \
+            -c "SELECT '✅ Connected!' as status;" 2>&1 || echo "❌ Не вдалося підключитись"
+          
+          echo "Тест завершено"
