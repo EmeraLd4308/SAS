@@ -9,6 +9,8 @@ import { StudentForm } from './studentForm/studentForm'
 import { SignIn } from './signIn/signIn'
 import { Header } from './header/header'
 import { Footer } from './footer/footer'
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import '../styles/styles.scss'
 
 const initialFormData = {
@@ -114,13 +116,7 @@ function App() {
         window.location.reload();
       }, remainingTime + 100);
     } catch (error) {
-      if (error.message === 'EMPTY') {
-        alert('Введіть ключ доступу!');
-      } else if (error.message === 'WRONG') {
-        alert('Невірний ключ доступу!');
-      } else {
-        alert('Помилка: ' + error.message);
-      }
+      console.log('Помилка логіну:', error.message);
     }
   };
   
@@ -247,35 +243,46 @@ function App() {
     setItemsPerPage(10);
   };
 
-  if (!isAuthenticated) {
-    return (
-        <div className="app-container"><SignIn onLogin={handleLogin}/></div>
-    );
-  }
-
   return (
       <div className="app-container">
-        <Header onYearFilter={handleYearFilter} activeYear={activeYear} onResetActiveYear={resetActiveYear}/>
-        <div className="main-content">
-          <DeleteWindow message={modalState.message} onConfirm={modalState.action === 'DELETE' ? executeDelete : null} onCancel={closeModal}/>
+        <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover theme="colored"/>
 
-          {loading && students.length === 0 ? (<div className="loading-message"><div className="loading-spinner"></div><div className="loading-text">Завантаження</div></div>) : (
-              <>
-                <TableControls searchTerm={searchTerm} onSearchChange={setSearchTerm} genderFilter={genderFilter} onGenderFilterChange={setGenderFilter} dateFrom={dateFrom} onDateFromChange={setDateFrom} dateTo={dateTo} onDateToChange={setDateTo} onResetFilters={resetFilters} onAddClick={handleAddClick}/>
+        {!isAuthenticated ? (<SignIn onLogin={handleLogin} />) : (
+            <>
+              <Header onYearFilter={handleYearFilter} activeYear={activeYear} onResetActiveYear={resetActiveYear}/>
 
-                {(isFormOpen || editingId !== null) && (
-                    <StudentForm onSubmit={handleFormSubmit} editingId={editingId} onCancelEdit={handleCancelEdit} formData={formData} onFormChange={setFormData} loading={loading}/>
+              <div className="main-content">
+                <DeleteWindow message={modalState.message} onConfirm={modalState.action === "DELETE" ? executeDelete : null} onCancel={closeModal}/>
+
+                {loading && students.length === 0 ? (
+                    <div className="loading-message">
+                      <div className="loading-spinner"></div>
+                      <div className="loading-text">Завантаження</div>
+                    </div>
+                ) : (
+                    <>
+                      <TableControls searchTerm={searchTerm} onSearchChange={setSearchTerm} genderFilter={genderFilter} onGenderFilterChange={setGenderFilter} dateFrom={dateFrom} onDateFromChange={setDateFrom} dateTo={dateTo} onDateToChange={setDateTo} onResetFilters={resetFilters} onAddClick={handleAddClick}/>
+
+                      {(isFormOpen || editingId !== null) && (<StudentForm onSubmit={handleFormSubmit} editingId={editingId} onCancelEdit={handleCancelEdit} formData={formData} onFormChange={setFormData} loading={loading}/>)}
+
+                      {loading ? (
+                          <div className="loading-message">
+                            <div className="loading-spinner"></div>
+                            <div className="loading-text">Оновлення даних</div>
+                          </div>
+                      ) : students.length === 0 ? (
+                          <p className="no-data">Немає жодного учня, що відповідає критеріям пошуку/фільтрації.</p>
+                      ) : (
+                          <StudentTable students={students} onEdit={handleEdit} onDelete={confirmDelete} currentPage={currentPage} itemsPerPage={itemsPerPage} sortBy={sortBy} sortOrder={sortOrder} onSort={handleSort} onExport={handleExport} totalPages={totalPages} onPageChange={setCurrentPage} onItemsPerPageChange={setItemsPerPage}/>
+                      )}
+                    </>
                 )}
+              </div>
 
-                {loading ? (
-                    <div className="loading-message"><div className="loading-spinner"></div><div className="loading-text">Оновлення даних</div></div>) : 
-                    students.length === 0 ? (<p className="no-data">Немає жодного учня, що відповідає критеріям пошуку/фільтрації.</p>) : (
-                    <StudentTable students={students} onEdit={handleEdit} onDelete={confirmDelete} currentPage={currentPage} itemsPerPage={itemsPerPage} sortBy={sortBy} sortOrder={sortOrder} onSort={handleSort} onExport={handleExport} totalPages={totalPages} onPageChange={setCurrentPage} onItemsPerPageChange={setItemsPerPage}/>
-                )}
-              </>
-          )}
-        </div>
-        <Footer onYearFilter={handleYearFilter} activeYear={activeYear} onResetActiveYear={resetActiveYear}/>
+              <Footer onYearFilter={handleYearFilter} activeYear={activeYear} onResetActiveYear={resetActiveYear}
+              />
+            </>
+        )}
       </div>
   );
 }

@@ -1,252 +1,253 @@
 @use '../../styles/variables' as var;
 
-.filters-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: var.$color-fon;
-    z-index: 999;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    animation: fadeIn 0.3s ease;
-    backdrop-filter: blur(2px);
-    height: 100%;
-}
+.form-container {
+    position: relative;
+    display: inline-block;
 
-.student-form-card {
-    border: var.$border;
-    background: var.$gradient-top;
-    border-radius: var.$border-radius;
-    padding: clamp(1rem, 2vw, 1.5rem);
-    width: min(40rem, 95vw);
-    margin: 0 auto;
-    padding-top: clamp(0.05rem, 0.2vw, 0.1rem);
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 1000;
-    overflow-y: auto;
-    animation: slideIn 0.3s ease;
-
-    h2 {
-        margin-bottom: clamp(1.5rem, 2.5vw, 2rem);
-        color: var.$color-text;
-        text-align: left;
-        font-size: clamp(1.25rem, 1.8vw, 1.5rem);
+    .form-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: var.$color-fon;
+        z-index: 999;
+        display: flex;
+        align-items: flex-start; // або stretch
+        justify-content: center;
+        padding-top: 0;
+        animation: fadeIn 0.3s ease;
+        backdrop-filter: blur(2px);
+        height: 100%;
     }
-}
 
-.form-vertical {
-    display: flex;
-    flex-direction: column;
-    gap: clamp(1.2rem, 1.8vw, 1.8rem);
-
-    input[type="text"] {
-        font-size: clamp(0.85rem, 0.95vw, 0.95rem);
-        padding: clamp(0.5rem, 0.8vw, 0.6rem);
-        width: 100%;
-        max-width: 100%;
+    .student-form-card {
         border: var.$border;
+        background: var.$gradient-top;
         border-radius: var.$border-radius;
-        background: var.$color-background;
-        transition: var.$transition;
+        padding: clamp(1rem, 2vw, 1.5rem);
+        width: min(40rem, 95vw);
+        margin: 0;
+        padding-top: clamp(0.05rem, 0.2vw, 0.1rem);
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1000;
+        overflow-y: auto;
+        animation: slideIn 0.3s ease;
 
-        &:not(:placeholder-shown)  {
-            background: var.$color-edit;
-        }
-        
-        &:focus {
-            border-color: var.$color-secondary;
-            box-shadow: 0 0 0 clamp(0.1rem, 0.2vw, 0.15rem) rgba(157, 239, 120, 0.3), 0 0 10px rgba(157, 239, 120, 0.2);
-            outline: none;
-        }
-    }
-}
-
-.date-gender-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: clamp(1rem, 1.5vw, 1.5rem);
-    flex-wrap: nowrap;
-    white-space: nowrap;
-
-    & > * {
-        font-size: clamp(0.85rem, 0.95vw, 0.95rem);
-        color: var.$color-text50;
-        flex-shrink: 0;
-    }
-}
-
-.date-field {
-    flex: 1;
-    min-width: 0;
-    display: flex;
-    align-items: center;
-    gap: clamp(0.4rem, 0.6vw, 0.6rem);
-
-    span {
-        white-space: nowrap;
-        flex-shrink: 0;
-    }
-
-    input[type="date"] {
-        padding: clamp(0.5rem, 0.8vw, 0.6rem);
-        width: 100%;
-        min-width: 8rem;
-        border: var.$border;
-        border-radius: var.$border-radius;
-        background: var.$color-background;
-        transition: var.$transition;
-        font-size: clamp(0.85rem, 0.95vw, 0.95rem);
-        flex-shrink: 1;
-
-        &:focus {
-            border-color: var.$color-secondary;
-            box-shadow: 0 0 0 clamp(0.1rem, 0.2vw, 0.15rem) rgba(157, 239, 120, 0.3), 0 0 10px rgba(157, 239, 120, 0.2);
-            outline: none;
-        }
-        
-        &:valid  {
-            background: var.$color-edit;
+        h2 {
+            margin-bottom: clamp(1.5rem, 2.5vw, 2rem);
+            color: var.$color-text;
+            text-align: left;
+            font-size: clamp(1.25rem, 1.8vw, 1.5rem);
         }
     }
-}
 
-.gender-block {
-    display: flex;
-    align-items: center;
-    gap: clamp(0.6rem, 0.9vw, 0.9rem);
-    flex-shrink: 0;
-    white-space: nowrap;
+    .form-vertical {
+        display: flex;
+        flex-direction: column;
+        gap: clamp(1.2rem, 1.8vw, 1.8rem);
 
-    span {
-        margin-right: clamp(0.2rem, 0.4vw, 0.4rem);
-        flex-shrink: 0;
-    }
-}
-
-.gender-options {
-    display: flex;
-    gap: clamp(0.3rem, 0.5vw, 0.5rem);
-    flex-shrink: 0;
-}
-
-.gender-option {
-    display: flex;
-    align-items: center;
-    gap: clamp(0.3rem, 0.5vw, 0.5rem);
-    border: none;
-    justify-content: center;
-
-    input[type="radio"] {
-        display: none;
-
-        + span {
+        input[type="text"] {
             font-size: clamp(0.85rem, 0.95vw, 0.95rem);
-            height: clamp(1.5rem, 2vw, 2rem);
-            width: clamp(1.5rem, 2vw, 2rem);
-            border-radius: clamp(1.5rem, 2vw, 2rem);
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            padding: clamp(0.5rem, 0.8vw, 0.6rem);
+            width: 100%;
+            max-width: 100%;
             border: var.$border;
-            background: transparent;
-            color: var.$color-text50;
+            border-radius: var.$border-radius;
+            background: var.$color-background;
             transition: var.$transition;
+
+            &:not(:placeholder-shown) {
+                background: var.$color-edit;
+            }
+
+            &:focus {
+                border-color: var.$color-secondary;
+                box-shadow: 0 0 0 clamp(0.1rem, 0.2vw, 0.15rem) rgba(157, 239, 120, 0.3), 0 0 10px rgba(157, 239, 120, 0.2);
+                outline: none;
+            }
+        }
+    }
+
+    .date-gender-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: clamp(1rem, 1.5vw, 1.5rem);
+        flex-wrap: nowrap;
+        white-space: nowrap;
+
+        & > * {
+            font-size: clamp(0.85rem, 0.95vw, 0.95rem);
+            color: var.$color-text50;
+            flex-shrink: 0;
+        }
+    }
+
+    .date-field {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        align-items: center;
+        gap: clamp(0.4rem, 0.6vw, 0.6rem);
+
+        span {
+            white-space: nowrap;
             flex-shrink: 0;
         }
 
-        &:checked + span {
-            background: var.$color-secondary;
-            border-color: var.$color-secondary;
+        input[type="date"] {
+            padding: clamp(0.5rem, 0.8vw, 0.6rem);
+            width: 100%;
+            min-width: 8rem;
+            border: var.$border;
+            border-radius: var.$border-radius;
+            background: var.$color-background;
+            transition: var.$transition;
+            font-size: clamp(0.85rem, 0.95vw, 0.95rem);
+            flex-shrink: 1;
+
+            &:focus {
+                border-color: var.$color-secondary;
+                box-shadow: 0 0 0 clamp(0.1rem, 0.2vw, 0.15rem) rgba(157, 239, 120, 0.3), 0 0 10px rgba(157, 239, 120, 0.2);
+                outline: none;
+            }
+
+            &:valid {
+                background: var.$color-edit;
+            }
+        }
+    }
+
+    .gender-block {
+        display: flex;
+        align-items: center;
+        gap: clamp(0.6rem, 0.9vw, 0.9rem);
+        flex-shrink: 0;
+        white-space: nowrap;
+
+        span {
+            margin-right: clamp(0.2rem, 0.4vw, 0.4rem);
+            flex-shrink: 0;
+        }
+    }
+
+    .gender-options {
+        display: flex;
+        gap: clamp(0.3rem, 0.5vw, 0.5rem);
+        flex-shrink: 0;
+    }
+
+    .gender-option {
+        display: flex;
+        align-items: center;
+        gap: clamp(0.3rem, 0.5vw, 0.5rem);
+        border: none;
+        justify-content: center;
+
+        input[type="radio"] {
+            display: none;
+
+            + span {
+                font-size: clamp(0.85rem, 0.95vw, 0.95rem);
+                height: clamp(1.5rem, 2vw, 2rem);
+                width: clamp(1.5rem, 2vw, 2rem);
+                border-radius: clamp(1.5rem, 2vw, 2rem);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border: var.$border;
+                background: transparent;
+                color: var.$color-text50;
+                transition: var.$transition;
+                flex-shrink: 0;
+            }
+
+            &:checked + span {
+                background: var.$color-secondary;
+                border-color: var.$color-secondary;
+                color: var.$color-text;
+            }
+        }
+    }
+
+    .button-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: clamp(0.6rem, 0.9vw, 0.9rem);
+        margin-top: clamp(0.5rem, 0.8vw, 0.8rem);
+        width: 100%;
+
+        .cancel-button,
+        .save-button {
+            padding: clamp(0.6rem, 0.8vw, 0.8rem) clamp(1rem, 1.5vw, 1.5rem);
+            border-radius: var.$border-radius;
+            border: none;
+            box-shadow: var.$box-shadow;
+            cursor: pointer;
+            font-size: clamp(0.85rem, 0.95vw, 0.95rem);
+            background: var.$gradient-50;
             color: var.$color-text;
+            min-height: clamp(2rem, 2.5vw, 2.5rem);
+            white-space: nowrap;
+            transition: var.$transition;
+            flex: 1;
+            min-width: 8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            &:hover {
+                background: var.$color-hover;
+            }
+        }
+    }
+
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+
+    @keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translate(-50%, -60%);
+        }
+        to {
+            opacity: 1;
+            transform: translate(-50%, -50%);
+        }
+    }
+
+    @keyframes fadeOut {
+        from {
+            opacity: 1;
+        }
+        to {
+            opacity: 0;
+        }
+    }
+
+    @keyframes slideOut {
+        from {
+            opacity: 1;
+            transform: translate(-50%, -50%);
+        }
+        to {
+            opacity: 0;
+            transform: translate(-50%, -60%);
         }
     }
 }
-
-.button-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: clamp(0.6rem, 0.9vw, 0.9rem);
-    margin-top: clamp(0.5rem, 0.8vw, 0.8rem);
-    width: 100%;
-}
-
-.cancel-button,
-.save-button {
-    padding: clamp(0.6rem, 0.8vw, 0.8rem) clamp(1rem, 1.5vw, 1.5rem);
-    border-radius: var.$border-radius;
-    border: none;
-    box-shadow: var.$box-shadow;
-    cursor: pointer;
-    font-size: clamp(0.85rem, 0.95vw, 0.95rem);
-    background: var.$gradient-50;
-    color: var.$color-text;
-    min-height: clamp(2rem, 2.5vw, 2.5rem);
-    white-space: nowrap;
-    transition: var.$transition;
-    flex: 1;
-    min-width: 8rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    &:hover {
-        background: var.$color-hover;
-    }
-}
-
-.save-button {
-    background: var.$gradient-50;
-    color: var.$color-text;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
-}
-
-@keyframes slideIn {
-    from {
-        opacity: 0;
-        transform: translate(-50%, -60%);
-    }
-    to {
-        opacity: 1;
-        transform: translate(-50%, -50%);
-    }
-}
-
-@keyframes fadeOut {
-    from {
-        opacity: 1;
-    }
-    to {
-        opacity: 0;
-    }
-}
-
-@keyframes slideOut {
-    from {
-        opacity: 1;
-        transform: translate(-50%, -50%);
-    }
-    to {
-        opacity: 0;
-        transform: translate(-50%, -60%);
-    }
-}
-
 
 @media (max-width: 48rem) {
     .student-form-card {
