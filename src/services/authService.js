@@ -31,7 +31,7 @@ export const saveAuthSession = () => {
     localStorage.setItem('is_authenticated', 'true');
     toast.info('Сесія збережена на 4 години', {
         position: "top-right",
-        autoClose: 2000,
+        autoClose: 3500,
     });
 };
 

@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
+import { ToastContainer } from 'react-toastify';
 import { checkAccessKey, checkAuthSession, saveAuthSession, clearAuthSession, getRemainingTime } from '../services/authService'
 import { getStudents, deleteStudent, addStudent, updateStudent } from '../services/studentsService'
 import { TableControls } from './tableControls/tableControls'
@@ -9,7 +10,6 @@ import { StudentForm } from './studentForm/studentForm'
 import { SignIn } from './signIn/signIn'
 import { Header } from './header/header'
 import { Footer } from './footer/footer'
-import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import '../styles/styles.scss'
 
@@ -92,19 +92,13 @@ function App() {
 
   useEffect(() => {
     if (isAuthenticated) {
-      loadStudents();
-    }
-  }, [sortBy, sortOrder, genderFilter, dateFrom, dateTo, yearFilter, loadStudents, isAuthenticated]);
-
-  useEffect(() => {
-    if (searchTerm !== undefined && isAuthenticated) {
       const timer = setTimeout(() => {
         loadStudents();
       }, 300);
       return () => clearTimeout(timer);
     }
-  }, [searchTerm, loadStudents, isAuthenticated]);
-
+  }, [sortBy, sortOrder, searchTerm, genderFilter, dateFrom, dateTo, yearFilter, isAuthenticated]);
+  
   const handleLogin = (accessKey) => {
     try {
       checkAccessKey(accessKey);
@@ -240,7 +234,6 @@ function App() {
     setSortBy('id');
     setSortOrder('asc');
     setCurrentPage(1);
-    setItemsPerPage(10);
   };
 
   return (
@@ -255,10 +248,7 @@ function App() {
                 <DeleteWindow message={modalState.message} onConfirm={modalState.action === "DELETE" ? executeDelete : null} onCancel={closeModal}/>
 
                 {loading && students.length === 0 ? (
-                    <div className="loading-message">
-                      <div className="loading-spinner"></div>
-                      <div className="loading-text">Завантаження</div>
-                    </div>
+                    <div className="loading-message"><div className="loading-spinner"></div><div className="loading-text">Завантаження</div></div>
                 ) : (
                     <>
                       <TableControls searchTerm={searchTerm} onSearchChange={setSearchTerm} genderFilter={genderFilter} onGenderFilterChange={setGenderFilter} dateFrom={dateFrom} onDateFromChange={setDateFrom} dateTo={dateTo} onDateToChange={setDateTo} onResetFilters={resetFilters} onAddClick={handleAddClick}/>
@@ -266,13 +256,8 @@ function App() {
                       {(isFormOpen || editingId !== null) && (<StudentForm onSubmit={handleFormSubmit} editingId={editingId} onCancelEdit={handleCancelEdit} formData={formData} onFormChange={setFormData} loading={loading}/>)}
 
                       {loading ? (
-                          <div className="loading-message">
-                            <div className="loading-spinner"></div>
-                            <div className="loading-text">Оновлення даних</div>
-                          </div>
-                      ) : students.length === 0 ? (
-                          <p className="no-data">Немає жодного учня, що відповідає критеріям пошуку/фільтрації.</p>
-                      ) : (
+                          <div className="loading-message"><div className="loading-spinner"></div><div className="loading-text">Оновлення даних</div></div>
+                      ) : students.length === 0 ? (<p className="no-data">Немає жодного учня, що відповідає критеріям пошуку/фільтрації.</p>) : (
                           <StudentTable students={students} onEdit={handleEdit} onDelete={confirmDelete} currentPage={currentPage} itemsPerPage={itemsPerPage} sortBy={sortBy} sortOrder={sortOrder} onSort={handleSort} onExport={handleExport} totalPages={totalPages} onPageChange={setCurrentPage} onItemsPerPageChange={setItemsPerPage}/>
                       )}
                     </>

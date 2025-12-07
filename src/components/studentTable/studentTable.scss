@@ -119,7 +119,7 @@
                     .items-info {
                         color: var.$color-text50;
                         font-size: clamp(0.85rem, 0.95vw, 0.95rem);
-                        font-weight: 500;
+                        font-weight: var.$font-weight;
                         white-space: nowrap;
                     }
 
