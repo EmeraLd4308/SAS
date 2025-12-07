@@ -1,12 +1,15 @@
 import { useState, useEffect, useCallback } from 'react'
-import { getStudents, deleteStudent, addStudent, updateStudent } from '../services/StudentsService'
-import { exportToExcel } from '../services/ExportService'
+import { ToastContainer } from 'react-toastify';
+import { checkAccessKey, checkAuthSession, saveAuthSession, clearAuthSession, getRemainingTime } from '../services/authService'
+import { getStudents, deleteStudent, addStudent, updateStudent } from '../services/childsService'
+import { TableControls } from './tableControls/tableControls'
+import { DeleteWindow } from './deleteWindow/deleteWindow'
+import { StudentTable } from './childsTable/childsTable'
+import { exportToExcel } from '../services/exportService'
+import { StudentForm } from './childsForm/childsForm'
+import { SignIn } from './signIn/signIn'
 import { Header } from './header/header'
 import { Footer } from './footer/footer'
-import { DeleteWindow } from './deleteWindow/deleteWindow'
-import { StudentForm } from './studentForm/studentForm'
-import { TableControls } from './tableControls/tableControls'
-import { StudentTable } from './studentTable/studentTable'
 import '../styles/styles.scss'
 
 const initialFormData = {
@@ -27,58 +30,51 @@ function App() {
   const [sortBy, setSortBy] = useState('id');
   const [sortOrder, setSortOrder] = useState('asc');
   const [genderFilter, setGenderFilter] = useState('all');
+  const [addressFilter, setAddressFilter] = useState('all');
   const [dateFrom, setDateFrom] = useState('');
   const [dateTo, setDateTo] = useState('');
   const [yearFilter, setYearFilter] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [modalState, setModalState] = useState({message: null, action: null, id: null});
+  const [activeYear, setActiveYear] = useState(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const totalPages = Math.ceil(students.length / itemsPerPage);
 
-  // Завантаження фільтрів з localStorage
   useEffect(() => {
-    const savedFilters = localStorage.getItem('studentFilters');
-    if (savedFilters) {
-      const { search, gender, sortBy: savedSortBy, sortOrder: savedSortOrder, year } = JSON.parse(savedFilters);
-      setSearchTerm(search || '');
-      setGenderFilter(gender || 'all');
-      setSortBy(savedSortBy || 'id');
-      setSortOrder(savedSortOrder || 'asc');
-      setYearFilter(year || null);
+    const sessionValid = checkAuthSession();
+    setIsAuthenticated(sessionValid);
+    if (sessionValid) {
+      const remainingTime = getRemainingTime();
+      if (remainingTime > 0) {
+        setTimeout(() => {
+          clearAuthSession();
+          window.location.reload();
+        }, remainingTime + 100);
+      }
     }
   }, []);
 
-  // Збереження фільтрів в localStorage
   useEffect(() => {
-    const filters = {
-      search: searchTerm,
-      gender: genderFilter,
-      sortBy,
-      sortOrder,
-      year: yearFilter
-    };
+    const savedFilters = localStorage.getItem('studentFilters');
+    if (savedFilters) {
+      const {search, gender, address, sortBy: savedSortBy, sortOrder: savedSortOrder, year} = JSON.parse(savedFilters);
+      setSearchTerm(search || ''); setGenderFilter(gender || 'all'); setAddressFilter(address || 'all'); setSortBy(savedSortBy || 'id'); setSortOrder(savedSortOrder || 'asc');
+      const savedYear = year || null;
+      setYearFilter(savedYear); setActiveYear(savedYear);
+    }
+  }, []);
+
+  useEffect(() => {
+    const filters = {search: searchTerm, gender: genderFilter, address: addressFilter, sortBy, sortOrder, year: yearFilter};
     localStorage.setItem('studentFilters', JSON.stringify(filters));
-  }, [searchTerm, genderFilter, sortBy, sortOrder, yearFilter]);
+  }, [searchTerm, genderFilter, addressFilter, sortBy, sortOrder, yearFilter]);
 
-  // Функція сортування
-  const handleSort = (column, order) => {
-    setSortBy(column);
-    setSortOrder(order);
-    setCurrentPage(1);
-  };
-
-  // Функція завантаження студентів
   const loadStudents = useCallback(async () => {
+    if (!isAuthenticated) return;
     setLoading(true);
     try {
-      const data = await getStudents(
-          sortBy,
-          sortOrder === 'asc',
-          searchTerm,
-          genderFilter,
-          dateFrom,
-          dateTo,
-          yearFilter
-      );
+      const data = await getStudents(sortBy, sortOrder === 'asc', searchTerm, genderFilter, addressFilter, dateFrom, dateTo, yearFilter);
       setStudents(data || []);
       setCurrentPage(1);
     } catch (error) {
@@ -88,25 +84,32 @@ function App() {
     } finally {
       setLoading(false);
     }
-  }, [sortBy, sortOrder, searchTerm, genderFilter, dateFrom, dateTo, yearFilter]);
+  }, [sortBy, sortOrder, searchTerm, genderFilter, addressFilter, dateFrom, dateTo, yearFilter, isAuthenticated]);
 
-  // Завантаження студентів при зміні фільтрів
   useEffect(() => {
-    loadStudents();
-  }, [sortBy, sortOrder, genderFilter, dateFrom, dateTo, yearFilter, loadStudents]);
-
-  // Завантаження студентів при зміні пошуку
-  useEffect(() => {
-    if (searchTerm !== undefined) {
+    if (isAuthenticated) {
       const timer = setTimeout(() => {
         loadStudents();
-      }, 300); // Debounce 300ms
-
+      }, 300);
       return () => clearTimeout(timer);
     }
-  }, [searchTerm, loadStudents]);
+  }, [sortBy, sortOrder, searchTerm, genderFilter, addressFilter, dateFrom, dateTo, yearFilter, isAuthenticated]);
 
-  // Обробка збереження форми
+  const handleLogin = (accessKey) => {
+    try {
+      checkAccessKey(accessKey); saveAuthSession(); setIsAuthenticated(true);
+      const remainingTime = getRemainingTime();
+      setTimeout(() => {
+        clearAuthSession();
+        window.location.reload();
+      }, remainingTime + 100);
+    } catch (error) {
+      console.log('Помилка логіну:', error.message);
+    }
+  };
+
+  const handleSort = (column, order) => {setSortBy(column); setSortOrder(order); setCurrentPage(1);};
+
   const handleFormSubmit = async (formData) => {
     if (!formData.child_name.trim() || !formData.birth_date) {
       setModalState({ message: 'Заповніть обовʼязкові поля', action: null, id: null });
@@ -118,78 +121,34 @@ function App() {
       if (editingId) {
         const result = await updateStudent(editingId, formData);
         success = result.success;
-        message = success ? 'Учня успішно оновлено!' : 'Помилка оновлення.';
+        message = success ? 'Дитину успішно оновлено!' : 'Помилка оновлення.';
       } else {
         const result = await addStudent(formData);
         success = result.success;
-        message = success ? 'Учня успішно додано!' : 'Помилка додавання.';
+        message = success ? 'Дитину успішно додано!' : 'Помилка додавання.';
       }
-      if (success) {
-        loadStudents();
-        setFormData(initialFormData);
-        setEditingId(null);
-        setIsFormOpen(false);
-      }
+      if (success) {loadStudents(); setFormData(initialFormData); setEditingId(null); setIsFormOpen(false); }
     } catch (error) {
-      success = false;
       message = 'Сталася помилка при збереженні';
     } finally {
-      setModalState({ message, action: null, id: null });
-      setLoading(false);
+      setModalState({ message, action: null, id: null }); setLoading(false);
     }
   };
 
-  // Відкриття форми для додавання
-  const handleAddClick = () => {
-    setIsFormOpen(true);
-    setEditingId(null);
-    setFormData(initialFormData);
-  };
+  const handleAddClick = () => { setIsFormOpen(true); setEditingId(null); setFormData(initialFormData); };
+  const handleYearFilter = (year) => { setYearFilter(year); setActiveYear(year); setCurrentPage(1); };
+  const resetActiveYear = () => { setActiveYear(null); };
+  const handleEdit = (student) => { setEditingId(student.id); setIsFormOpen(true); setFormData({child_name: student.child_name || '', gender: student.gender || '', birth_date: student.birth_date ? student.birth_date.slice(0, 10) : '', address: student.address || '', parent_name: student.parent_name || '',}); };
+  const handleCancelEdit = () => { setEditingId(null); setIsFormOpen(false); setFormData(initialFormData); };
+  const confirmDelete = (studentId) => { setModalState({ message: 'Ви впевнені, що хочете видалити цю дитину?', action: 'DELETE', id: studentId}); };
 
-  // Фільтрація за роком
-  const handleYearFilter = (year) => {
-    setYearFilter(year);
-    setCurrentPage(1);
-  };
-
-  // Редагування студента
-  const handleEdit = (student) => {
-    setEditingId(student.id);
-    setIsFormOpen(true);
-    setFormData({
-      child_name: student.child_name || '',
-      gender: student.gender || '',
-      birth_date: student.birth_date ? student.birth_date.slice(0, 10) : '',
-      address: student.address || '',
-      parent_name: student.parent_name || '',
-    });
-  };
-
-  // Скасування редагування
-  const handleCancelEdit = () => {
-    setEditingId(null);
-    setIsFormOpen(false);
-    setFormData(initialFormData);
-  };
-
-  // Підтвердження видалення
-  const confirmDelete = (studentId) => {
-    setModalState({
-      message: 'Ви впевнені, що хочете видалити цю дитину?',
-      action: 'DELETE',
-      id: studentId
-    });
-  };
-
-  // Виконання видалення
   const executeDelete = async () => {
     const studentId = modalState.id;
     setModalState({ message: null, action: null, id: null });
     try {
       const success = await deleteStudent(studentId);
       if (success) {
-        loadStudents();
-        setModalState({ message: 'Учня успішно видалено!', action: null, id: null });
+        loadStudents(); setModalState({ message: 'Дитину успішно видалено!', action: null, id: null });
       } else {
         setModalState({ message: 'Помилка видалення.', action: null, id: null });
       }
@@ -198,122 +157,45 @@ function App() {
     }
   };
 
-  // Закриття модального вікна
-  const closeModal = () => {
-    setModalState({ message: null, action: null, id: null });
-  };
+  const closeModal = () => { setModalState({ message: null, action: null, id: null }); };
 
-  // Експорт до Excel
   const handleExport = async () => {
-    const result = await exportToExcel({
-      searchTerm,
-      genderFilter: genderFilter !== 'all' ? genderFilter : '',
-      dateFrom,
-      dateTo,
-      yearFilter
-    });
+    const result = await exportToExcel({searchTerm, genderFilter: genderFilter !== 'all' ? genderFilter : '', addressFilter: addressFilter !== 'all' ? addressFilter : '', dateFrom, dateTo, yearFilter});
     if (result.success) {
-      setModalState({
-        message: `Експортовано ${result.count} записів у файл "${result.fileName}"`,
-        action: null,
-        id: null
-      });
+      setModalState({ message: `Експортовано ${result.count} записів у файл "${result.fileName}"`, action: null, id: null });
     } else {
-      setModalState({
-        message: 'Помилка експорту даних',
-        action: null,
-        id: null
-      });
+      setModalState({ message: 'Помилка експорту даних', action: null, id: null });
     }
   };
 
-  // Скидання всіх фільтрів
-  const resetFilters = () => {
-    setSearchTerm('');
-    setGenderFilter('all');
-    setDateFrom('');
-    setDateTo('');
-    setYearFilter(null);
-    setSortBy('id');
-    setSortOrder('asc');
-    setCurrentPage(1);
-    setItemsPerPage(10);
-  };
-
-  // Розрахунок загальної кількості сторінок
-  const totalPages = Math.ceil(students.length / itemsPerPage);
-
-  // Показати завантаження якщо дані ще не завантажені
-  if (loading && students.length === 0) {
-    return (
-        <div className="app-container">
-          <Header onYearFilter={handleYearFilter} />
-          <div className="main-content">
-            <h1 className="loading-message">Завантаження даних</h1>
-          </div>
-          <Footer />
-        </div>
-    );
-  }
+  const resetFilters = () => {setSearchTerm(''); setGenderFilter('all'); setAddressFilter('all'); setDateFrom(''); setDateTo(''); setYearFilter(null); setActiveYear(null); setSortBy('id'); setSortOrder('asc'); setCurrentPage(1);};
 
   return (
       <div className="app-container">
-        <Header onYearFilter={handleYearFilter} />
-
-        <div className="main-content">
-          <DeleteWindow
-              message={modalState.message}
-              onConfirm={modalState.action === 'DELETE' ? executeDelete : null}
-              onCancel={closeModal}
-          />
-
-          <TableControls
-              searchTerm={searchTerm}
-              onSearchChange={setSearchTerm}
-              genderFilter={genderFilter}
-              onGenderFilterChange={setGenderFilter}
-              dateFrom={dateFrom}
-              onDateFromChange={setDateFrom}
-              dateTo={dateTo}
-              onDateToChange={setDateTo}
-              onResetFilters={resetFilters}
-              onAddClick={handleAddClick}
-          />
-
-          {(isFormOpen || editingId !== null) && (
-              <StudentForm
-                  onSubmit={handleFormSubmit}
-                  editingId={editingId}
-                  onCancelEdit={handleCancelEdit}
-                  formData={formData}
-                  onFormChange={setFormData}
-                  loading={loading}
+        <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover theme="colored"/>
+        {!isAuthenticated ? (<SignIn onLogin={handleLogin} />) : (
+            <>
+              <Header onYearFilter={handleYearFilter} activeYear={activeYear} onResetActiveYear={resetActiveYear}/>
+              <div className="main-content">
+                <DeleteWindow message={modalState.message} onConfirm={modalState.action === "DELETE" ? executeDelete : null} onCancel={closeModal}/>
+                {loading && students.length === 0 ? (
+                    <div className="loading-message"><div className="loading-spinner"></div><div className="loading-text">Завантаження</div></div>
+                ) : (
+                    <>
+                      <TableControls searchTerm={searchTerm} onSearchChange={setSearchTerm} genderFilter={genderFilter} onGenderFilterChange={setGenderFilter} addressFilter={addressFilter} onAddressFilterChange={setAddressFilter} dateFrom={dateFrom} onDateFromChange={setDateFrom} dateTo={dateTo} onDateToChange={setDateTo} onResetFilters={resetFilters} onAddClick={handleAddClick}/>
+                      {(isFormOpen || editingId !== null) && (<StudentForm onSubmit={handleFormSubmit} editingId={editingId} onCancelEdit={handleCancelEdit} formData={formData} onFormChange={setFormData} loading={loading} students={students}/>)}
+                      {loading ? (
+                          <div className="loading-message"><div className="loading-spinner"></div><div className="loading-text">Оновлення даних</div></div>
+                      ) : students.length === 0 ? (<p className="no-data">Немає жодного учня, що відповідає критеріям пошуку/фільтрації.</p>) : (
+                          <StudentTable students={students} onEdit={handleEdit} onDelete={confirmDelete} currentPage={currentPage} itemsPerPage={itemsPerPage} sortBy={sortBy} sortOrder={sortOrder} onSort={handleSort} onExport={handleExport} totalPages={totalPages} onPageChange={setCurrentPage} onItemsPerPageChange={setItemsPerPage}/>
+                      )}
+                    </>
+                )}
+              </div>
+              <Footer onYearFilter={handleYearFilter} activeYear={activeYear} onResetActiveYear={resetActiveYear}
               />
-          )}
-
-          {loading ? (
-              <h1 className="loading-message">Завантаження даних</h1>
-          ) : students.length === 0 ? (
-              <p className="no-data">Немає жодного учня, що відповідає критеріям пошуку/фільтрації.</p>
-          ) : (
-              <StudentTable
-                  students={students}
-                  onEdit={handleEdit}
-                  onDelete={confirmDelete}
-                  currentPage={currentPage}
-                  itemsPerPage={itemsPerPage}
-                  sortBy={sortBy}
-                  sortOrder={sortOrder}
-                  onSort={handleSort}
-                  onExport={handleExport}
-                  totalPages={totalPages}
-                  onPageChange={setCurrentPage}
-                  onItemsPerPageChange={setItemsPerPage}
-              />
-          )}
-        </div>
-
-        <Footer onYearFilter={handleYearFilter} />
+            </>
+        )}
       </div>
   );
 }

@@ -1,18 +1,13 @@
 import { useState, useEffect } from 'react'
-import { getUniqueYears } from '../../services/studentsService'
+import { getUniqueYears } from '../../services/childsService'
 import './footer.scss'
 
-export function Footer({ onYearFilter }) {
+export function Footer({ onYearFilter, activeYear, onResetActiveYear }) {
+    
     const [years, setYears] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [selectedYear, setSelectedYear] = useState(null);
+    useEffect(() => { loadYears(); }, []);
 
-    // Завантаження років при монтуванні
-    useEffect(() => {
-        loadYears();
-    }, []);
-
-    // Функція завантаження унікальних років
     const loadYears = async () => {
         try {
             setLoading(true);
@@ -20,7 +15,6 @@ export function Footer({ onYearFilter }) {
             setYears(uniqueYears);
         } catch (error) {
             console.error('Помилка завантаження років:', error);
-            // Запасний варіант - показуємо останні 6 років
             const currentYear = new Date().getFullYear();
             const defaultYears = Array.from({ length: 6 }, (_, i) => currentYear - i);
             setYears(defaultYears);
@@ -29,14 +23,11 @@ export function Footer({ onYearFilter }) {
         }
     };
 
-    // Обробка кліку на рік
     const handleYearClick = (year) => {
-        const newSelectedYear = selectedYear === year ? null : year;
-        setSelectedYear(newSelectedYear);
-
-        // Викликаємо функцію фільтрації
-        if (onYearFilter) {
-            onYearFilter(newSelectedYear);
+        if (activeYear === year) {
+            onYearFilter(null);
+        } else {
+            onYearFilter(year);
         }
     };
 
@@ -45,20 +36,7 @@ export function Footer({ onYearFilter }) {
             <div className="footer-content">
                 <div className="footer-section">
                     <nav className="navigation">
-                        {loading ? (
-                            <div className="loading-years">Завантаження років...</div>
-                        ) : (
-                            years.map(year => (
-                                <button
-                                    key={year}
-                                    className={`nav-btn ${selectedYear === year ? 'active' : ''}`}
-                                    onClick={() => handleYearClick(year)}
-                                    title={`Фільтрувати за ${year} роком народження`}
-                                >
-                                    {year}
-                                </button>
-                            ))
-                        )}
+                        {loading ? (<div className="loading-years">Завантаження років...</div>) : (years.map(year => (<button key={year} className={`nav-btn ${activeYear === year ? 'active' : ''}`} onClick={() => handleYearClick(year)} title={`Фільтрувати за ${year} роком народження`}>{year}</button>)))}
                     </nav>
                 </div>
                 <div className="footer-section">

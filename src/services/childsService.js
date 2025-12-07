@@ -2,50 +2,16 @@ import { supabase } from '../client/supabaseClient'
 
 const TABLE_NAME = 'students_info';
 
-// Функція buildQuery залишається БЕЗ ЗМІН
-function buildQuery(sortBy, sortAscending, searchTerm, genderFilter, dateFrom, dateTo) {
-    let query = supabase.from(TABLE_NAME).select('*');
-    if (searchTerm) {
-        query = query.or(`child_name.ilike.%${searchTerm}%,parent_name.ilike.%${searchTerm}%,address.ilike.%${searchTerm}%`);
-    }
-    if (genderFilter && genderFilter !== 'all') {
-        query = query.eq('gender', genderFilter);
-    }
-    if (dateFrom) {
-        query = query.gte('birth_date', dateFrom);
-    }
-    if (dateTo) {
-        query = query.lte('birth_date', dateTo);
-    }
-    if (sortBy) {
-        query = query.order(sortBy, { ascending: sortAscending });
-    }
-    return query;
-}
-
-// Оновлена getStudents, яка конвертує yearFilter в dateFrom/dateTo
-export async function getStudents(
-    sortBy = 'seq_number',
-    sortAscending = true,
-    searchTerm = '',
-    genderFilter = '',
-    dateFrom = null,
-    dateTo = null,
-    yearFilter = null
-) {
+export async function getStudents(sortBy = 'seq_number', sortAscending = true, searchTerm = '', genderFilter = '', addressFilter = '', dateFrom = null, dateTo = null, yearFilter = null) {
     try {
-        // Якщо є yearFilter, перетворюємо його на dateFrom/dateTo
         let actualDateFrom = dateFrom;
         let actualDateTo = dateTo;
-
         if (yearFilter) {
             actualDateFrom = `${yearFilter}-01-01`;
             actualDateTo = `${yearFilter}-12-31`;
         }
-
-        const query = buildQuery(sortBy, sortAscending, searchTerm, genderFilter, actualDateFrom, actualDateTo);
+        const query = buildQuery(sortBy, sortAscending, searchTerm, genderFilter, addressFilter, actualDateFrom, actualDateTo);
         const { data, error } = await query;
-
         if (error) {
             console.error('Помилка отримання учнів:', error);
             return [];
@@ -57,23 +23,39 @@ export async function getStudents(
     }
 }
 
-// Функція для отримання унікальних років (залишається)
+function buildQuery(sortBy, sortAscending, searchTerm, genderFilter, addressFilter, dateFrom, dateTo) {
+    let query = supabase.from(TABLE_NAME).select('*');
+    if (searchTerm) {
+        query = query.or(`child_name.ilike.%${searchTerm}%,parent_name.ilike.%${searchTerm}%,address.ilike.%${searchTerm}%`);
+    }
+    if (genderFilter && genderFilter !== 'all') {
+        query = query.eq('gender', genderFilter);
+    }
+    if (addressFilter && addressFilter !== 'all') {
+        query = query.ilike('address', `%${addressFilter}%`);
+    }
+    if (dateFrom && dateFrom !== 'all') {
+        query = query.gte('birth_date', dateFrom);
+    }
+    if (dateTo && dateTo !== 'all') {
+        query = query.lte('birth_date', dateTo);
+    }
+    if (sortBy) {
+        query = query.order(sortBy, { ascending: sortAscending });
+    }
+    return query;
+}
+
 export async function getUniqueYears() {
     try {
-        const { data, error } = await supabase
-            .from(TABLE_NAME)
-            .select('birth_date')
-            .not('birth_date', 'is', null);
-
+        const { data, error } = await supabase.from(TABLE_NAME).select('birth_date').not('birth_date', 'is', null);
         if (error) {
             console.error('Помилка отримання років:', error);
             return getDefaultYears();
         }
-
         if (!data || data.length === 0) {
             return getDefaultYears();
         }
-
         const yearsSet = new Set();
         data.forEach(student => {
             if (student.birth_date) {
@@ -81,12 +63,9 @@ export async function getUniqueYears() {
                 yearsSet.add(year);
             }
         });
-
-        const years = Array.from(yearsSet)
-            .sort((a, b) => b - a)
-            .slice(0, 6);
-
+        const years = Array.from(yearsSet).sort((a, b) => b - a).slice(0, 6);
         return years.length > 0 ? years : getDefaultYears();
+        
     } catch (error) {
         console.error('Непередбачена помилка в getUniqueYears:', error);
         return getDefaultYears();
@@ -98,7 +77,6 @@ function getDefaultYears() {
     return Array.from({length: 6}, (_, i) => currentYear - i);
 }
 
-// Інші функції залишаються без змін
 export async function addStudent(newStudentData) {
     try {
         const { data, error } = await supabase.from(TABLE_NAME).insert([newStudentData]).select();

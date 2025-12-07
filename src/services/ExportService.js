@@ -34,14 +34,14 @@ export async function exportToExcel(filters = {}) {
         }));
         const worksheet = XLSX.utils.json_to_sheet(excelData);
         const workbook = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(workbook, worksheet, "Учні ВОКС");
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Діти ОТГ");
         const colWidths = [
             { wch: 8 },  // ID
-            { wch: 25 }, // ПІБ Дитини
+            { wch: 50 }, // ПІБ Дитини
             { wch: 8 },  // Стать
-            { wch: 15 }, // Дата народження
-            { wch: 30 }, // Адреса
-            { wch: 25 }, // ПІБ Батьків
+            { wch: 18 }, // Дата народження
+            { wch: 60 }, // Адреса
+            { wch: 50 }, // ПІБ Батьків
         ];
         worksheet['!cols'] = colWidths;
         const date = new Date();

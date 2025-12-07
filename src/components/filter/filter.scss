@@ -33,8 +33,9 @@
   }
 
   .clear-filters-button {
-    background: var.$color-red;
+    background: var.$color-secondary;
     color: var.$color-text;
+    box-shadow: var.$box-shadow;
     border: none;
     padding: 10px 20px;
     border-radius: var.$border-radius;
@@ -83,7 +84,6 @@
     overflow-y: auto;
     animation: slideIn 0.3s ease;
     
-
     .filters-content {
       display: flex;
       flex-direction: column;
@@ -119,7 +119,6 @@
         
         select,
         input[type="date"] {
-        
           padding: clamp(0.5rem, 0.8vw, 0.6rem);
           border: var.$border;
           border-radius: var.$border-radius;
@@ -128,6 +127,7 @@
           font-size: clamp(0.85rem, 0.95vw, 0.95rem);
           flex: 1;
           min-width: 8rem;
+          
           &:focus {
             border-color: var.$color-hover;
             box-shadow: 0 0 0 clamp(0.1rem, 0.2vw, 0.15rem) rgba(163, 103, 255, 0.3);

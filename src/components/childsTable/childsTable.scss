@@ -1,6 +1,7 @@
 @use '../../styles/variables' as var;
 
 .student-table {
+    margin-top: 3rem;
     width: 100%;
     border-collapse: collapse;
     background-color: var.$color-background;
@@ -118,7 +119,7 @@
                     .items-info {
                         color: var.$color-text50;
                         font-size: clamp(0.85rem, 0.95vw, 0.95rem);
-                        font-weight: 500;
+                        font-weight: var.$font-weight;
                         white-space: nowrap;
                     }
 
@@ -146,8 +147,7 @@
                             box-sizing: border-box;
                             display: flex;
                             align-items: center;
-                            min-width: clamp(3.5rem, 6vw, 5rem); // Зменшено з 7rem до 5rem
-
+                            min-width: clamp(3.5rem, 6vw, 5rem);
                             line-height: 1;
 
                             &:focus {
@@ -362,8 +362,7 @@
     }
 }
 
-// Глобальні адаптивні покращення
-@media (min-width: 120rem) { // 1920px+
+@media (min-width: 120rem) {
     .student-table {
         max-width: 120rem;
         margin-left: auto;
@@ -395,7 +394,6 @@
     }
 }
 
-// Плавні переходи для змін розміру вікна
 * {
     transition: font-size 0.2s ease, padding 0.2s ease, margin 0.2s ease;
 }
