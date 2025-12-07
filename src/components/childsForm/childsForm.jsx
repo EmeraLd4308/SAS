@@ -225,7 +225,7 @@ export function StudentForm({onSubmit, editingId, onCancelEdit, formData: extern
                         <span>Дата нар.</span>
 
                         <label className="date-field">
-                            <input type="date" name="birth_date" value={formData.birth_date} onChange={handleFormChange}/>
+                            <input type="date" name="birth_date" value={formData.birth_date} required onChange={handleFormChange}/>
                         </label>
 
                         <div className="gender-block">

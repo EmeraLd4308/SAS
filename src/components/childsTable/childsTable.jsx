@@ -37,7 +37,6 @@ export function StudentTable({students, onEdit, onDelete, currentPage, itemsPerP
                     <th>Дія</th>
                 </tr>
                 </thead>
-                
                 <tbody>
                 {currentStudents.map((student) => (
                     <tr key={student.id}>
@@ -54,7 +53,6 @@ export function StudentTable({students, onEdit, onDelete, currentPage, itemsPerP
                     </tr>
                 ))}
                 </tbody>
-                
                 <tfoot>
                 <tr>
                     <td colSpan="7" className="table-footer">
@@ -73,7 +71,6 @@ export function StudentTable({students, onEdit, onDelete, currentPage, itemsPerP
                     </td>
                 </tr>
                 </tfoot>
-                
             </table>
         </>
     );

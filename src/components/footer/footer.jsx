@@ -6,10 +6,7 @@ export function Footer({ onYearFilter, activeYear, onResetActiveYear }) {
     
     const [years, setYears] = useState([]);
     const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        loadYears();
-    }, []);
+    useEffect(() => { loadYears(); }, []);
 
     const loadYears = async () => {
         try {
@@ -37,19 +34,14 @@ export function Footer({ onYearFilter, activeYear, onResetActiveYear }) {
     return (
         <footer className="app-footer">
             <div className="footer-content">
-                
                 <div className="footer-section">
                     <nav className="navigation">
-                        {loading ? (<div className="loading-years">Завантаження років...</div>) : (
-                            years.map(year => (<button key={year} className={`nav-btn ${activeYear === year ? 'active' : ''}`} onClick={() => handleYearClick(year)} title={`Фільтрувати за ${year} роком народження`}>{year}</button>))
-                        )}
+                        {loading ? (<div className="loading-years">Завантаження років...</div>) : (years.map(year => (<button key={year} className={`nav-btn ${activeYear === year ? 'active' : ''}`} onClick={() => handleYearClick(year)} title={`Фільтрувати за ${year} роком народження`}>{year}</button>)))}
                     </nav>
                 </div>
-                
                 <div className="footer-section">
                     <p>© Відділ освіти, культури, молоді, спорту Берегометської селищної ради</p>
                 </div>
-                
             </div>
         </footer>
     );

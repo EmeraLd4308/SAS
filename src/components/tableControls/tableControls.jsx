@@ -4,7 +4,7 @@ import searchIcon from '../../assets/icons/search.svg'
 import clearIcon from '../../assets/icons/clear.png'
 import './tableControls.scss'
 
-export function TableControls({searchTerm, onSearchChange, genderFilter, onGenderFilterChange, dateFrom, onDateFromChange, dateTo, onDateToChange, onResetFilters, onAddClick}) {
+export function TableControls({searchTerm, onSearchChange, genderFilter, onGenderFilterChange, addressFilter = 'all', onAddressFilterChange, dateFrom, onDateFromChange, dateTo, onDateToChange, onResetFilters, onAddClick}) {
 
     const searchInputRef = useRef(null);
     const [inputValue, setInputValue] = useState(searchTerm || '');
@@ -12,10 +12,7 @@ export function TableControls({searchTerm, onSearchChange, genderFilter, onGende
     const shouldShowClearButton = hasSearched && inputValue !== '' && inputValue === searchTerm;
     const [isInputFocused, setIsInputFocused] = useState(false);
 
-    useEffect(() => {
-        setInputValue(searchTerm || '');
-    }, [searchTerm]);
-
+    useEffect(() => { setInputValue(searchTerm || ''); }, [searchTerm]);
     const handleSearchClick = () => {
         if (searchInputRef.current) {
             const value = searchInputRef.current.value;
@@ -46,12 +43,7 @@ export function TableControls({searchTerm, onSearchChange, genderFilter, onGende
             setHasSearched(false);
         }
     };
-
-    const handleKeyPress = (e) => {
-        if (e.key === 'Enter') {
-            handleSearchClick();
-        }
-    };
+    const handleKeyPress = (e) => { if (e.key === 'Enter') { handleSearchClick(); } };
 
     return (
         <div className={`table-controls ${isInputFocused ? 'input-focused' : ''}`}>
@@ -65,7 +57,7 @@ export function TableControls({searchTerm, onSearchChange, genderFilter, onGende
                         ) : (
                             <button className="search-button" title="Пошук" aria-label="Пошук" onClick={handleSearchClick}><img src={searchIcon} alt="Пошук" /></button>
                         )}
-                        <FiltersButton genderFilter={genderFilter} onGenderFilterChange={onGenderFilterChange} dateFrom={dateFrom} onDateFromChange={onDateFromChange} dateTo={dateTo} onDateToChange={onDateToChange} onResetFilters={onResetFilters}/>
+                        <FiltersButton genderFilter={genderFilter} onGenderFilterChange={onGenderFilterChange} addressFilter={addressFilter} onAddressFilterChange={onAddressFilterChange} dateFrom={dateFrom} onDateFromChange={onDateFromChange} dateTo={dateTo} onDateToChange={onDateToChange} onResetFilters={onResetFilters}/>
                     </div>
                 </div>
             </div>

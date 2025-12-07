@@ -2,27 +2,7 @@ import { supabase } from '../client/supabaseClient'
 
 const TABLE_NAME = 'students_info';
 
-function buildQuery(sortBy, sortAscending, searchTerm, genderFilter, dateFrom, dateTo) {
-    let query = supabase.from(TABLE_NAME).select('*');
-    if (searchTerm) {
-        query = query.or(`child_name.ilike.%${searchTerm}%,parent_name.ilike.%${searchTerm}%,address.ilike.%${searchTerm}%`);
-    }
-    if (genderFilter && genderFilter !== 'all') {
-        query = query.eq('gender', genderFilter);
-    }
-    if (dateFrom) {
-        query = query.gte('birth_date', dateFrom);
-    }
-    if (dateTo) {
-        query = query.lte('birth_date', dateTo);
-    }
-    if (sortBy) {
-        query = query.order(sortBy, { ascending: sortAscending });
-    }
-    return query;
-}
-
-export async function getStudents(sortBy = 'seq_number', sortAscending = true, searchTerm = '', genderFilter = '', dateFrom = null, dateTo = null, yearFilter = null) {
+export async function getStudents(sortBy = 'seq_number', sortAscending = true, searchTerm = '', genderFilter = '', addressFilter = '', dateFrom = null, dateTo = null, yearFilter = null) {
     try {
         let actualDateFrom = dateFrom;
         let actualDateTo = dateTo;
@@ -30,7 +10,7 @@ export async function getStudents(sortBy = 'seq_number', sortAscending = true, s
             actualDateFrom = `${yearFilter}-01-01`;
             actualDateTo = `${yearFilter}-12-31`;
         }
-        const query = buildQuery(sortBy, sortAscending, searchTerm, genderFilter, actualDateFrom, actualDateTo);
+        const query = buildQuery(sortBy, sortAscending, searchTerm, genderFilter, addressFilter, actualDateFrom, actualDateTo);
         const { data, error } = await query;
         if (error) {
             console.error('Помилка отримання учнів:', error);
@@ -41,6 +21,29 @@ export async function getStudents(sortBy = 'seq_number', sortAscending = true, s
         console.error('Непередбачена помилка в getStudents:', e);
         return [];
     }
+}
+
+function buildQuery(sortBy, sortAscending, searchTerm, genderFilter, addressFilter, dateFrom, dateTo) {
+    let query = supabase.from(TABLE_NAME).select('*');
+    if (searchTerm) {
+        query = query.or(`child_name.ilike.%${searchTerm}%,parent_name.ilike.%${searchTerm}%,address.ilike.%${searchTerm}%`);
+    }
+    if (genderFilter && genderFilter !== 'all') {
+        query = query.eq('gender', genderFilter);
+    }
+    if (addressFilter && addressFilter !== 'all') {
+        query = query.ilike('address', `%${addressFilter}%`);
+    }
+    if (dateFrom && dateFrom !== 'all') {
+        query = query.gte('birth_date', dateFrom);
+    }
+    if (dateTo && dateTo !== 'all') {
+        query = query.lte('birth_date', dateTo);
+    }
+    if (sortBy) {
+        query = query.order(sortBy, { ascending: sortAscending });
+    }
+    return query;
 }
 
 export async function getUniqueYears() {
