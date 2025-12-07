@@ -1,12 +1,12 @@
 import { useState, useEffect, useCallback } from 'react'
 import { ToastContainer } from 'react-toastify';
 import { checkAccessKey, checkAuthSession, saveAuthSession, clearAuthSession, getRemainingTime } from '../services/authService'
-import { getStudents, deleteStudent, addStudent, updateStudent } from '../services/studentsService'
+import { getStudents, deleteStudent, addStudent, updateStudent } from '../services/childsService'
 import { TableControls } from './tableControls/tableControls'
 import { DeleteWindow } from './deleteWindow/deleteWindow'
-import { StudentTable } from './studentTable/studentTable'
+import { StudentTable } from './childsTable/childsTable'
 import { exportToExcel } from '../services/exportService'
-import { StudentForm } from './studentForm/studentForm'
+import { StudentForm } from './childsForm/childsForm'
 import { SignIn } from './signIn/signIn'
 import { Header } from './header/header'
 import { Footer } from './footer/footer'
@@ -253,7 +253,7 @@ function App() {
                     <>
                       <TableControls searchTerm={searchTerm} onSearchChange={setSearchTerm} genderFilter={genderFilter} onGenderFilterChange={setGenderFilter} dateFrom={dateFrom} onDateFromChange={setDateFrom} dateTo={dateTo} onDateToChange={setDateTo} onResetFilters={resetFilters} onAddClick={handleAddClick}/>
 
-                      {(isFormOpen || editingId !== null) && (<StudentForm onSubmit={handleFormSubmit} editingId={editingId} onCancelEdit={handleCancelEdit} formData={formData} onFormChange={setFormData} loading={loading}/>)}
+                      {(isFormOpen || editingId !== null) && (<StudentForm onSubmit={handleFormSubmit} editingId={editingId} onCancelEdit={handleCancelEdit} formData={formData} onFormChange={setFormData} loading={loading} students={students}/>)}
 
                       {loading ? (
                           <div className="loading-message"><div className="loading-spinner"></div><div className="loading-text">Оновлення даних</div></div>

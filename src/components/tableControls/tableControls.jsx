@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { FiltersButton } from '../filter/filter'
 import searchIcon from '../../assets/icons/search.svg'
-import clearIcon from '../../assets/icons/clear.svg'
+import clearIcon from '../../assets/icons/clear.png'
 import './tableControls.scss'
 
 export function TableControls({searchTerm, onSearchChange, genderFilter, onGenderFilterChange, dateFrom, onDateFromChange, dateTo, onDateToChange, onResetFilters, onAddClick}) {
@@ -59,10 +59,7 @@ export function TableControls({searchTerm, onSearchChange, genderFilter, onGende
                 <div className="control-group search-control">
                     <div className="search-wrapper">
                         <button className="add-button" onClick={onAddClick} title="Додати запис" aria-label="Додати дитину">+</button>
-                        <input ref={searchInputRef} type="text" 
-                               onFocus={() => setIsInputFocused(true)} 
-                               onBlur={() => setIsInputFocused(false)} 
-                               id="search" placeholder="Пошук (ПІБ, Адреса)" value={inputValue} onChange={handleInputChange} onKeyPress={handleKeyPress}/>
+                        <input ref={searchInputRef} type="text" onFocus={() => setIsInputFocused(true)} onBlur={() => setIsInputFocused(false)} id="search" placeholder="Пошук (ПІБ, Адреса)" value={inputValue} onChange={handleInputChange} onKeyPress={handleKeyPress}/>
                         {shouldShowClearButton ? (
                             <button className="clear-button" title="Очистити пошук" aria-label="Очистити пошук" onClick={handleClearSearch}><img src={clearIcon} alt="Очистити" /></button>
                         ) : (

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import filterIcon from '../../assets/icons/filter.svg'
-import clearIcon from '../../assets/icons/clear.svg'
+import cleanIcon from '../../assets/icons/clean.png'
 import './filter.scss'
 
 export function FiltersButton({genderFilter, onGenderFilterChange, dateFrom, onDateFromChange, dateTo, onDateToChange, onResetFilters}) {
@@ -20,7 +20,7 @@ export function FiltersButton({genderFilter, onGenderFilterChange, dateFrom, onD
         <div className="filters-container">
             {hasActiveFilters ? (
                 <button className="clear-filters-button" onClick={onResetFilters} title="Очистити всі фільтри">
-                    <img src={clearIcon} alt="" width="40" height="40" />
+                    <img src={cleanIcon} alt="" width="40" height="40" />
                 </button>
             ) : (
                 <button className="filters-toggle-button" onClick={() => setIsOpen(true)} title="Показати фільтри">

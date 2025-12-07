@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import './studentForm.scss';
+import './childsForm.scss';
 
 const initialFormData = {
     child_name: '',
@@ -11,7 +11,7 @@ const initialFormData = {
     parent_name: '',
 };
 
-export function StudentForm({onSubmit, editingId, onCancelEdit, formData: externalFormData, onFormChange, loading}) {
+export function StudentForm({onSubmit, editingId, onCancelEdit, formData: externalFormData, onFormChange, loading, students = []}) {
     const [localFormData, setLocalFormData] = useState(initialFormData);
     const [initialEditData, setInitialEditData] = useState(null);
     const formData = externalFormData || localFormData;
@@ -41,6 +41,38 @@ export function StudentForm({onSubmit, editingId, onCancelEdit, formData: extern
         return null;
     };
 
+    const checkForDuplicate = () => {
+        if (editingId) return false;
+        if (!formData.child_name.trim() || !formData.birth_date || !formData.gender) {
+            return false;
+        }
+        const normalizedFormData = {
+            child_name: formData.child_name.trim().toLowerCase(),
+            gender: formData.gender,
+            birth_date: formData.birth_date,
+            address: formData.address.trim().toLowerCase(),
+            parent_name: formData.parent_name.trim().toLowerCase(),
+        };
+        const isDuplicate = students.some(student => {
+            if (editingId && student.id === editingId) return false;
+            const normalizedStudent = {
+                child_name: (student.child_name || '').trim().toLowerCase(),
+                gender: student.gender || '',
+                birth_date: student.birth_date ? student.birth_date.slice(0, 10) : '', // Обрізаємо час
+                address: (student.address || '').trim().toLowerCase(),
+                parent_name: (student.parent_name || '').trim().toLowerCase(),
+            };
+            return (
+                normalizedFormData.child_name === normalizedStudent.child_name &&
+                normalizedFormData.gender === normalizedStudent.gender &&
+                normalizedFormData.birth_date === normalizedStudent.birth_date &&
+                normalizedFormData.address === normalizedStudent.address &&
+                normalizedFormData.parent_name === normalizedStudent.parent_name
+            );
+        });
+        return isDuplicate;
+    };
+
     const validateForm = () => {
         if (!formData.child_name.trim()) {
             toast.warning('Будь ласка, введіть ПІБ дитини', {
@@ -53,7 +85,7 @@ export function StudentForm({onSubmit, editingId, onCancelEdit, formData: extern
             });
             return false;
         }
-        
+
         if (!formData.address.trim()) {
             toast.warning('Будь ласка, введіть адресу', {
                 position: "top-right",
@@ -65,7 +97,7 @@ export function StudentForm({onSubmit, editingId, onCancelEdit, formData: extern
             });
             return false;
         }
-        
+
         if (!formData.birth_date) {
             toast.warning('Будь ласка, виберіть дату народження', {
                 position: "top-right",
@@ -77,7 +109,7 @@ export function StudentForm({onSubmit, editingId, onCancelEdit, formData: extern
             });
             return false;
         }
-        
+
         if (!formData.gender) {
             toast.warning('Будь ласка, виберіть стать', {
                 position: "top-right",
@@ -129,12 +161,21 @@ export function StudentForm({onSubmit, editingId, onCancelEdit, formData: extern
                 return false;
             }
         }
-
+        if (checkForDuplicate()) {
+            toast.warning('Дитина з такими даними вже існує в базі!', {
+                position: "top-right",
+                autoClose: 4000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+            });
+            return false;
+        }
         if (editingId && initialEditData) {
             const isDataChanged = Object.keys(formData).some(key =>
                 formData[key] !== initialEditData[key]
             );
-
             if (!isDataChanged) {
                 toast.info('Нічого не змінено. Зробіть зміни перед оновленням.', {
                     position: "top-right",
@@ -147,7 +188,6 @@ export function StudentForm({onSubmit, editingId, onCancelEdit, formData: extern
                 return false;
             }
         }
-
         return true;
     };
 

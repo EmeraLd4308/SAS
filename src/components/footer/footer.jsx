@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { getUniqueYears } from '../../services/studentsService'
+import { getUniqueYears } from '../../services/childsService'
 import './footer.scss'
 
 export function Footer({ onYearFilter, activeYear, onResetActiveYear }) {
