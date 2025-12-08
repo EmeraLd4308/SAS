@@ -13,7 +13,7 @@
         background: var.$color-fon;
         z-index: 999;
         display: flex;
-        align-items: flex-start; // або stretch
+        align-items: flex-start;
         justify-content: center;
         padding-top: 0;
         animation: fadeIn 0.3s ease;
@@ -87,6 +87,7 @@
         }
     }
 
+
     .date-field {
         flex: 1;
         min-width: 0;
@@ -109,8 +110,11 @@
             transition: var.$transition;
             font-size: clamp(0.85rem, 0.95vw, 0.95rem);
             flex-shrink: 1;
+            cursor: pointer;
 
-            &:focus {
+            &:focus,
+            &:focus-visible,
+            &:focus-within {
                 border-color: var.$color-secondary;
                 box-shadow: 0 0 0 clamp(0.1rem, 0.2vw, 0.15rem) rgba(157, 239, 120, 0.3), 0 0 10px rgba(157, 239, 120, 0.2);
                 outline: none;
@@ -118,6 +122,10 @@
 
             &:valid {
                 background: var.$color-edit;
+            }
+            
+            &::-moz-focus-inner {
+                border: 0;
             }
         }
     }
