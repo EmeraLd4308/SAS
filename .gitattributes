@@ -19,3 +19,4 @@ src/client/supabaseClient.js linguist-detectable=false
 src/services/excelService.js linguist-detectable=false
 src/services/childsService.js linguist-detectable=false
 src/components/childsForm/childsForm.jsx linguist-detectable=false
+src/components/childsForm/childsForm.scss linguist-detectable=false
