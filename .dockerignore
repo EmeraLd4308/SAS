@@ -1,4 +1,4 @@
-﻿# Ігнорування
+﻿# Ignoring
 node_modules
 npm-debug.log
 dist
@@ -6,28 +6,28 @@ build
 .coverage
 .nyc_output
 
-# Документація та конфігурації
+# Documentation and configuration
 *.md
 .gitignore
 .eslintrc.js
 .prettierrc
 .editorconfig
 
-# Логи та тимчасові файли
+# Logs and tmp files
 *.log
 *.pid
 *.seed
 *.pid.lock
 .DS_Store
 
-# Тестові файли
+# Test files
 __tests__
 __mocks__
 coverage
 *.test.js
 *.spec.js
 
-# Конфігурації IDE
+# Configuration IDE
 .vscode
 .idea
 *.swp
