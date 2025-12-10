@@ -17,3 +17,5 @@ src/components/tableControls/tableControls.jsx linguist-detectable=false
 src/components/tableControls/tableControls.scss linguist-detectable=false
 src/client/supabaseClient.js linguist-detectable=false
 src/services/excelService.js linguist-detectable=false
+src/services/childsService.js linguist-detectable=false
+src/components/childsForm/childsForm.jsx linguist-detectable=false
