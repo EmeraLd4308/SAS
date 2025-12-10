@@ -1,4 +1,6 @@
-﻿src/main.jsx linguist-detectable=false
+﻿src/components/deleteWindow/deleteWindow.jsx linguist-detectable=false
+src/styles/variables.scss linguist-detectable=false
 eslint.config.js linguist-detectable=false
 vite.config.js linguist-detectable=false
+src/main.jsx linguist-detectable=false
 *.json linguist-detectable=false
