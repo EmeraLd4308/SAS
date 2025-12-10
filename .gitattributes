@@ -1,0 +1,4 @@
+﻿src/main.jsx linguist-detectable=false
+eslint.config.js linguist-detectable=false
+vite.config.js linguist-detectable=false
+*.json linguist-detectable=false
