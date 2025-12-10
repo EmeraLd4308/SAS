@@ -7,3 +7,4 @@ vite.config.js linguist-detectable=false
 src/main.jsx linguist-detectable=false
 *.json linguist-detectable=false
 src/components/filter/filter.jsx linguist-detectable=false
+src/components/footer/footer.jsx linguist-detectable=false
