@@ -9,4 +9,4 @@ src/main.jsx linguist-detectable=false
 src/components/filter/filter.jsx linguist-detectable=false
 src/components/filter/filter.scss linguist-detectable=false
 src/components/footer/footer.jsx linguist-detectable=false
-src/components/footer/header.jsx linguist-detectable=false
+src/components/header/header.jsx linguist-detectable=false
