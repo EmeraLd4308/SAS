@@ -11,3 +11,4 @@ src/components/filter/filter.scss linguist-detectable=false
 src/components/footer/footer.jsx linguist-detectable=false
 src/components/header/header.jsx linguist-detectable=false
 src/components/childsTable/childsTable.jsx linguist-detectable=false
+src/components/childsTable/childsTable.scss linguist-detectable=false
