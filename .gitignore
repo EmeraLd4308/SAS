@@ -96,6 +96,7 @@ credentials
 *.pem
 *.key
 .env
+.env.production
 
 # Logs / temp / coverage
 *.log
