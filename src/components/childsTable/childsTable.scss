@@ -151,13 +151,29 @@
                             line-height: 1;
 
                             &:focus {
-                                background: var.$color-hover;
-                                border-color: var.$color-hover;
                                 outline: none;
                             }
 
                             &:hover {
                                 background: var.$color-hover;
+                            }
+
+                            option {
+                                padding: 12px;
+                                background: var.$color-background;
+                                color: var.$color-text;
+                                font-size: clamp(0.85rem, 0.95vw, 0.95rem);
+
+                                &:checked,
+                                &:hover,
+                                &:focus {
+                                    background: var.$color-secondary;
+                                }
+
+                                &:disabled {
+                                    color: var.$color-text50;
+                                    background: transparent;
+                                }
                             }
                         }
                     }

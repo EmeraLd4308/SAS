@@ -95,7 +95,7 @@ secrets.*
 credentials
 *.pem
 *.key
-.env
+.env*
 
 # Logs / temp / coverage
 *.log

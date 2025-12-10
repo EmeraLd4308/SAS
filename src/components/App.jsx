@@ -5,20 +5,14 @@ import { getStudents, deleteStudent, addStudent, updateStudent } from '../servic
 import { TableControls } from './tableControls/tableControls'
 import { DeleteWindow } from './deleteWindow/deleteWindow'
 import { StudentTable } from './childsTable/childsTable'
-import { exportToExcel } from '../services/exportService'
+import { exportToExcel } from '../services/excelService'
 import { StudentForm } from './childsForm/childsForm'
 import { SignIn } from './signIn/signIn'
 import { Header } from './header/header'
 import { Footer } from './footer/footer'
 import '../styles/styles.scss'
 
-const initialFormData = {
-  child_name: '',
-  gender: '',
-  birth_date: '',
-  address: '',
-  parent_name: '',
-};
+const initialFormData = { child_name: '', gender: '', birth_date: '', address: '', parent_name: '', };
 
 function App() {
   const [students, setStudents] = useState([]);

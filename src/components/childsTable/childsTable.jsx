@@ -57,16 +57,13 @@ export function StudentTable({students, onEdit, onDelete, currentPage, itemsPerP
                 <tr>
                     <td colSpan="7" className="table-footer">
                         <div className="footer-content">
-                            
                             <button onClick={onExport} className="export-button" disabled={students.length === 0}>Експортувати в Excel</button>
-
                             <div className="items-per-page-controls">
                                 <div className="items-per-page-selector">
                                     <label htmlFor="itemsPerPage">Дітей на сторінці:</label>
                                     <select id="itemsPerPage" value={itemsPerPage} onChange={handleItemsPerPageChange} className="items-select">{itemsPerPageOptions.map(option => (<option key={option} value={option}>{option}</option>))}</select>
                                 </div>
                             </div>
-                            
                         </div>
                     </td>
                 </tr>

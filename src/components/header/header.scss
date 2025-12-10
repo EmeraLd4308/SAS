@@ -1,7 +1,7 @@
 @use '../../styles/variables' as var;
 
 .app-header {
-    background: var.$gradient-header2;
+    background: var.$gradient-header;
     box-shadow: var.$box-shadow;
 
     .header-content {

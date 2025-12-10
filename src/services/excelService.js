@@ -24,25 +24,11 @@ export async function exportToExcel(filters = {}) {
         if (!data || data.length === 0) {
             return { success: false, error: 'Немає даних для експорту' };
         }
-        const excelData = data.map(student => ({
-            'ID': student.id || '',
-            'ПІБ Дитини': student.child_name || '',
-            'Стать': student.gender || '',
-            'Дата народження': student.birth_date || '',
-            'Адреса': student.address || '',
-            'ПІБ Батьків': student.parent_name || '',
-        }));
+        const excelData = data.map(student => ({'ID': student.id || '', 'ПІБ Дитини': student.child_name || '', 'Стать': student.gender || '', 'Дата народження': student.birth_date || '', 'Адреса': student.address || '', 'ПІБ Батьків': student.parent_name || '',}));
         const worksheet = XLSX.utils.json_to_sheet(excelData);
         const workbook = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(workbook, worksheet, "Діти ОТГ");
-        const colWidths = [
-            { wch: 8 },  // ID
-            { wch: 50 }, // ПІБ Дитини
-            { wch: 8 },  // Стать
-            { wch: 18 }, // Дата народження
-            { wch: 60 }, // Адреса
-            { wch: 50 }, // ПІБ Батьків
-        ];
+        const colWidths = [{ wch: 8 }, { wch: 50 }, { wch: 8 }, { wch: 18 }, { wch: 60 }, { wch: 50 },];
         worksheet['!cols'] = colWidths;
         const date = new Date();
         const year = date.getFullYear();
@@ -54,6 +40,6 @@ export async function exportToExcel(filters = {}) {
         return {success: true, count: data.length, fileName: fileName};
     } catch (error) {
         console.error('Непередбачена помилка при експорті:', error);
-        return { success: false, error };
+        return {success: false, error};
     }
 }
