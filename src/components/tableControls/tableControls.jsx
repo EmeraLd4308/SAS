@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { FiltersButton } from '../filter/filter'
-import searchIcon from '/public/icons/search.svg';
-import clearIcon from '/public/icons/clear.png'
+import searchIcon from '../../icons/search.svg';
+import clearIcon from '../../icons/clear.png'
 import './tableControls.scss'
 
 export function TableControls({searchTerm, onSearchChange, genderFilter, onGenderFilterChange, addressFilter = 'all', onAddressFilterChange, dateFrom, onDateFromChange, dateTo, onDateToChange, onResetFilters, onAddClick}) {
