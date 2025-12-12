@@ -1,7 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
 import { FiltersButton } from '../filter/filter'
-import searchIcon from '../../icons/ssearch.svg';
-import clearIcon from '../../icons/clear.png'
 import './tableControls.scss'
 
 export function TableControls({searchTerm, onSearchChange, genderFilter, onGenderFilterChange, addressFilter = 'all', onAddressFilterChange, dateFrom, onDateFromChange, dateTo, onDateToChange, onResetFilters, onAddClick}) {
@@ -53,9 +51,9 @@ export function TableControls({searchTerm, onSearchChange, genderFilter, onGende
                         <button className="add-button" onClick={onAddClick} title="Додати запис" aria-label="Додати дитину">+</button>
                         <input ref={searchInputRef} type="text" onFocus={() => setIsInputFocused(true)} onBlur={() => setIsInputFocused(false)} id="search" placeholder="Пошук (ПІБ, Адреса)" value={inputValue} onChange={handleInputChange} onKeyPress={handleKeyPress}/>
                         {shouldShowClearButton ? (
-                            <button className="clear-button" title="Очистити пошук" aria-label="Очистити пошук" onClick={handleClearSearch}><img src={clearIcon} alt="Очистити" /></button>
+                            <button className="clear-button" title="Очистити пошук" aria-label="Очистити пошук" onClick={handleClearSearch}><img src="/icons/clear.png" alt="Очистити" /></button>
                         ) : (
-                            <button className="search-button" title="Пошук" aria-label="Пошук" onClick={handleSearchClick}><img src={searchIcon} alt="Пошук" /></button>
+                            <button className="search-button" title="Пошук" aria-label="Пошук" onClick={handleSearchClick}><img src="/icons/ssearch.svg" alt="Пошук" /></button>
                         )}
                         <FiltersButton genderFilter={genderFilter} onGenderFilterChange={onGenderFilterChange} addressFilter={addressFilter} onAddressFilterChange={onAddressFilterChange} dateFrom={dateFrom} onDateFromChange={onDateFromChange} dateTo={dateTo} onDateToChange={onDateToChange} onResetFilters={onResetFilters}/>
                     </div>
