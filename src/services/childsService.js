@@ -1,4 +1,4 @@
-import { supabase } from '../../src/client/supabaseClient'
+import { supabase } from "../client/supabaseClient.js";
 
 const TABLE_NAME = 'students_info';
 
