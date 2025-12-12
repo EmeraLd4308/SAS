@@ -1,3 +1,5 @@
+import editIcon from '../../assets/icons/edit.png'
+import deleteIcon from '../../assets/icons/delete.svg'
 import './childsTable.scss'
 
 export function StudentTable({students, onEdit, onDelete, currentPage, itemsPerPage, sortBy = 'id', sortOrder = 'asc', onSort = () => {}, onExport, onPageChange, onItemsPerPageChange, itemsPerPageOptions = [20, 50, 100, 200, 500, 1000]}) {
@@ -45,8 +47,8 @@ export function StudentTable({students, onEdit, onDelete, currentPage, itemsPerP
                         <td>{student.address}</td>
                         <td>{student.parent_name}</td>
                         <td className="action-cell">
-                            <button onClick={() => onEdit(student)} className="edit-button"><img src="../../assets/icons/edit.png" alt="Редагувати" width="20" height="20" /></button>
-                            <button onClick={() => onDelete(student.id)} className="delete-button"><img src="../../assets/icons/delete.svg" alt="Видалити" width="20" height="20" /></button>
+                            <button onClick={() => onEdit(student)} className="edit-button"><img src={editIcon} alt="Редагувати" width="20" height="20" /></button>
+                            <button onClick={() => onDelete(student.id)} className="delete-button"><img src={deleteIcon} alt="Видалити" width="20" height="20" /></button>
                         </td>
                     </tr>
                 ))}
