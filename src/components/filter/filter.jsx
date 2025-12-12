@@ -17,9 +17,9 @@ export function FiltersButton({genderFilter, onGenderFilterChange, addressFilter
 
     return (
         <div className="filters-container">
-            {hasActiveFilters ? (<button className="clear-filters-button" onClick={onResetFilters} title="Очистити всі фільтри"><img src="/icons/clean.png" alt="" width="40" height="40" /></button>
+            {hasActiveFilters ? (<button className="clear-filters-button" onClick={onResetFilters} title="Очистити всі фільтри"><img src="../../assets/icons/clean.png" alt="" width="40" height="40" /></button>
             ) : (
-                <button className="filters-toggle-button" onClick={() => setIsOpen(true)} title="Показати фільтри"><img src="/icons/filter.svg" alt="" width="40" height="40" /></button>
+                <button className="filters-toggle-button" onClick={() => setIsOpen(true)} title="Показати фільтри"><img src="../../assets/icons/filter.svg" alt="" width="40" height="40" /></button>
             )}
             {isOpen && (
                 <>

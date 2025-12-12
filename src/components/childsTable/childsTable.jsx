@@ -45,8 +45,8 @@ export function StudentTable({students, onEdit, onDelete, currentPage, itemsPerP
                         <td>{student.address}</td>
                         <td>{student.parent_name}</td>
                         <td className="action-cell">
-                            <button onClick={() => onEdit(student)} className="edit-button"><img src="/icons/edit.png" alt="Редагувати" width="20" height="20" /></button>
-                            <button onClick={() => onDelete(student.id)} className="delete-button"><img src="/icons/delete.svg" alt="Видалити" width="20" height="20" /></button>
+                            <button onClick={() => onEdit(student)} className="edit-button"><img src="../../assets/icons/edit.png" alt="Редагувати" width="20" height="20" /></button>
+                            <button onClick={() => onDelete(student.id)} className="delete-button"><img src="../../assets/icons/delete.svg" alt="Видалити" width="20" height="20" /></button>
                         </td>
                     </tr>
                 ))}

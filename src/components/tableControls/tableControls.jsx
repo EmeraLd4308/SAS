@@ -51,9 +51,9 @@ export function TableControls({searchTerm, onSearchChange, genderFilter, onGende
                         <button className="add-button" onClick={onAddClick} title="Додати запис" aria-label="Додати дитину">+</button>
                         <input ref={searchInputRef} type="text" onFocus={() => setIsInputFocused(true)} onBlur={() => setIsInputFocused(false)} id="search" placeholder="Пошук (ПІБ, Адреса)" value={inputValue} onChange={handleInputChange} onKeyPress={handleKeyPress}/>
                         {shouldShowClearButton ? (
-                            <button className="clear-button" title="Очистити пошук" aria-label="Очистити пошук" onClick={handleClearSearch}><img src="/icons/clear.png" alt="Очистити" /></button>
+                            <button className="clear-button" title="Очистити пошук" aria-label="Очистити пошук" onClick={handleClearSearch}><img src="../../assets/icons/clear.png" alt="Очистити" /></button>
                         ) : (
-                            <button className="search-button" title="Пошук" aria-label="Пошук" onClick={handleSearchClick}><img src="/icons/ssearch.svg" alt="Пошук" /></button>
+                            <button className="search-button" title="Пошук" aria-label="Пошук" onClick={handleSearchClick}><img src="../../assets/icons/ssearch.svg" alt="Пошук" /></button>
                         )}
                         <FiltersButton genderFilter={genderFilter} onGenderFilterChange={onGenderFilterChange} addressFilter={addressFilter} onAddressFilterChange={onAddressFilterChange} dateFrom={dateFrom} onDateFromChange={onDateFromChange} dateTo={dateTo} onDateToChange={onDateToChange} onResetFilters={onResetFilters}/>
                     </div>
