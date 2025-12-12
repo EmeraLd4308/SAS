@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import filterIcon from '../../assets/icons/filter.svg'
-import cleanIcon from '../../assets/icons/clean.png'
+import filterIcon from '@/assets/icons/filter.svg'
+import cleanIcon from '@/assets/icons/clean.png'
 import './filter.scss'
 
 const ADDRESS_FILTER_OPTIONS = [{ value: 'all', label: 'Усі' }, { value: 'вовчинець', label: 'с. Вовчинець' }, { value: 'мигове', label: 'с. Мигове' }, { value: 'берегомет', label: 'с-ще Берегомет' }, { value: 'лекече', label: 'с. Лекече' }, { value: 'лопушна', label: 'с. Лопушна' }, { value: 'долішній шепіт', label: 'с. Долішній Шепіт' }, { value: 'велике', label: 'с. Велике' }, { value: 'заріччя', label: 'с. Заріччя' }, { value: 'лукавці', label: 'с. Лукавці' }, { value: 'майдан', label: 'с. Майдан' }, { value: 'вахнівці', label: 'с. Вахнівці' }];

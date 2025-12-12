@@ -1,5 +1,5 @@
-import editIcon from '../../assets/icons/edit.png'
-import deleteIcon from '../../assets/icons/delete.svg'
+import editIcon from '@/assets/icons/edit.png'
+import deleteIcon from '@/assets/icons/delete.svg'
 import './childsTable.scss'
 
 export function StudentTable({students, onEdit, onDelete, currentPage, itemsPerPage, sortBy = 'id', sortOrder = 'asc', onSort = () => {}, onExport, onPageChange, onItemsPerPageChange, itemsPerPageOptions = [20, 50, 100, 200, 500, 1000]}) {
