@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { FiltersButton } from '../filter/filter'
-import searchIcon from '/icons/search.svg'
+import searchIcon from '/public/icons/search.svg';
 import clearIcon from '/icons/clear.png'
 import './tableControls.scss'
 
