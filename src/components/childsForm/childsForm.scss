@@ -36,6 +36,7 @@
         z-index: 1000;
         overflow-y: auto;
         animation: slideIn 0.3s ease;
+        max-height: 90vh;
 
         h2 {
             margin-bottom: clamp(1.5rem, 2.5vw, 2rem);
@@ -48,7 +49,7 @@
     .form-vertical {
         display: flex;
         flex-direction: column;
-        gap: clamp(1.2rem, 1.8vw, 1.8rem);
+        gap: clamp(1rem, 1.5vw, 1.8rem);
 
         input[type="text"] {
             font-size: clamp(0.85rem, 0.95vw, 0.95rem);
@@ -87,7 +88,6 @@
         }
     }
 
-
     .date-field {
         flex: 1;
         min-width: 0;
@@ -123,7 +123,7 @@
             &:valid {
                 background: var.$color-edit;
             }
-            
+
             &::-moz-focus-inner {
                 border: 0;
             }
@@ -215,14 +215,9 @@
         }
     }
 
-
     @keyframes fadeIn {
-        from {
-            opacity: 0;
-        }
-        to {
-            opacity: 1;
-        }
+        from { opacity: 0; }
+        to { opacity: 1; }
     }
 
     @keyframes slideIn {
@@ -237,12 +232,8 @@
     }
 
     @keyframes fadeOut {
-        from {
-            opacity: 1;
-        }
-        to {
-            opacity: 0;
-        }
+        from { opacity: 1; }
+        to { opacity: 0; }
     }
 
     @keyframes slideOut {
@@ -258,90 +249,199 @@
 }
 
 @media (max-width: 48rem) {
-    .student-form-card {
-        width: 95vw;
-        padding: clamp(0.8rem, 1.5vw, 1rem);
+    .form-container {
+        .student-form-card {
+            width: 95vw;
+            padding: clamp(0.8rem, 1.5vw, 1rem);
+            max-height: 85vh;
+            overflow-y: auto;
 
-        h2 {
-            text-align: center;
-            margin-bottom: clamp(1rem, 1.5vw, 1.5rem);
+            h2 {
+                text-align: center;
+                margin-bottom: clamp(1rem, 1.5vw, 1.5rem);
+                font-size: clamp(1.1rem, 1.3vw, 1.3rem);
+            }
         }
-    }
 
-    .date-gender-row {
-        flex-wrap: wrap;
-        gap: clamp(0.8rem, 1.2vw, 1rem);
-    }
+        .form-vertical {
+            gap: clamp(0.8rem, 1.2vw, 1rem);
+        }
 
-    .date-field {
-        min-width: 100%;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: clamp(0.3rem, 0.5vw, 0.4rem);
+        .date-gender-row {
+            flex-wrap: wrap;
+            gap: clamp(0.8rem, 1.2vw, 1rem);
+            white-space: normal;
+        }
 
-        input[type="date"] {
+        .date-field {
+            min-width: 100%;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: clamp(0.3rem, 0.5vw, 0.4rem);
+
+            span {
+                font-size: clamp(0.8rem, 0.9vw, 0.9rem);
+                white-space: normal;
+            }
+
+            input[type="date"] {
+                width: 100%;
+                min-width: unset;
+                font-size: clamp(0.8rem, 0.9vw, 0.9rem);
+            }
+        }
+
+        .gender-block {
             width: 100%;
-        }
-    }
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: clamp(0.5rem, 0.8vw, 0.8rem);
+            margin-top: 0.5rem;
 
-    .gender-block {
-        margin-right: 0;
-        justify-content: center;
-        gap: clamp(0.8rem, 1.2vw, 1rem);
-        width: 100%;
-
-        span {
-            margin-right: 0;
-        }
-    }
-
-    .button-row {
-        justify-content: center;
-        flex-direction: column;
-        align-items: stretch;
-        gap: clamp(0.8rem, 1.2vw, 1rem);
-
-        .cancel-button,
-        .save-button {
-            width: 100%;
-            padding: clamp(0.7rem, 0.9vw, 0.9rem) clamp(1rem, 1.5vw, 1.5rem);
-        }
-    }
-}
-
-@media (max-width: 36rem) {
-    .gender-block {
-        flex-direction: column;
-        gap: clamp(0.5rem, 0.8vw, 0.8rem);
-
-        span {
-            text-align: center;
-            width: 100%;
+            span {
+                width: 100%;
+                text-align: left;
+                margin-right: 0;
+                font-size: clamp(0.8rem, 0.9vw, 0.9rem);
+                white-space: normal;
+            }
         }
 
         .gender-options {
             width: 100%;
-            justify-content: center;
+            justify-content: space-around;
+            gap: clamp(0.5rem, 0.8vw, 0.8rem);
         }
-    }
 
-    .gender-option input[type="radio"] + span {
-        height: clamp(1.8rem, 2.2vw, 2rem);
-        width: clamp(1.8rem, 2.2vw, 2rem);
+        .gender-option {
+            flex: 1;
+            justify-content: center;
+
+            input[type="radio"] + span {
+                height: clamp(1.8rem, 2.2vw, 2rem);
+                width: 100%;
+                max-width: 3rem;
+                font-size: clamp(0.8rem, 0.9vw, 0.9rem);
+            }
+        }
+
+        .button-row {
+            flex-direction: column;
+            gap: clamp(0.6rem, 0.9vw, 0.9rem);
+            margin-top: clamp(1rem, 1.5vw, 1.5rem);
+
+            .cancel-button,
+            .save-button {
+                width: 100%;
+                min-width: unset;
+                padding: clamp(0.7rem, 0.9vw, 0.9rem) clamp(1rem, 1.5vw, 1.5rem);
+                font-size: clamp(0.85rem, 0.95vw, 0.95rem);
+            }
+        }
     }
 }
 
 @media (max-width: 30rem) {
-    .student-form-card {
-        padding: clamp(0.6rem, 1vw, 0.8rem);
-    }
+    .form-container {
+        .student-form-card {
+            width: 98vw;
+            padding: clamp(0.6rem, 1vw, 0.8rem);
+            max-height: 90vh;
+            border-radius: clamp(0.5rem, 0.8vw, 0.8rem);
 
-    .form-vertical {
-        gap: clamp(1rem, 1.5vw, 1.2rem);
-    }
+            h2 {
+                font-size: clamp(1rem, 1.2vw, 1.2rem);
+                margin-bottom: clamp(0.8rem, 1.2vw, 1rem);
+            }
+        }
 
-    .button-row {
-        gap: clamp(0.6rem, 0.9vw, 0.9rem);
+        .form-vertical {
+            gap: clamp(0.6rem, 0.9vw, 0.8rem);
+
+            input[type="text"] {
+                padding: clamp(0.4rem, 0.6vw, 0.5rem);
+                font-size: clamp(0.8rem, 0.9vw, 0.9rem);
+            }
+        }
+
+        .date-gender-row {
+            gap: clamp(0.5rem, 0.8vw, 0.8rem);
+        }
+
+        .date-field {
+            gap: clamp(0.2rem, 0.3vw, 0.3rem);
+
+            span {
+                font-size: clamp(0.75rem, 0.85vw, 0.85rem);
+            }
+
+            input[type="date"] {
+                padding: clamp(0.4rem, 0.6vw, 0.5rem);
+                font-size: clamp(0.75rem, 0.85vw, 0.85rem);
+            }
+        }
+
+        .gender-block {
+            gap: clamp(0.3rem, 0.5vw, 0.5rem);
+
+            span {
+                font-size: clamp(0.75rem, 0.85vw, 0.85rem);
+                margin-bottom: 0.3rem;
+            }
+        }
+
+        .gender-options {
+            gap: clamp(0.3rem, 0.5vw, 0.5rem);
+        }
+
+        .gender-option {
+            input[type="radio"] + span {
+                height: clamp(1.6rem, 2vw, 1.8rem);
+                max-width: 2.5rem;
+                font-size: clamp(0.75rem, 0.85vw, 0.85rem);
+            }
+        }
+
+        .button-row {
+            gap: clamp(0.4rem, 0.6vw, 0.6rem);
+            margin-top: clamp(0.8rem, 1.2vw, 1rem);
+
+            .cancel-button,
+            .save-button {
+                padding: clamp(0.5rem, 0.7vw, 0.6rem) clamp(0.8rem, 1.2vw, 1rem);
+                font-size: clamp(0.8rem, 0.9vw, 0.9rem);
+                min-height: clamp(1.8rem, 2.2vw, 2rem);
+            }
+        }
+    }
+}
+
+@media (max-width: 22.5rem) {
+    .form-container {
+        .student-form-card {
+            padding: clamp(0.5rem, 0.8vw, 0.6rem);
+            max-height: 95vh;
+        }
+
+        .form-vertical {
+            gap: clamp(0.5rem, 0.7vw, 0.6rem);
+        }
+
+        .gender-options {
+            flex-direction: column;
+            align-items: center;
+            gap: clamp(0.3rem, 0.5vw, 0.4rem);
+        }
+
+        .gender-option {
+            width: 100%;
+            max-width: 8rem;
+
+            input[type="radio"] + span {
+                width: 100%;
+                max-width: 8rem;
+            }
+        }
     }
 }
 

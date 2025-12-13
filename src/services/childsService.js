@@ -26,7 +26,30 @@ export async function getStudents(sortBy = 'seq_number', sortAscending = true, s
 function buildQuery(sortBy, sortAscending, searchTerm, genderFilter, addressFilter, dateFrom, dateTo) {
     let query = supabase.from(TABLE_NAME).select('*');
     if (searchTerm) {
-        query = query.or(`child_name.ilike.%${searchTerm}%,parent_name.ilike.%${searchTerm}%,address.ilike.%${searchTerm}%`);
+        const trimmedSearch = searchTerm.trim().toLowerCase();
+        if (trimmedSearch) {
+            const searchWords = trimmedSearch.split(/\s+/).filter(word => word.length > 0);
+            const searchConditions = [];
+            searchWords.forEach(word => {
+                if (word.length > 1) {
+                    searchConditions.push(
+                        `child_name.ilike.%${word}%`,
+                        `parent_name.ilike.%${word}%`,
+                        `address.ilike.%${word}%`
+                    );
+                }
+            });
+            if (searchWords.length > 1) {
+                searchConditions.push(
+                    `child_name.ilike.%${trimmedSearch}%`,
+                    `parent_name.ilike.%${trimmedSearch}%`,
+                    `address.ilike.%${trimmedSearch}%`
+                );
+            }
+            if (searchConditions.length > 0) {
+                query = query.or(searchConditions.join(','));
+            }
+        }
     }
     if (genderFilter && genderFilter !== 'all') {
         query = query.eq('gender', genderFilter);
