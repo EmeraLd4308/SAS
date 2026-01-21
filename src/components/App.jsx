@@ -21,7 +21,7 @@ function App() {
   const [editingId, setEditingId] = useState(null);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
-  const [sortBy, setSortBy] = useState('id');
+  const [sortBy, setSortBy] = useState('child_name');
   const [sortOrder, setSortOrder] = useState('asc');
   const [genderFilter, setGenderFilter] = useState('all');
   const [addressFilter, setAddressFilter] = useState('all');
@@ -29,7 +29,7 @@ function App() {
   const [dateTo, setDateTo] = useState('');
   const [yearFilter, setYearFilter] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [itemsPerPage, setItemsPerPage] = useState(20);
   const [modalState, setModalState] = useState({message: null, action: null, id: null});
   const [activeYear, setActiveYear] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);

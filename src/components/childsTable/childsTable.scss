@@ -1,14 +1,53 @@
 @use '../../styles/variables' as var;
 
 .student-table {
-    margin-top: clamp(1.5rem, 3vw, 3rem);
     width: 100%;
     border-collapse: collapse;
     background-color: var.$color-background;
     border-radius: var.$border-radius;
     overflow: hidden;
     box-shadow: var.$box-shadow;
-    margin-bottom: clamp(1rem, 2vw, 1.25rem);
+    
+    thead,
+    tfoot {
+        display: table;
+        width: 100%;
+        table-layout: fixed;
+    }
+
+    tbody {
+        display: block;
+        max-height: clamp(18.4rem, 55.2vh, 41.4rem);
+        overflow-y: auto;
+        overflow-x: hidden;
+        scrollbar-width: thin;
+        scrollbar-color: var.$color-secondary transparent;
+
+        &::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background: var.$color-secondary;
+            border-radius: var.$border-radius;
+
+            &:hover {
+                background: var.$color-hover;
+            }
+        }
+    }
+
+    thead tr,
+    tbody tr,
+    tfoot tr {
+        display: table;
+        width: 100%;
+        table-layout: fixed;
+    }
+
+    tbody tr {
+        min-height: var(--row-height);
+    }
 
     thead {
         background: var.$gradient-table;

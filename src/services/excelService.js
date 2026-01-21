@@ -16,19 +16,19 @@ export async function exportToExcel(filters = {}) {
         if (filters.dateTo) {
             query = query.lte('birth_date', filters.dateTo);
         }
-        const { data, error } = await query;
+        const {data, error} = await query;
         if (error) {
             console.error('Помилка отримання даних для експорту:', error);
-            return { success: false, error };
+            return {success: false, error};
         }
         if (!data || data.length === 0) {
-            return { success: false, error: 'Немає даних для експорту' };
+            return {success: false, error: 'Немає даних для експорту'};
         }
         const excelData = data.map(student => ({'ID': student.id || '', 'ПІБ Дитини': student.child_name || '', 'Стать': student.gender || '', 'Дата народження': student.birth_date || '', 'Адреса': student.address || '', 'ПІБ Батьків': student.parent_name || '',}));
         const worksheet = XLSX.utils.json_to_sheet(excelData);
         const workbook = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(workbook, worksheet, "Діти ОТГ");
-        const colWidths = [{ wch: 8 }, { wch: 50 }, { wch: 8 }, { wch: 18 }, { wch: 60 }, { wch: 50 },];
+        const colWidths = [{wch: 8}, {wch: 50}, {wch: 8}, {wch: 18}, {wch: 60}, {wch: 50},];
         worksheet['!cols'] = colWidths;
         const date = new Date();
         const year = date.getFullYear();
